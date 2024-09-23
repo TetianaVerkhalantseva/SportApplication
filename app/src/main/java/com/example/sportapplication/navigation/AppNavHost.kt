@@ -2,42 +2,37 @@ package com.example.sportapplication.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import com.example.sportapplication.ui.mainScreen.MainScreenRoute
-import com.example.sportapplication.ui.mainScreen.navigation.MAIN_ROUTE
-import com.example.sportapplication.ui.mainScreen.navigation.navigateToMain
-import com.example.sportapplication.ui.secondScreen.SecondScreenRoute
-import com.example.sportapplication.ui.secondScreen.navigation.SECOND_ROUTE
-import com.example.sportapplication.ui.secondScreen.navigation.navigateToSecond
+import com.example.sportapplication.ui.registration.navigation.REGISTRATION_ROUTE
+import com.example.sportapplication.ui.registration.navigation.registrationRoute
+import com.example.sportapplication.ui.main.navigation.mainScreen
+import com.example.sportapplication.ui.main.navigation.navigateToMain
+import com.example.sportapplication.ui.second.navigation.navigateToSecond
+import com.example.sportapplication.ui.second.navigation.secondScreen
 
 private const val GENERAL_ROUTE = "GENERAL_ROUTE"
 
 @Composable
-fun AppNavHost() {
-    val navController = rememberNavController()
+fun AppNavHost(navHostController: NavHostController) {
+
     NavHost(
         modifier = Modifier,
-        navController = navController,
-        startDestination = MAIN_ROUTE,
+        navController = navHostController,
+        startDestination = REGISTRATION_ROUTE,
         route = GENERAL_ROUTE
     ) {
-        composable(
-            route = MAIN_ROUTE
-        ) {
-            MainScreenRoute(
-                navigateToSecondScreen = { navController.navigateToSecond() }
-            )
-        }
-        composable(
-            route = SECOND_ROUTE
+        mainScreen(
+            navHostController = navHostController,
+            navigateToSecondScreen = { navHostController.navigateToSecond() }
         )
-        {
-            SecondScreenRoute(
-                navigateToMainScreen = { navController.navigateToMain() }
-            )
-        }
+        secondScreen(
+            navHostController = navHostController,
+            navigateToMainScreen = { navHostController.navigateToMain() }
+        )
+        registrationRoute(
+            navHostController = navHostController
+        )
     }
 
 }

@@ -1,12 +1,11 @@
-package com.example.sportapplication.ui.secondScreen.navigation
+package com.example.sportapplication.ui.second.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import com.example.sportapplication.ui.mainScreen.navigation.MAIN_ROUTE
-import com.example.sportapplication.ui.secondScreen.SecondScreenRoute
+import com.example.sportapplication.ui.second.SecondScreenRoute
 
 const val SECOND_ROUTE = "second_route"
 
@@ -18,7 +17,7 @@ fun NavGraphBuilder.secondScreen(
     navigateToMainScreen: () -> Unit,
 ) {
     composable(
-        route = MAIN_ROUTE
+        route = SECOND_ROUTE
     ) {
         SecondScreenRoute(
             navigateToMainScreen = navigateToMainScreen

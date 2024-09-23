@@ -1,4 +1,4 @@
-package com.example.sportapplication.ui.secondScreen
+package com.example.sportapplication.ui.second
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column

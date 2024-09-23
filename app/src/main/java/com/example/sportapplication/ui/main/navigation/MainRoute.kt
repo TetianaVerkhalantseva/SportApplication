@@ -1,11 +1,11 @@
-package com.example.sportapplication.ui.mainScreen.navigation
+package com.example.sportapplication.ui.main.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import com.example.sportapplication.ui.mainScreen.MainScreenRoute
+import com.example.sportapplication.ui.main.MainScreenRoute
 
 const val MAIN_ROUTE = "main_route"
 
