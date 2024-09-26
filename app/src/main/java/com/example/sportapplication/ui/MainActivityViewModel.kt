@@ -9,6 +9,4 @@ import javax.inject.Inject
 class MainActivityViewModel @Inject constructor(
     private val userRepository: UserRepository
 ): ViewModel() {
-
-    val user = userRepository.currentUser
 }
