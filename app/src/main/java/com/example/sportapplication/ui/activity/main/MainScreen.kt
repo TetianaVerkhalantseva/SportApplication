@@ -10,11 +10,13 @@ import com.example.sportapplication.ui.activity.navigation.AppNavHost
 
 @Composable
 fun MainScreen(
-    navController: NavHostController
+    navController: NavHostController,
+    showBottomBar: Boolean
 ) {
+
     Scaffold(
         bottomBar = {
-            BottomNavBar(navController = navController)
+            if (showBottomBar) BottomNavBar(navController = navController)
         }
     ) { padding ->
         Box(

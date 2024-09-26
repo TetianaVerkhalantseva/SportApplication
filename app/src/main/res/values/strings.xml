@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">SportApplication</string>
-    <string name="map_screen">Screen</string>
+    <string name="map_screen">Map</string>
+    <string name="quest_screen">Quest</string>
+    <string name="inventory_screen">Inventory</string>
+    <string name="achievements_screen">Achieve</string>
 </resources>

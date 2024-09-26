@@ -1,4 +1,4 @@
-package com.example.sportapplication.ui.main
+package com.example.sportapplication.ui.introduction
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -8,26 +8,26 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
-fun MainScreenRoute(
-    navigateToSecondScreen: () -> Unit
+fun IntroductionScreenRoute(
+    navigateToMapScreen: () -> Unit
 ) {
-    val viewModel : MainViewModel = hiltViewModel()
+    val viewModel : IntroductionViewModel = hiltViewModel()
 
-    MainScreen(
-        navigateToSecondScreen = navigateToSecondScreen
+    IntroductionScreen(
+        navigateToMapScreen = navigateToMapScreen
     )
 }
 
 @Composable
-fun MainScreen(
-    navigateToSecondScreen: () -> Unit
+fun IntroductionScreen(
+    navigateToMapScreen: () -> Unit
 ) {
     Column {
         Text(
             modifier = Modifier.clickable {
-                navigateToSecondScreen()
+                navigateToMapScreen()
             },
-            text = "MYMAINSCREEN!"
+            text = "Introduction page!"
         )
     }
 }

@@ -21,11 +21,20 @@ fun MapScreenRoute() {
 fun MapScreen() {
     val context = LocalContext.current
     Column {
-
         AndroidView(
             modifier = Modifier.fillMaxSize(),
             factory = { context ->
                 val mapView = MapView(context)
+
+                mapView.isVerticalMapRepetitionEnabled = false
+                mapView.setScrollableAreaLimitLatitude(
+                    MapView.getTileSystem().maxLatitude,
+                    MapView.getTileSystem().minLatitude,
+                    0
+                )
+                mapView.maxZoomLevel = 20.0
+                mapView.minZoomLevel = 4.0
+
                 mapView.setTileSource(TileSourceFactory.USGS_TOPO)
                 mapView.setBuiltInZoomControls(true)
                 mapView.setMultiTouchControls(true)

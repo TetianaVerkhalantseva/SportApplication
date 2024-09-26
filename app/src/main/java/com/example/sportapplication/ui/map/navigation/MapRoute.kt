@@ -5,10 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import com.example.sportapplication.ui.main.navigation.navigateToMain
 import com.example.sportapplication.ui.map.MapScreenRoute
-import com.example.sportapplication.ui.registration.RegistrationScreenRoute
-import com.example.sportapplication.ui.registration.navigation.REGISTRATION_ROUTE
 
 const val MAP_ROUTE = "map_route"
 
