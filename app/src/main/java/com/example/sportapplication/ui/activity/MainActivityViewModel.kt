@@ -1,4 +1,4 @@
-package com.example.sportapplication.ui
+package com.example.sportapplication.ui.activity
 
 import androidx.lifecycle.ViewModel
 import com.example.sportapplication.repository.UserRepository

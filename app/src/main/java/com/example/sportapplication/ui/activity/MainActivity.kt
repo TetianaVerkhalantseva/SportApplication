@@ -1,4 +1,4 @@
-package com.example.sportapplication.ui
+package com.example.sportapplication.ui.activity
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -10,8 +10,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
-import com.example.sportapplication.navigation.AppNavHost
-import com.example.sportapplication.ui.main.navigation.navigateToMain
+import com.example.sportapplication.ui.activity.main.MainScreen
+import com.example.sportapplication.ui.activity.navigation.AppNavHost
 import com.example.sportapplication.ui.theme.SportApplicationTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -29,10 +29,10 @@ class MainActivity : ComponentActivity() {
                     val viewModel : MainActivityViewModel = hiltViewModel()
                     val navHostController = rememberNavController()
 
-                    AppNavHost(navHostController)
+                    MainScreen(navController = navHostController)
 
                     LaunchedEffect(key1 = viewModel.user) {
-                        if (viewModel.user != null) navHostController.navigateToMain()
+                       // if (viewModel.user != null) navHostController.navigateToMain()
                     }
                 }
             }

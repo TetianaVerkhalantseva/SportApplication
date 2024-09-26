@@ -1,4 +1,4 @@
-package com.example.sportapplication.navigation
+package com.example.sportapplication.ui.activity.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -8,6 +8,8 @@ import com.example.sportapplication.ui.registration.navigation.REGISTRATION_ROUT
 import com.example.sportapplication.ui.registration.navigation.registrationRoute
 import com.example.sportapplication.ui.main.navigation.mainScreen
 import com.example.sportapplication.ui.main.navigation.navigateToMain
+import com.example.sportapplication.ui.map.navigation.MAP_ROUTE
+import com.example.sportapplication.ui.map.navigation.mapRoute
 import com.example.sportapplication.ui.second.navigation.navigateToSecond
 import com.example.sportapplication.ui.second.navigation.secondScreen
 
@@ -19,7 +21,8 @@ fun AppNavHost(navHostController: NavHostController) {
     NavHost(
         modifier = Modifier,
         navController = navHostController,
-        startDestination = REGISTRATION_ROUTE,
+        startDestination = MAP_ROUTE,
+        //startDestination = REGISTRATION_ROUTE,
         route = GENERAL_ROUTE
     ) {
         mainScreen(
@@ -31,6 +34,9 @@ fun AppNavHost(navHostController: NavHostController) {
             navigateToMainScreen = { navHostController.navigateToMain() }
         )
         registrationRoute(
+            navHostController = navHostController
+        )
+        mapRoute(
             navHostController = navHostController
         )
     }
