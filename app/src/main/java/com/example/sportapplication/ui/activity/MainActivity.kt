@@ -41,10 +41,6 @@ class MainActivity : ComponentActivity() {
                         navController = navHostController,
                         showBottomBar = isBottomBarVisible.value
                     )
-
-                    LaunchedEffect(key1 = viewModel.user) {
-                       // if (viewModel.user != null) navHostController.navigateToMain()
-                    }
                 }
             }
         }
