@@ -1,4 +1,4 @@
-package com.example.sportapplication.ui.second
+package com.example.sportapplication.ui.quest
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -7,23 +7,23 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 @Composable
-fun SecondScreenRoute(navigateToMainScreen: () -> Unit) {
+fun SecondScreenRoute(navigateToMapScreen: () -> Unit) {
 
-    SecondScreen(
-        navigateToMainScreen = navigateToMainScreen
+    QuestScreen(
+        navigateToMapScreen = navigateToMapScreen
     )
 }
 
 @Composable
-fun SecondScreen(
-    navigateToMainScreen: () -> Unit
+fun QuestScreen(
+    navigateToMapScreen: () -> Unit
 ) {
     Column {
         Text(
             modifier = Modifier.clickable {
-                navigateToMainScreen()
+                navigateToMapScreen()
             },
-            text = "SECONDSCREEN"
+            text = "Quest screen"
         )
     }
 }

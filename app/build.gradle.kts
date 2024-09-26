@@ -52,6 +52,11 @@ android {
 }
 
 dependencies {
+    implementation ("androidx.compose.material:material:1.7.2")
+    implementation ("androidx.navigation:navigation-compose:2.7.6")
+
+
+    implementation ("org.osmdroid:osmdroid-android:6.1.14")
 
     // Room
     implementation ("androidx.room:room-runtime:2.6.1")
