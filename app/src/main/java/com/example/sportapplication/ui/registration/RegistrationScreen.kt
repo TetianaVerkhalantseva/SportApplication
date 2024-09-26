@@ -59,7 +59,7 @@ fun RegistrationScreen(
         })
     }
 
-    Button(onClick = { viewModel.registerUser(email, password) }) {
+    Button(onClick = {  }) {
 
     }
 }

@@ -30,10 +30,6 @@ class MainActivity : ComponentActivity() {
                     val navHostController = rememberNavController()
 
                     AppNavHost(navHostController)
-
-                    LaunchedEffect(key1 = viewModel.user) {
-                        if (viewModel.user != null) navHostController.navigateToMain()
-                    }
                 }
             }
         }

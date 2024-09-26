@@ -18,22 +18,6 @@ class RegistrationViewModel @Inject constructor (
     val registrationState = _registrationState.asSharedFlow()
 
 
-    fun registerUser(email: String, password: String) {
-        viewModelScope.launch {
-            _registrationState.emit(RegistrationState.InProgress)
-            userRepository.createUserWithEmailAndPassword(email, password) {
-                if (it.isSuccessful) {
-                    viewModelScope.launch {
-                        _registrationState.emit(RegistrationState.Success)
-                    }
-                } else {
-                    viewModelScope.launch {
-                        _registrationState.emit(RegistrationState.Error(it.exception))
-                    }
-                }
-            }
-        }
-    }
 }
 
 sealed interface RegistrationState {
