@@ -4,4 +4,10 @@
     <string name="quest_screen">Quest</string>
     <string name="inventory_screen">Inventory</string>
     <string name="achievements_screen">Achieve</string>
+
+    <!-- Achievements Screen -->
+    <string name="achievements">Achievements</string>
+    <string name="total_workouts">Total Workouts</string>
+    <string name="workouts_in_a_week">Workouts in a Week</string>
+    <string name="share_badge">Share Badge</string>
 </resources>

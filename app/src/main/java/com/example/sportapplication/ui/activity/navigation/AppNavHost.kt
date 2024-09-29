@@ -6,6 +6,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.NavHost
 import com.example.sportapplication.ui.achievements.navigation.achievementsScreen
+import com.example.sportapplication.ui.achievements.selectedAchievement.navigation.navigateToSelectedAchievement
+import com.example.sportapplication.ui.achievements.selectedAchievement.navigation.selectedAchievementScreen
 import com.example.sportapplication.ui.introduction.navigation.INTRODUCTION_ROUTE
 import com.example.sportapplication.ui.introduction.navigation.introductionScreen
 import com.example.sportapplication.ui.inventory.navigation.inventoryScreen
@@ -42,9 +44,16 @@ fun AppNavHost(navHostController: NavHostController) {
             navHostController = navHostController
         )
         achievementsScreen(
-            navHostController = navHostController
+            navHostController = navHostController,
+            navigateToSelectedAchievementScreen = {
+                navHostController.navigateToSelectedAchievement(it.uid)
+            }
+
         )
         inventoryScreen(
+            navHostController = navHostController
+        )
+        selectedAchievementScreen(
             navHostController = navHostController
         )
     }
