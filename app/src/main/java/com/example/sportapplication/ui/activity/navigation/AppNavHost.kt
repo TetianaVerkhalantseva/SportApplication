@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import com.example.sportapplication.ui.achievements.navigation.achievementsScreen
 import com.example.sportapplication.ui.introduction.navigation.INTRODUCTION_ROUTE
 import com.example.sportapplication.ui.introduction.navigation.introductionScreen
+import com.example.sportapplication.ui.inventory.InventoryScreen
 import com.example.sportapplication.ui.inventory.navigation.inventoryScreen
 import com.example.sportapplication.ui.map.navigation.mapRoute
 import com.example.sportapplication.ui.map.navigation.navigateToMap

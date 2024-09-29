@@ -20,7 +20,7 @@ fun AchievementsScreen(
         Text(
             modifier = Modifier.clickable {
             },
-            text = "ACHIEVEMENTS SCREEN"
+            text = "Achievement screen"
         )
     }
 }
