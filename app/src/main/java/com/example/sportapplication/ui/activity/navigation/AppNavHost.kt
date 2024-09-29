@@ -12,7 +12,7 @@ import com.example.sportapplication.ui.inventory.navigation.inventoryScreen
 import com.example.sportapplication.ui.map.navigation.mapRoute
 import com.example.sportapplication.ui.map.navigation.navigateToMap
 import com.example.sportapplication.ui.quest.navigation.questScreen
-
+import com.example.sportapplication.ui.sensor.navigation.sensorScreen
 private const val GENERAL_ROUTE = "GENERAL_ROUTE"
 
 @Composable
@@ -47,6 +47,7 @@ fun AppNavHost(navHostController: NavHostController) {
         inventoryScreen(
             navHostController = navHostController
         )
+        sensorScreen(navHostController = navHostController)
     }
 
 }

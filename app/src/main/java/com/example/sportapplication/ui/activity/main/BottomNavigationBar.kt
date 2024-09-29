@@ -19,6 +19,7 @@ import com.example.sportapplication.ui.inventory.navigation.INVENTORY_ROUTE
 import com.example.sportapplication.ui.map.navigation.MAP_ROUTE
 import com.example.sportapplication.ui.model.BottomNavItem
 import com.example.sportapplication.ui.quest.navigation.QUEST_ROUTE
+import com.example.sportapplication.ui.sensor.navigation.SENSOR_ROUTE
 
 @Composable
 fun BottomNavBar(
@@ -46,6 +47,7 @@ fun BottomNavBar(
                 icon = R.drawable.ic_launcher_foreground,
                 route = ACHIEVEMENTS_ROUTE
             ),
+            BottomNavItem(name = R.string.sensor_screen, icon = R.drawable.ic_launcher_foreground, route = SENSOR_ROUTE)
         )
     }
 

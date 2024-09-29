@@ -4,4 +4,5 @@
     <string name="quest_screen">Quest</string>
     <string name="inventory_screen">Inventory</string>
     <string name="achievements_screen">Achieve</string>
+    <string name="sensor_screen">Sensor</string>
 </resources>
