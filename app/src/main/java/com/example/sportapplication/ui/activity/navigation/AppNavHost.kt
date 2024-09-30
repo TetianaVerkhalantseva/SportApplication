@@ -14,6 +14,8 @@ import com.example.sportapplication.ui.inventory.navigation.inventoryScreen
 import com.example.sportapplication.ui.map.navigation.mapRoute
 import com.example.sportapplication.ui.map.navigation.navigateToMap
 import com.example.sportapplication.ui.quest.navigation.questScreen
+import com.example.sportapplication.ui.quest.selectedQuest.navigation.navigateToSelectedQuest
+import com.example.sportapplication.ui.quest.selectedQuest.navigation.selectedQuestScreen
 
 private const val GENERAL_ROUTE = "GENERAL_ROUTE"
 
@@ -38,7 +40,7 @@ fun AppNavHost(navHostController: NavHostController) {
         )
         questScreen(
             navHostController = navHostController,
-            navigateToMapScreen = { navHostController.navigateToMap() }
+            navigateToSelectedQuestScreen = { navHostController.navigateToSelectedQuest() }
         )
         mapRoute(
             navHostController = navHostController
@@ -54,6 +56,9 @@ fun AppNavHost(navHostController: NavHostController) {
             navHostController = navHostController
         )
         selectedAchievementScreen(
+            navHostController = navHostController
+        )
+        selectedQuestScreen(
             navHostController = navHostController
         )
     }

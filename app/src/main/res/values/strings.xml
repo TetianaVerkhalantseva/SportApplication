@@ -10,4 +10,16 @@
     <string name="total_workouts">Total Workouts</string>
     <string name="workouts_in_a_week">Workouts in a Week</string>
     <string name="share_badge">Share Badge</string>
+
+
+    <!-- Quests Screen -->
+    <string name="all_quests">All quests</string>
+    <string name="favourites">Favourites</string>
+    <string name="daily_quests">Daily quests</string>
+    <string name="no_equipment_quests">No Equipment Quests</string>
+    <string name="quest_description1">Do this 4 times then do that 123123 times and be happy</string>
+
+    <!-- Selected Quest Screen -->
+    <string name="start_quiz">Start Quiz</string>
+
 </resources>
