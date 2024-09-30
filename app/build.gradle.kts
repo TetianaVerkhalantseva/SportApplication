@@ -52,6 +52,10 @@ android {
 }
 
 dependencies {
+    // Pager
+    implementation ("androidx.compose.foundation:foundation:1.7.2")
+    implementation ("com.google.accompanist:accompanist-pager-indicators:0.30.1")
+
     implementation ("androidx.compose.material:material:1.7.2")
     implementation ("androidx.navigation:navigation-compose:2.7.6")
 

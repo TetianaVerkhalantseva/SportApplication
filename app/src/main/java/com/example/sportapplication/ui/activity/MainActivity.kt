@@ -7,12 +7,12 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
+import com.example.sportapplication.ui.achievements.selectedAchievement.navigation.SELECTED_ACHIEVEMENT_ROUTE_WITH_ARGUMENTS
 import com.example.sportapplication.ui.introduction.navigation.INTRODUCTION_ROUTE
 import com.example.sportapplication.ui.theme.SportApplicationTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -35,6 +35,7 @@ class MainActivity : ComponentActivity() {
                     navHostController.addOnDestinationChangedListener { controller, destination, arguments ->
                         isBottomBarVisible.value =
                             destination.route != INTRODUCTION_ROUTE
+                                    && destination.route != SELECTED_ACHIEVEMENT_ROUTE_WITH_ARGUMENTS
                     }
 
                     MainScreen(
