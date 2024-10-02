@@ -5,15 +5,23 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
@@ -36,17 +44,20 @@ import com.example.sportapplication.database.model.Reward
 
 @Composable
 fun SelectedQuestRoute(
-    onBackClick : () -> Unit
+    onBackClick : () -> Unit,
+    navigateToInventoryScreen: () -> Unit
 ) {
 
     SelectedQuestScreen (
-        onBackClick = onBackClick
+        onBackClick = onBackClick,
+        navigateToInventoryScreen = navigateToInventoryScreen
     )
 }
 
 @Composable
 fun SelectedQuestScreen(
-    onBackClick : () -> Unit
+    onBackClick : () -> Unit,
+    navigateToInventoryScreen: () -> Unit
 ) {
     Column (
         modifier = Modifier.fillMaxSize(),
@@ -68,7 +79,9 @@ fun SelectedQuestScreen(
         }
 
         selectedQuest?.let { quest ->
-            Column {
+            Column (
+
+            ){
                 Image(
                     modifier = Modifier
                         .clip(RoundedCornerShape(18.dp))
@@ -93,6 +106,44 @@ fun SelectedQuestScreen(
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
+            }
+
+            Spacer(modifier = Modifier.height(40.dp))
+
+            Card (
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 30.dp)
+                    .clickable {
+                        navigateToInventoryScreen()
+                    },
+                shape = RoundedCornerShape(24.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = Color.White
+                ),
+            ) {
+
+                Row {
+                    Icon(
+                        modifier = Modifier
+                            .size(20.dp),
+                        imageVector = Icons.Default.Build,
+                        contentDescription = null,
+                        tint = Color.Gray
+                    )
+                    Spacer(modifier = Modifier.width(12.dp))
+                    Text(
+                        text = "Inventory"
+                    )
+                    Spacer(modifier = Modifier.weight(1F))
+                    Icon(
+                        modifier = Modifier
+                            .size(20.dp),
+                        imageVector = Icons.Default.KeyboardArrowRight,
+                        contentDescription = null,
+                        tint = Color.Gray
+                    )
+                }
             }
 
             Spacer(modifier = Modifier.weight(1F))

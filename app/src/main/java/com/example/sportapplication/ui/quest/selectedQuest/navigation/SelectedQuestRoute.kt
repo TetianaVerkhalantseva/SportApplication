@@ -5,6 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
+import com.example.sportapplication.ui.inventory.navigation.navigateToInventory
 import com.example.sportapplication.ui.quest.selectedQuest.SelectedQuestRoute
 
 const val SELECTED_QUEST_ROUTE = "selected_quest_route"
@@ -19,7 +20,8 @@ fun NavGraphBuilder.selectedQuestScreen(
         route = SELECTED_QUEST_ROUTE
     ) {
         SelectedQuestRoute(
-            onBackClick = { navHostController.popBackStack() }
+            onBackClick = { navHostController.popBackStack() },
+            navigateToInventoryScreen = { navHostController.navigateToInventory() }
         )
     }
 }
