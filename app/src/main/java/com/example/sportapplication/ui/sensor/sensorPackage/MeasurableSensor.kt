@@ -1,4 +1,4 @@
-package com.example.sportapplication.sensorPackage
+package com.example.sportapplication.ui.sensor.sensorPackage
 
 abstract class MeasurableSensor(protected val sensorType: Int) {
 

@@ -1,4 +1,4 @@
-package com.example.sportapplication.sensorPackage
+package com.example.sportapplication.ui.sensor.sensorPackage
 
 import android.content.Context
 import android.content.pm.PackageManager

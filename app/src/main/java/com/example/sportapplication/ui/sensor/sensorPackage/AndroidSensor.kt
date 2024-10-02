@@ -1,10 +1,11 @@
-package com.example.sportapplication.sensorPackage
+package com.example.sportapplication.ui.sensor.sensorPackage
 
 import android.content.Context
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
+import android.util.Log
 
 
 abstract class AndroidSensor(
@@ -19,17 +20,21 @@ abstract class AndroidSensor(
         private var sensor: Sensor? = null
 
     override fun startListening(){
+        Log.i("Staring listening to sensor", "initiating")
         if(!doesSensorExist){
+            Log.e("sensor failure", "sensor not found" )
             return
         }
-        if(::sensorManager.isInitialized && sensor == null){
+        if(!::sensorManager.isInitialized && sensor == null){
+            Log.i("sensor manager setup", "inserting sensor")
             sensorManager = context.getSystemService(SensorManager::class.java) as SensorManager
             sensor = sensorManager.getDefaultSensor(sensorType)
-        } else {
+        }
+            Log.i("registering sensor", "sensor is being registered ${sensor.toString()}")
             sensor?.let {
                 sensorManager.registerListener(this, it, SensorManager.SENSOR_DELAY_NORMAL)
             }
-        }
+
     }
 
     override fun stopListening() {
