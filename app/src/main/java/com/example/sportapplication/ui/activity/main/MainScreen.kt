@@ -9,6 +9,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.sportapplication.R
@@ -33,7 +34,7 @@ fun MainScreen(
         Scaffold(
             topBar = {
                 TopAppBar(
-                    title = { Text("Sport Application", style = MaterialTheme.typography.titleLarge) },
+                    title = { Text(stringResource(R.string.questabout), style = MaterialTheme.typography.titleLarge) },
                     colors = TopAppBarDefaults.topAppBarColors(
                         containerColor = MaterialTheme.colorScheme.primaryContainer,  // TopAppBar background color
                         titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer  // TopAppBar text color

@@ -53,7 +53,7 @@ fun IntroductionScreen(
     ) {
 
         Text(
-            text = stringResource(R.string.welcome_to_sport_application),
+            text = stringResource(R.string.welcome_to_questabout),
             style = MaterialTheme.typography.titleLarge,
             color = MaterialTheme.colorScheme.primary
         )
