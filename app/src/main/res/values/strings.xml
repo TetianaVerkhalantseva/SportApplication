@@ -23,5 +23,7 @@
     <!-- Selected Quest Screen -->
     <string name="start_quiz">Start Quiz</string>
     <string name="welcome_to_sport_application">Welcome to Sport Application</string>
+    <string name="welcome_to_questabout">Welcome to Questabout</string>
+    <string name="questabout">Questabout</string>
 
 </resources>
