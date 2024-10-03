@@ -6,6 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.example.sportapplication.ui.map.MapScreenRoute
+import com.example.sportapplication.ui.quest.selectedQuest.navigation.navigateToSelectedQuest
 
 const val MAP_ROUTE = "map_route"
 
@@ -19,6 +20,7 @@ fun NavGraphBuilder.mapRoute(
         route = MAP_ROUTE
     ) {
         MapScreenRoute(
+            navigateToSelectedMarkerScreen = { navHostController.navigateToSelectedQuest() }
             //navigateToMainScreen = { navHostController.navigateToMain() }
         )
     }

@@ -22,4 +22,6 @@
 
     <!-- Selected Quest Screen -->
     <string name="start_quiz">Start Quiz</string>
+    <string name="welcome_to_sport_application">Welcome to Sport Application</string>
+
 </resources>
