@@ -1,7 +1,3 @@
-package com.example.sportapplication.ui.activity.main
-
-import android.app.Application
-import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
@@ -112,6 +108,7 @@ fun MainScreen(
                             DropdownMenuItem(
                                 text = { Text(stringResource(R.string.change_theme), style = MaterialTheme.typography.bodyLarge) },
                                 onClick = {
+                                    // Toggle dark theme
                                     isDarkTheme = !isDarkTheme
                                     showMenu = false
                                 },
@@ -123,9 +120,8 @@ fun MainScreen(
                                     )
                                 }
                             )
-
                             DropdownMenuItem(
-                                text = { Text(stringResource(R.string.settings), style = MaterialTheme.typography.bodyLarge) },
+                                text = { Text("Settings", style = MaterialTheme.typography.bodyLarge) },
                                 onClick = {
                                     scope.launch {
                                         // Navigate to settings
