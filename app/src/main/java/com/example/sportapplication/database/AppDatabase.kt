@@ -30,5 +30,5 @@ abstract class AppDatabase: RoomDatabase() {
     }
 
     abstract fun userDao(): UserDao
-    abstract fun sensorDato(): SensorDao
+    abstract fun sensorDao(): SensorDao
 }

@@ -15,9 +15,9 @@ interface SensorDao {
     suspend fun getSensorData(sensorType: String): List<Float>
 
     @Query("SELECT * FROM sensorData WHERE timestamp LIKE :timestamp")
-    suspend fun getSensorDataAtTime(timestamp: Long)
+    suspend fun getSensorDataAtTime(timestamp: Long): List<SensorData>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertRow(sensorData: SensorData)
+    fun insertRow(sensorData: SensorData)
 
 }
