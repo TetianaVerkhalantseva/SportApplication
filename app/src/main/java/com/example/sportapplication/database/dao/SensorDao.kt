@@ -9,15 +9,15 @@ import com.example.sportapplication.database.entity.SensorData
 @Dao
 interface SensorDao {
     @Query("SELECT * FROM sensorData")
-    fun getAll(): List<SensorData>
+    suspend fun getAll(): List<SensorData>
 
     @Query("SELECT :sensorType FROM sensorData")
-    fun getSensorData(sensorType: String): List<Float>
+    suspend fun getSensorData(sensorType: String): List<Float>
 
     @Query("SELECT * FROM sensorData WHERE timestamp LIKE :timestamp")
-    fun getSensorDataAtTime(timestamp: Long)
+    suspend fun getSensorDataAtTime(timestamp: Long)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertRow(sensorData: SensorData)
+    suspend fun insertRow(sensorData: SensorData)
 
 }
