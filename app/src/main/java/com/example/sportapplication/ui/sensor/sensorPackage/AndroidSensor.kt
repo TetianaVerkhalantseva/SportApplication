@@ -11,13 +11,15 @@ import android.util.Log
 abstract class AndroidSensor(
     private val context: Context,
     private val sensorFeature: String,
-    sensorType: Int): MeasurableSensor(sensorType), SensorEventListener {
+    sensorType: Int
+): MeasurableSensor(sensorType), SensorEventListener {
+    override val doesSensorExist: Boolean
+        get() = context.packageManager.hasSystemFeature(sensorFeature)
 
-        override val doesSensorExist: Boolean
-            get() = context.packageManager.hasSystemFeature(sensorFeature)
+    private lateinit var sensorManager: SensorManager
+    private var sensor: Sensor? = null
+    var timestamp = 0L
 
-        private lateinit var sensorManager: SensorManager
-        private var sensor: Sensor? = null
 
     override fun startListening(){
         Log.i("Staring listening to sensor", "initiating")
@@ -44,12 +46,15 @@ abstract class AndroidSensor(
         sensorManager.unregisterListener(this)
     }
 
+
+
     override fun onSensorChanged(event: SensorEvent?){
         if(!doesSensorExist){
             return
         }
         if(event?.sensor?.type == sensorType){
             onSensorValuesChanged?.invoke(event.values.toList())
+            timestamp = event.timestamp
         }
     }
 

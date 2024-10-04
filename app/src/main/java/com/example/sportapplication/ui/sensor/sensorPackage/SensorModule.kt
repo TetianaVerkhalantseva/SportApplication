@@ -13,11 +13,11 @@ object SensorModule {
     @Provides
     @Singleton
     fun provideGyroscopeSensor(app: Application): MultiSensor {
-        val multiSensor = MultiSensor(AccelerometerSensor(app),GyroscopeSensor(app))
+        val multiSensor = MultiSensor(AccelerometerSensor(app),GyroscopeSensor(app), MagneticSensor(app))
         return multiSensor
     }
 }
 
-public class MultiSensor(public final val accelerometerSensor: MeasurableSensor, public final val gyroscopeSensor: MeasurableSensor) {
+class MultiSensor(val accelerometerSensor: AndroidSensor, val gyroscopeSensor: AndroidSensor, val magneticSensor: MagneticSensor) {
 
 }
