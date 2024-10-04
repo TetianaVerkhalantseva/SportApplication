@@ -11,6 +11,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.example.sportapplication.ui.sensor.sensorPackage.MultiSensor
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.util.Timer
 import javax.inject.Inject
 import kotlin.math.cos
 import kotlin.math.sin
@@ -21,7 +22,7 @@ class SensorViewModel @Inject constructor(
     private val multiSensor: MultiSensor
 ): ViewModel() {
 
-    var initState = true
+    private var initState = true
 
     //GYROSCOPE
     var rotation by mutableStateOf(floatArrayOf(0f,0f,0f))
@@ -52,6 +53,8 @@ class SensorViewModel @Inject constructor(
     }
 
 
+
+
     init {
             multiSensor.gyroscopeSensor.startListening()
 
@@ -63,6 +66,8 @@ class SensorViewModel @Inject constructor(
                     val initMatrix = getRotationMatrixFromOrientation(accMagOrientation)
                     SensorManager.getOrientation(initMatrix, floatArrayOf(0f,0f,0f))
                     rotationMatrix = multiplyMatrices(rotationMatrix, initMatrix)
+
+                    fun Timer.schedule() {}
                 }
 
 
