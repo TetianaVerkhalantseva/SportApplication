@@ -1,16 +1,20 @@
 package com.example.sportapplication.ui.activity.main
 
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.sportapplication.R
@@ -60,17 +64,18 @@ fun BottomNavigationBar(
     val currentBackStack by navController.currentBackStackEntryAsState()
     val currentSelectedRoute = currentBackStack?.destination?.route
 
-    BottomNavigation (
-        backgroundColor = Color.White,
-        contentColor = Color.White
+    // Updated with theme colors and fonts
+    BottomNavigation(
+        backgroundColor = MaterialTheme.colorScheme.primary,
+        contentColor = MaterialTheme.colorScheme.onPrimary
     ) {
         items.forEach { item ->
-            val isSelected =  currentSelectedRoute == item.route
+            val isSelected = currentSelectedRoute == item.route
             BottomNavigationItem(
                 selected = isSelected,
                 onClick = {
                     navController.navigate(item.route) {
-                        navController.graph.startDestinationRoute?.let {  route ->
+                        navController.graph.startDestinationRoute?.let { route ->
                             popUpTo(route) {
                                 saveState = true
                             }
@@ -83,24 +88,23 @@ fun BottomNavigationBar(
                     Icon(
                         imageVector = ImageVector.vectorResource(id = item.icon),
                         contentDescription = null,
-                        tint =
-                            if (isSelected) Color.Red
-                            else Color.Black
+                        tint = if (isSelected) MaterialTheme.colorScheme.onPrimary
+                        else MaterialTheme.colorScheme.onSurface
                     )
-                       },
+                },
                 label = {
                     Text(
                         text = stringResource(id = item.name),
-                        color =
-                            if (isSelected) Color.Red
-                            else Color.Black
+                        color = if (isSelected) MaterialTheme.colorScheme.onPrimary
+                        else MaterialTheme.colorScheme.onSurface,
+                        style = MaterialTheme.typography.titleSmall,
+                        modifier = Modifier.padding(bottom = 20.dp)
                     )
                 },
-                selectedContentColor = Color.Red,
-                unselectedContentColor = Color.Black,
+                selectedContentColor = MaterialTheme.colorScheme.onPrimary,
+                unselectedContentColor = MaterialTheme.colorScheme.onSurface,
                 alwaysShowLabel = true
             )
         }
-
     }
 }
