@@ -9,18 +9,28 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import com.example.sportapplication.database.dao.SensorDao
+import com.example.sportapplication.database.entity.SensorData
 import com.example.sportapplication.ui.sensor.sensorPackage.MultiSensor
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.util.Date
 import java.util.Timer
 import javax.inject.Inject
+import kotlin.concurrent.fixedRateTimer
 import kotlin.math.cos
 import kotlin.math.sin
 import kotlin.math.sqrt
 
 @HiltViewModel
 class SensorViewModel @Inject constructor(
-    private val multiSensor: MultiSensor
+    private val multiSensor: MultiSensor,
+    private val sensorDao: SensorDao
 ): ViewModel() {
+
+    private var databaseUpdateTimer = Timer()
 
     private var initState = true
 
@@ -28,6 +38,7 @@ class SensorViewModel @Inject constructor(
     var rotation by mutableStateOf(floatArrayOf(0f,0f,0f))
     private val NS2S = 1.0f / 1000000000f
     private var timestamp: Long = 0L
+    private var databaseTimestamp: Long = 0L
     var rotationCurrent by mutableStateOf(floatArrayOf(1f, 0f, 0f, 0f, 1f, 0f, 0f, 0f, 1f))
 
     //Low-pass filter
@@ -57,25 +68,24 @@ class SensorViewModel @Inject constructor(
 
     init {
             multiSensor.gyroscopeSensor.startListening()
-
             multiSensor.gyroscopeSensor.setOnSensorValuesChangedListener { values ->
                 this.rotation = values.toFloatArray()
+
+                val currentTimestamp: Long = multiSensor.gyroscopeSensor.timestamp
 
                 if(initState){
                     initState = false
                     val initMatrix = getRotationMatrixFromOrientation(accMagOrientation)
                     SensorManager.getOrientation(initMatrix, floatArrayOf(0f,0f,0f))
                     rotationMatrix = multiplyMatrices(rotationMatrix, initMatrix)
-
-                    fun Timer.schedule() {}
+                    databaseUpdateTimer = fixedRateTimer("databaseUpdateTimer", false, 1000L, 1000L) {
+                        updateDatabase(currentTimestamp)
+                    }
                 }
 
 
                 val deltaRotationVector = FloatArray(4) {0f}
 
-                val currentTimestamp: Long = multiSensor.gyroscopeSensor.timestamp
-
-                Log.i("timestamp", (currentTimestamp - timestamp).toString())
 
                 val dT = (currentTimestamp - timestamp) * NS2S
 
@@ -91,6 +101,8 @@ class SensorViewModel @Inject constructor(
                 rotationCurrent = multiplyMatrices(rotationCurrent, deltaRotationMatrix)
 
                 SensorManager.getOrientation(rotationCurrent, orientation)
+
+
             }
 
             multiSensor.accelerometerSensor.startListening()
@@ -119,13 +131,49 @@ class SensorViewModel @Inject constructor(
             }
         }
 
-    fun calculateAccMagOrientation() {
+    private fun calculateAccMagOrientation() {
         if(SensorManager.getRotationMatrix(rotationMatrix, null, acceleration, magnet)){
             SensorManager.getOrientation(rotationMatrix, accMagOrientation)
         }
     }
 
+    private fun updateDatabase(currentTimestamp: Long){
+        CoroutineScope(Dispatchers.IO).launch {
+            sensorDao.insertRow(
+                SensorData(
+                Date().time,
+                rotation[0], rotation[1], rotation[2],
+                acceleration[0], acceleration[1], acceleration[2],
+                magnet[0], magnet[1], magnet[2]
+                )
+            )
+
+            val row = sensorDao.getAll()[0]
+
+            Log.i("database Row", row.toString())
+
+        }
+            /*
+        if(databaseTimestamp == 0L){
+            databaseTimestamp = currentTimestamp
+        }
+
+        if (currentTimestamp - databaseTimestamp > 1000){
+            CoroutineScope(Dispatchers.IO).launch {  sensorDoa.insertRow(
+                SensorData(
+                    currentTimestamp,
+                    rotation[0], rotation[1], rotation[2],
+                    acceleration[0], acceleration[1], acceleration[2],
+                    magnet[0], magnet[1], magnet[2]
+                )
+            )}
+            databaseTimestamp = currentTimestamp
+        }*/
+    }
+
 }
+
+
 
  fun multiplyMatrices(matrixA: FloatArray, matrixB: FloatArray): FloatArray {
      val result = FloatArray(9)
@@ -219,4 +267,3 @@ fun getRotationMatrixFromOrientation(orientation: FloatArray): FloatArray{
     resultMatrix = multiplyMatrices(zM, resultMatrix)
     return resultMatrix
 }
-
