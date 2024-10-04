@@ -3,7 +3,6 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
-    id("com.google.gms.google-services")
 }
 
 android {
@@ -53,12 +52,20 @@ android {
 }
 
 dependencies {
+    // Pager
+    implementation ("androidx.compose.foundation:foundation:1.7.2")
+    implementation ("com.google.accompanist:accompanist-pager-indicators:0.30.1")
+
+    implementation ("androidx.compose.material:material:1.7.2")
+    implementation ("androidx.navigation:navigation-compose:2.7.6")
+
+
+    implementation ("org.osmdroid:osmdroid-android:6.1.14")
 
     // Room
     implementation ("androidx.room:room-runtime:2.6.1")
     implementation ("androidx.room:room-ktx:2.6.1")
-    implementation("com.google.firebase:firebase-auth:23.0.0")
-    implementation("com.google.firebase:firebase-firestore:25.1.0")
+    implementation("androidx.compose.ui:ui-text-google-fonts:1.7.2")
     kapt ("androidx.room:room-compiler:2.6.1")
 
     implementation ("com.google.dagger:hilt-android:2.51.1")
