@@ -1,6 +1,7 @@
 package com.example.sportapplication.database.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -18,6 +19,15 @@ interface SensorDao {
     suspend fun getSensorDataAtTime(timestamp: Long): List<SensorData>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertRow(sensorData: SensorData)
+    suspend fun insertRow(sensorData: SensorData)
+
+    @Query("SELECT COUNT(*) FROM sensorData")
+    suspend fun rowCount(): Int
+
+    @Query("DELETE FROM sensorData WHERE timestamp IN (SELECT timestamp FROM sensorData LIMIT :rowCount)")
+    suspend fun deleteTop(rowCount: Int)
+
+    @Query("Delete From sensorData")
+    suspend fun deleteAll()
 
 }

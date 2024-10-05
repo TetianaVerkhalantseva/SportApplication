@@ -1,10 +1,12 @@
 package com.example.sportapplication.ui.sensor
 
 
+import android.hardware.Sensor
 import android.hardware.SensorManager
 import android.util.Half.EPSILON
 import android.util.Log
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -31,14 +33,14 @@ class SensorViewModel @Inject constructor(
 ): ViewModel() {
 
     private var databaseUpdateTimer = Timer()
-
+    var numberOfRecordings by mutableIntStateOf(0)
+    var rowsOfData by mutableStateOf<List<SensorData>?>(null)
     private var initState = true
 
     //GYROSCOPE
     var rotation by mutableStateOf(floatArrayOf(0f,0f,0f))
     private val NS2S = 1.0f / 1000000000f
     private var timestamp: Long = 0L
-    private var databaseTimestamp: Long = 0L
     var rotationCurrent by mutableStateOf(floatArrayOf(1f, 0f, 0f, 0f, 1f, 0f, 0f, 0f, 1f))
 
     //Low-pass filter
@@ -50,7 +52,7 @@ class SensorViewModel @Inject constructor(
     var acceleration by mutableStateOf(floatArrayOf(0f,0f,0f))
 
     //MAGNETIC_FIELD
-    var orientation = floatArrayOf(0f,0f,0f)
+    var orientation by mutableStateOf( floatArrayOf(0f,0f,0f))
     private var magnet = floatArrayOf(0f,0f,0f)
     private var accMagOrientation = floatArrayOf(0f,0f,0f)
     var rotationMatrix = FloatArray(9)
@@ -67,6 +69,7 @@ class SensorViewModel @Inject constructor(
 
 
     init {
+            deleteAllPointsInDatabase()
             multiSensor.gyroscopeSensor.startListening()
             multiSensor.gyroscopeSensor.setOnSensorValuesChangedListener { values ->
                 this.rotation = values.toFloatArray()
@@ -78,7 +81,7 @@ class SensorViewModel @Inject constructor(
                     val initMatrix = getRotationMatrixFromOrientation(accMagOrientation)
                     SensorManager.getOrientation(initMatrix, floatArrayOf(0f,0f,0f))
                     rotationMatrix = multiplyMatrices(rotationMatrix, initMatrix)
-                    databaseUpdateTimer = fixedRateTimer("databaseUpdateTimer", false, 1000L, 1000L) {
+                    databaseUpdateTimer = fixedRateTimer("databaseUpdateTimer", true, 1000L, 1000L) {
                         updateDatabase(currentTimestamp)
                     }
                 }
@@ -137,8 +140,17 @@ class SensorViewModel @Inject constructor(
         }
     }
 
+    private fun deleteAllPointsInDatabase() {
+
+        CoroutineScope(Dispatchers.IO).launch {
+            sensorDao.deleteAll()
+        }
+    }
+
     private fun updateDatabase(currentTimestamp: Long){
         CoroutineScope(Dispatchers.IO).launch {
+
+
             sensorDao.insertRow(
                 SensorData(
                 Date().time,
@@ -148,9 +160,19 @@ class SensorViewModel @Inject constructor(
                 )
             )
 
-            val row = sensorDao.getAll()[0]
+            val rowCount = sensorDao.rowCount()
 
-            Log.i("database Row", row.toString())
+           if(rowCount > 60) {
+
+               sensorDao.deleteTop(1)
+           }
+
+            val rowCount2 = sensorDao.rowCount()
+
+            Log.i("database Row after delete", rowCount2.toString())
+            numberOfRecordings = sensorDao.rowCount()
+
+            rowsOfData =sensorDao.getAll()
 
         }
             /*
