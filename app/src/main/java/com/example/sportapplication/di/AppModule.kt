@@ -2,6 +2,7 @@ package com.example.sportapplication.di
 
 import android.content.Context
 import com.example.sportapplication.database.AppDatabase
+import com.example.sportapplication.database.dao.SensorDao
 import com.example.sportapplication.database.dao.UserDao
 import dagger.Module
 import dagger.Provides
@@ -22,5 +23,9 @@ object AppModule {
     @Provides
     @Singleton
     fun provideUserDao(appDatabase: AppDatabase): UserDao = appDatabase.userDao()
+
+    @Provides
+    @Singleton
+    fun providesSensorDoa(appDatabase: AppDatabase): SensorDao = appDatabase.sensorDao()
 
 }
