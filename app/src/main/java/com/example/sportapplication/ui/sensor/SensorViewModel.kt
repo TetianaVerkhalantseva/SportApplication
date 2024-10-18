@@ -1,7 +1,5 @@
 package com.example.sportapplication.ui.sensor
 
-
-import android.hardware.Sensor
 import android.hardware.SensorManager
 import android.util.Half.EPSILON
 import android.util.Log
@@ -82,7 +80,7 @@ class SensorViewModel @Inject constructor(
                     SensorManager.getOrientation(initMatrix, floatArrayOf(0f,0f,0f))
                     rotationMatrix = multiplyMatrices(rotationMatrix, initMatrix)
                     databaseUpdateTimer = fixedRateTimer("databaseUpdateTimer", true, 1000L, 1000L) {
-                        updateDatabase(currentTimestamp)
+                        updateDatabase()
                     }
                 }
 
@@ -147,7 +145,7 @@ class SensorViewModel @Inject constructor(
         }
     }
 
-    private fun updateDatabase(currentTimestamp: Long){
+    private fun updateDatabase(){
         CoroutineScope(Dispatchers.IO).launch {
 
 
