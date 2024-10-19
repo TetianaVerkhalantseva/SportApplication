@@ -28,7 +28,6 @@ fun SensorScreenRoute() {
 
 @Composable
 fun SensorScreen(rotation: FloatArray, rotationCurrent: FloatArray, orientation: FloatArray, acceleration: FloatArray, linearAcceleration: SnapshotStateList<Float>, numberOfRecordings: Int, rowsOfData: List<SensorData>?){
-
     Column {
         Text(text="Sensor screen")
         Text(text="Raw gyroscope: ${rotation[0]}, ${rotation[1]}, ${rotation[2]}")

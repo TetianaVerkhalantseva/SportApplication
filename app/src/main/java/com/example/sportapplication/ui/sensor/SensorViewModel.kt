@@ -8,6 +8,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModel
 import com.example.sportapplication.database.dao.SensorDao
 import com.example.sportapplication.database.entity.SensorData
@@ -63,10 +64,13 @@ class SensorViewModel @Inject constructor(
         multiSensor.accelerometerSensor.stopListening()
     }
 
-
+    override fun onCleared() {
+        super.onCleared()
+    }
 
 
     init {
+
             deleteAllPointsInDatabase()
             multiSensor.gyroscopeSensor.startListening()
             multiSensor.gyroscopeSensor.setOnSensorValuesChangedListener { values ->
@@ -131,6 +135,8 @@ class SensorViewModel @Inject constructor(
                 this.magnet = values.toFloatArray()
             }
         }
+
+
 
     private fun calculateAccMagOrientation() {
         if(SensorManager.getRotationMatrix(rotationMatrix, null, acceleration, magnet)){
