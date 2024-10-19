@@ -1,6 +1,7 @@
 package com.example.sportapplication.di
 
 import android.content.Context
+import android.content.SharedPreferences
 import com.example.sportapplication.database.AppDatabase
 import com.example.sportapplication.database.dao.UserDao
 import dagger.Module
@@ -22,5 +23,11 @@ object AppModule {
     @Provides
     @Singleton
     fun provideUserDao(appDatabase: AppDatabase): UserDao = appDatabase.userDao()
+
+    // Provide SharedPreferences for language settings
+    @Provides
+    @Singleton
+    fun provideSharedPreferences(@ApplicationContext context: Context): SharedPreferences =
+        context.getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
 
 }

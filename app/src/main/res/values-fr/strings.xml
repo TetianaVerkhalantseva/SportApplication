@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ApplicationSport</string>
+    <string name="map_screen">Carte</string>
+    <string name="quest_screen">Quête</string>
+    <string name="inventory_screen">Inventaire</string>
+    <string name="achievements_screen">Succès</string>
+    <string name="sensor_screen">Capteur</string>
+
+    <!-- Achievements Screen -->
+    <string name="achievements">Succès</string>
+    <string name="total_workouts">Entraînements Totaux</string>
+    <string name="workouts_in_a_week">Entraînements en Une Semaine</string>
+    <string name="share_badge">Partager le Badge</string>
+
+    <!-- Quests Screen -->
+    <string name="all_quests">Toutes les quêtes</string>
+    <string name="favourites">Favoris</string>
+    <string name="daily_quests">Quêtes quotidiennes</string>
+    <string name="no_equipment_quests">Quêtes sans équipement</string>
+    <string name="quest_description1">Faites ceci 4 fois, puis faites cela 123123 fois et soyez heureux</string>
+
+    <!-- Selected Quest Screen -->
+    <string name="start_quiz">Commencer le Quiz</string>
+
+    <!-- Introduction Screen and menu -->
+    <string name="welcome_to_sport_application">Bienvenue dans ApplicationSport</string>
+    <string name="welcome_to_questabout">Bienvenue dans Questabout</string>
+    <string name="questabout">Questabout</string>
+    <string name="change_language">Changer la Langue</string>
+    <string name="change_theme">Changer le Thème</string>
+    <string name="settings">Paramètres</string>
+    <string name="welcome_to_questabout_2">Bienvenue dans Questabout</string>
+    <string name="about_questabout">À propos de Questabout</string>
+    <string name="questabout_is_an_app_designed_to_bring_together_gamification_outdoor_activities_and_social_interaction_explore_nature_while_earning_achievements_and_meeting_like_minded_people_the_app_includes_features_like_a_customizable_map_navigation_tools_event_tracking_and_options_to_set_up_personal_quests_users_can_customize_preferences_creating_a_tailored_experience_through_camera_input_the_gameplay_becomes_more_interactive_adding_an_ar_like_experience_to_your_outdoor_adventures_complete_challenges_alone_or_collaborate_with_others_for_group_based_achievements_the_app_tracks_weather_conditions_suggests_hotspots_and_visualizes_your_activity_through_heatmaps_customize_your_avatar_earn_badges_and_keep_up_with_others_through_real_time_communication_keep_the_adventure_alive_with_questabout_s_dynamic_and_social_features_this_application_has_been_carefully_crafted_to_ensure_a_fun_and_engaging_experience_for_users_who_want_to_combine_exercise_with_exploration_and_social_connection_it_s_all_about_getting_outside_moving_and_making_new_connections_track_your_progress_manage_your_quests_and_customize_your_experience_every_step_of_the_way_questabout_makes_sure_every_journey_is_an_adventure_and_every_adventure_brings_new_opportunities_whether_you_are_looking_for_a_peaceful_hike_a_challenging_mountain_climb_or_just_a_walk_in_the_park_questabout_is_your_perfect_companion_stay_motivated_with_rewards_meet_new_friends_and_keep_discovering_new_places_let_the_journey_begin">
+        <![CDATA[
+        Questabout est une application conçue pour réunir la gamification, les activités de plein air et l\'interaction sociale. Explorez la nature tout en gagnant des succès et en rencontrant des personnes partageant les mêmes intérêts. L\'application inclut des fonctionnalités telles qu\'une carte personnalisable, des outils de navigation, le suivi des événements et des options pour créer des quêtes personnelles. Les utilisateurs peuvent personnaliser les préférences pour créer une expérience sur mesure. Grâce à l\'entrée de la caméra, le gameplay devient plus interactif, offrant une expérience semblable à la réalité augmentée pour vos aventures en plein air. Relevez des défis seul ou collaborez avec d\'autres pour des succès en groupe. L\'application suit les conditions météorologiques, suggère des points d\'intérêt et visualise votre activité à travers des cartes de chaleur. Personnalisez votre avatar, gagnez des badges et restez connecté avec les autres en temps réel. Gardez l\'aventure vivante avec les fonctionnalités dynamiques et sociales de Questabout. Cette application a été soigneusement conçue pour garantir une expérience amusante et engageante aux utilisateurs qui souhaitent combiner l\'exercice avec l\'exploration et la connexion sociale. Il s\'agit de sortir, de bouger et de créer de nouvelles connexions. Suivez vos progrès, gérez vos quêtes et personnalisez votre expérience à chaque étape. Questabout veille à ce que chaque voyage soit une aventure et que chaque aventure apporte de nouvelles opportunités. Que vous recherchiez une randonnée paisible, une ascension de montagne stimulante ou simplement une promenade dans le parc, Questabout est votre compagnon parfait. Restez motivé avec des récompenses, rencontrez de nouveaux amis et continuez à découvrir de nouveaux lieux. Que l\'aventure commence!
+        ]]>
+    </string>
+</resources>

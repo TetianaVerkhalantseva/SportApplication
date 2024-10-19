@@ -1,3 +1,7 @@
+package com.example.sportapplication.ui.activity.main
+
+import android.app.Application
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
@@ -10,11 +14,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.text.font.FontWeight
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.sportapplication.R
-import com.example.sportapplication.ui.activity.main.BottomNavBar
 import com.example.sportapplication.ui.activity.navigation.AppNavHost
+import com.example.sportapplication.ui.settings.LanguageViewModel
+import com.example.sportapplication.ui.settings.updateLocale
 import com.example.sportapplication.ui.theme.SportApplicationTheme
 import kotlinx.coroutines.launch
 
@@ -25,19 +31,26 @@ fun MainScreen(
     showBottomBar: Boolean
 ) {
     var showMenu by remember { mutableStateOf(false) }
+    var showLanguageMenu by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
+    val languageViewModel: LanguageViewModel = hiltViewModel()
 
     // State to track the dark mode toggle
     var isDarkTheme by remember { mutableStateOf(false) }
 
-    SportApplicationTheme(darkTheme = isDarkTheme) { // Pass the theme state here
+    SportApplicationTheme(darkTheme = isDarkTheme) {
         Scaffold(
             topBar = {
                 TopAppBar(
-                    title = { Text(stringResource(R.string.questabout), style = MaterialTheme.typography.titleLarge) },
+                    title = {
+                        Text(
+                            text = stringResource(R.string.questabout),
+                            style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
+                        )
+                    },
                     colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = MaterialTheme.colorScheme.primaryContainer,  // TopAppBar background color
-                        titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer  // TopAppBar text color
+                        containerColor = MaterialTheme.colorScheme.primaryContainer,
+                        titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
                     ),
                     actions = {
                         IconButton(onClick = { showMenu = !showMenu }) {
@@ -50,15 +63,12 @@ fun MainScreen(
                         DropdownMenu(
                             expanded = showMenu,
                             onDismissRequest = { showMenu = false },
-                            modifier = Modifier.background(MaterialTheme.colorScheme.primaryContainer)  // Same color as TopAppBar
+                            modifier = Modifier.background(MaterialTheme.colorScheme.primaryContainer)
                         ) {
                             DropdownMenuItem(
-                                text = { Text("Change Language", style = MaterialTheme.typography.bodyLarge) },
+                                text = { Text(stringResource(R.string.change_language), style = MaterialTheme.typography.bodyLarge) },
                                 onClick = {
-                                    scope.launch {
-                                        // Language change logic here
-                                        showMenu = false
-                                    }
+                                    showLanguageMenu = !showLanguageMenu
                                 },
                                 leadingIcon = {
                                     Icon(
@@ -68,10 +78,40 @@ fun MainScreen(
                                     )
                                 }
                             )
+
+                            // Submenu for selecting the language
+                            if (showLanguageMenu) {
+                                DropdownMenu(
+                                    expanded = showLanguageMenu,
+                                    onDismissRequest = { showLanguageMenu = false },
+                                    modifier = Modifier.background(MaterialTheme.colorScheme.primaryContainer)
+                                ) {
+                                    val languages = mapOf(
+                                        "en" to "English",
+                                        "no" to "Norsk",
+                                        "de" to "Deutsch",
+                                        "fr" to "Français",
+                                        "es" to "Español"
+                                    )
+
+                                    languages.forEach { (code, name) ->
+                                        DropdownMenuItem(
+                                            text = { Text(name, style = MaterialTheme.typography.bodyLarge) },
+                                            onClick = {
+                                                languageViewModel.setLanguage(code)
+                                                (navController.context.applicationContext as? Application)?.updateLocale(code)
+                                                showLanguageMenu = false
+                                                showMenu = false
+                                                (navController.context as ComponentActivity).recreate()
+                                            }
+                                        )
+                                    }
+                                }
+                            }
+
                             DropdownMenuItem(
-                                text = { Text("Change Theme", style = MaterialTheme.typography.bodyLarge) },
+                                text = { Text(stringResource(R.string.change_theme), style = MaterialTheme.typography.bodyLarge) },
                                 onClick = {
-                                    // Toggle dark theme
                                     isDarkTheme = !isDarkTheme
                                     showMenu = false
                                 },
@@ -83,8 +123,9 @@ fun MainScreen(
                                     )
                                 }
                             )
+
                             DropdownMenuItem(
-                                text = { Text("Settings", style = MaterialTheme.typography.bodyLarge) },
+                                text = { Text(stringResource(R.string.settings), style = MaterialTheme.typography.bodyLarge) },
                                 onClick = {
                                     scope.launch {
                                         // Navigate to settings
