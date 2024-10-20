@@ -22,27 +22,54 @@ fun SensorScreenRoute() {
     val orientation = viewModel.orientation
     val numberOfRecordings = viewModel.numberOfRecordings
     val rowsOfData = viewModel.rowsOfData
+    val currentAverageAcceleration = viewModel.currentAverageAcceleration
+    val currentMagnitudeAcceleration = Math.sqrt(
+        Math.pow(currentAverageAcceleration[0].toDouble(), 2.0) + Math.pow(
+            currentAverageAcceleration[1].toDouble(),
+            2.0
+        ) + Math.pow(currentAverageAcceleration[2].toDouble(), 2.0)
+    )
 
-    SensorScreen(rotation, rotationCurrent, orientation, acceleration, linearAcceleration, numberOfRecordings, rowsOfData)
+    SensorScreen(
+        rotation,
+        rotationCurrent,
+        orientation,
+        acceleration,
+        linearAcceleration,
+        numberOfRecordings,
+        rowsOfData,
+        currentMagnitudeAcceleration
+    )
 }
 
 @Composable
-fun SensorScreen(rotation: FloatArray, rotationCurrent: FloatArray, orientation: FloatArray, acceleration: FloatArray, linearAcceleration: SnapshotStateList<Float>, numberOfRecordings: Int, rowsOfData: List<SensorData>?){
+fun SensorScreen(
+    rotation: FloatArray,
+    rotationCurrent: FloatArray,
+    orientation: FloatArray,
+    acceleration: FloatArray,
+    linearAcceleration: SnapshotStateList<Float>,
+    numberOfRecordings: Int,
+    rowsOfData: List<SensorData>?,
+    currentMagnitudeAcceleration: Double
+) {
     Column {
-        Text(text="Sensor screen")
-        Text(text="Raw gyroscope: ${rotation[0]}, ${rotation[1]}, ${rotation[2]}")
-        Text(text="Filtered gyroscope: ${rotationCurrent[0]}, ${rotationCurrent[5]}, ${rotationCurrent[8]}")
-        Text(text="Raw orientation: ${orientation[0]}, ${orientation[1]}, ${orientation[2]}")
-        Text(text="Raw acceleration: ${acceleration[0]}, ${acceleration[1]}, ${acceleration[2]}" )
-        Text(text="Filtered acceleration: ${linearAcceleration[0]}, ${linearAcceleration[1]}, ${linearAcceleration[2]}" )
-        Text(text="Number of seonsor recordings stored: ${numberOfRecordings}")
-        if(rowsOfData != null )LazyColumn(Modifier.padding(top = 16.dp)){
+        Text(text = "Sensor screen")
+        Text(text = "Raw gyroscope: ${rotation[0]}, ${rotation[1]}, ${rotation[2]}")
+        Text(text = "Filtered gyroscope: ${rotationCurrent[0]}, ${rotationCurrent[5]}, ${rotationCurrent[8]}")
+        Text(text = "Raw orientation: ${orientation[0]}, ${orientation[1]}, ${orientation[2]}")
+        Text(text = "Raw acceleration: ${acceleration[0]}, ${acceleration[1]}, ${acceleration[2]}")
+        Text(text = "Filtered acceleration: ${linearAcceleration[0]}, ${linearAcceleration[1]}, ${linearAcceleration[2]}")
+        Text(text = "Number of seonsor recordings stored: $numberOfRecordings")
+        Text(text = "Average Accel: $currentMagnitudeAcceleration")
+        if (rowsOfData != null) LazyColumn(Modifier.padding(top = 16.dp)) {
             items(rowsOfData) { data ->
-                Column(Modifier.padding(bottom = 8.dp)){
-                Text(text="timestamp: ${data.timestamp}")
-                Text(text="gyroscope: [${data.gyroscopeX}, ${data.gyroscopeY}, ${data.gyroscopeZ}]")
-                Text(text="acceleration: [${data.accelerometerX}, ${data.accelerometerY}, ${data.accelerometerZ}]")
-                Text(text="magnetic: [${data.magneticX}, ${data.magneticY}, ${data.magneticZ}]")}
+                Column(Modifier.padding(bottom = 8.dp)) {
+                    Text(text = "timestamp: ${data.timestamp}")
+                    Text(text = "gyroscope: [${data.gyroscopeX}, ${data.gyroscopeY}, ${data.gyroscopeZ}]")
+                    Text(text = "acceleration: [${data.accelerometerX}, ${data.accelerometerY}, ${data.accelerometerZ}]")
+                    Text(text = "magnetic: [${data.magneticX}, ${data.magneticY}, ${data.magneticZ}]")
+                }
 
             }
         }
