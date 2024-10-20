@@ -4,13 +4,15 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.sportapplication.database.dao.InventoryDao
+import com.example.sportapplication.database.dao.ItemsDao
 import com.example.sportapplication.database.dao.SensorDao
 import com.example.sportapplication.database.dao.UserDao
 import com.example.sportapplication.database.entity.SensorData
 import com.example.sportapplication.database.entity.User
 
 @Database(entities = [User::class, SensorData::class], version = 1)
-abstract class AppDatabase: RoomDatabase() {
+abstract class AppDatabase : RoomDatabase() {
 
     companion object {
         private var INSTANCE: AppDatabase? = null
@@ -29,6 +31,8 @@ abstract class AppDatabase: RoomDatabase() {
         }
     }
 
+    abstract fun inventoryDao(): InventoryDao
+    abstract fun itemsDao(): ItemsDao
     abstract fun userDao(): UserDao
     abstract fun sensorDao(): SensorDao
 }
