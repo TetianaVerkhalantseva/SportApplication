@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -15,11 +16,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.DpOffset
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.sportapplication.R
 import com.example.sportapplication.ui.activity.navigation.AppNavHost
+import com.example.sportapplication.ui.profile.navigation.navigateToProfile
 import com.example.sportapplication.ui.settings.LanguageViewModel
+import com.example.sportapplication.ui.settings.UnitViewModel
 import com.example.sportapplication.ui.settings.updateLocale
 import com.example.sportapplication.ui.theme.SportApplicationTheme
 import kotlinx.coroutines.launch
@@ -32,10 +37,12 @@ fun MainScreen(
 ) {
     var showMenu by remember { mutableStateOf(false) }
     var showLanguageMenu by remember { mutableStateOf(false) }
+    var showSettingsMenu by remember { mutableStateOf(false) }
+    var showUnitMenu by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
     val languageViewModel: LanguageViewModel = hiltViewModel()
+    val unitViewModel: UnitViewModel = hiltViewModel()
 
-    // State to track the dark mode toggle
     var isDarkTheme by remember { mutableStateOf(false) }
 
     SportApplicationTheme(darkTheme = isDarkTheme) {
@@ -65,6 +72,22 @@ fun MainScreen(
                             onDismissRequest = { showMenu = false },
                             modifier = Modifier.background(MaterialTheme.colorScheme.primaryContainer)
                         ) {
+                            // Profile menu item
+                            DropdownMenuItem(
+                                text = { Text(stringResource(R.string.profile), style = MaterialTheme.typography.bodyLarge) },
+                                onClick = {
+                                    showMenu = false
+                                    navController.navigateToProfile() // Navigates to profile screen
+                                },
+                                leadingIcon = {
+                                    Icon(
+                                        imageVector = Icons.Default.Person,
+                                        contentDescription = null,
+                                        tint = MaterialTheme.colorScheme.onPrimaryContainer
+                                    )
+                                }
+                            )
+
                             DropdownMenuItem(
                                 text = { Text(stringResource(R.string.change_language), style = MaterialTheme.typography.bodyLarge) },
                                 onClick = {
@@ -79,7 +102,6 @@ fun MainScreen(
                                 }
                             )
 
-                            // Submenu for selecting the language
                             if (showLanguageMenu) {
                                 DropdownMenu(
                                     expanded = showLanguageMenu,
@@ -98,13 +120,72 @@ fun MainScreen(
                                         DropdownMenuItem(
                                             text = { Text(name, style = MaterialTheme.typography.bodyLarge) },
                                             onClick = {
-                                                languageViewModel.setLanguage(code)
-                                                (navController.context.applicationContext as? Application)?.updateLocale(code)
-                                                showLanguageMenu = false
-                                                showMenu = false
-                                                (navController.context as ComponentActivity).recreate()
+                                                scope.launch {
+                                                    languageViewModel.setLanguage(code)
+                                                    (navController.context.applicationContext as? Application)?.updateLocale(code)
+                                                    showLanguageMenu = false
+                                                    showMenu = false
+                                                    (navController.context as ComponentActivity).recreate()
+                                                }
                                             }
                                         )
+                                    }
+                                }
+                            }
+
+                            DropdownMenuItem(
+                                text = { Text(stringResource(R.string.settings), style = MaterialTheme.typography.bodyLarge) },
+                                onClick = {
+                                    showSettingsMenu = !showSettingsMenu
+                                },
+                                leadingIcon = {
+                                    Icon(
+                                        imageVector = Icons.Default.Settings,
+                                        contentDescription = null,
+                                        tint = MaterialTheme.colorScheme.onPrimaryContainer
+                                    )
+                                }
+                            )
+
+                            if (showSettingsMenu) {
+                                DropdownMenu(
+                                    expanded = showSettingsMenu,
+                                    onDismissRequest = { showSettingsMenu = false },
+                                    modifier = Modifier.background(MaterialTheme.colorScheme.primaryContainer)
+                                ) {
+                                    DropdownMenuItem(
+                                        text = { Text(stringResource(R.string.change_unit), style = MaterialTheme.typography.bodyLarge) },
+                                        onClick = {
+                                            showUnitMenu = !showUnitMenu
+                                        }
+                                    )
+
+                                    if (showUnitMenu) {
+                                        DropdownMenu(
+                                            expanded = showUnitMenu,
+                                            onDismissRequest = { showUnitMenu = false },
+                                            modifier = Modifier.background(MaterialTheme.colorScheme.primaryContainer),
+                                            offset = DpOffset(x = 0.dp, y = 200.dp)
+                                        ) {
+                                            val units = mapOf(
+                                                "metric" to stringResource(R.string.metric_system),
+                                                "imperial" to stringResource(R.string.imperial_system)
+                                            )
+
+                                            units.forEach { (unitType, displayName) ->
+                                                DropdownMenuItem(
+                                                    text = { Text(displayName, style = MaterialTheme.typography.bodyLarge) },
+                                                    onClick = {
+                                                        scope.launch {
+                                                            unitViewModel.setUnitSystem(unitType)
+                                                            showUnitMenu = false
+                                                            showSettingsMenu = false
+                                                            showMenu = false
+                                                        }
+                                                    }
+                                                )
+                                            }
+                                        }
                                     }
                                 }
                             }
@@ -118,23 +199,6 @@ fun MainScreen(
                                 leadingIcon = {
                                     Icon(
                                         painter = painterResource(id = R.drawable.theme_light_dark),
-                                        contentDescription = null,
-                                        tint = MaterialTheme.colorScheme.onPrimaryContainer
-                                    )
-                                }
-                            )
-
-                            DropdownMenuItem(
-                                text = { Text(stringResource(R.string.settings), style = MaterialTheme.typography.bodyLarge) },
-                                onClick = {
-                                    scope.launch {
-                                        // Navigate to settings
-                                        showMenu = false
-                                    }
-                                },
-                                leadingIcon = {
-                                    Icon(
-                                        imageVector = Icons.Default.Settings,
                                         contentDescription = null,
                                         tint = MaterialTheme.colorScheme.onPrimaryContainer
                                     )
