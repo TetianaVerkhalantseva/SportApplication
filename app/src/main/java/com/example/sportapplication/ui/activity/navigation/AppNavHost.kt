@@ -10,15 +10,15 @@ import com.example.sportapplication.ui.achievements.selectedAchievement.navigati
 import com.example.sportapplication.ui.achievements.selectedAchievement.navigation.selectedAchievementScreen
 import com.example.sportapplication.ui.introduction.navigation.INTRODUCTION_ROUTE
 import com.example.sportapplication.ui.introduction.navigation.introductionScreen
-import com.example.sportapplication.ui.inventory.InventoryScreen
 import com.example.sportapplication.ui.inventory.navigation.inventoryScreen
 import com.example.sportapplication.ui.map.navigation.mapRoute
 import com.example.sportapplication.ui.map.navigation.navigateToMap
+import com.example.sportapplication.ui.profile.navigation.profileRoute // Import profileRoute
 import com.example.sportapplication.ui.quest.navigation.questScreen
 import com.example.sportapplication.ui.quest.selectedQuest.navigation.navigateToSelectedQuest
 import com.example.sportapplication.ui.quest.selectedQuest.navigation.selectedQuestScreen
-
 import com.example.sportapplication.ui.sensor.navigation.sensorScreen
+
 private const val GENERAL_ROUTE = "GENERAL_ROUTE"
 
 @Composable
@@ -52,7 +52,6 @@ fun AppNavHost(navHostController: NavHostController) {
             navigateToSelectedAchievementScreen = {
                 navHostController.navigateToSelectedAchievement(it.uid)
             }
-
         )
         inventoryScreen(
             navHostController = navHostController
@@ -64,6 +63,7 @@ fun AppNavHost(navHostController: NavHostController) {
             navHostController = navHostController
         )
         sensorScreen(navHostController = navHostController)
-    }
 
+        profileRoute(navHostController = navHostController)
+    }
 }
