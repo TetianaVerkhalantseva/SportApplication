@@ -1,8 +1,11 @@
 package com.example.sportapplication.di
 
 import android.content.Context
+import android.content.SharedPreferences
 import com.example.sportapplication.database.AppDatabase
 import com.example.sportapplication.database.dao.UserDao
+import com.example.sportapplication.ui.profile.ProfileViewModel
+import com.example.sportapplication.ui.settings.UnitViewModel
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,14 +26,21 @@ object AppModule {
     @Singleton
     fun provideUserDao(appDatabase: AppDatabase): UserDao = appDatabase.userDao()
 
-    @Provides
-    @Singleton
-    fun providesSensorDoa(appDatabase: AppDatabase): SensorDao = appDatabase.sensorDao()
 
-    // Provide SharedPreferences for language settings
     @Provides
     @Singleton
     fun provideSharedPreferences(@ApplicationContext context: Context): SharedPreferences =
         context.getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
+
+    @Provides
+    @Singleton
+    fun provideUnitViewModel(sharedPreferences: SharedPreferences): UnitViewModel {
+        return UnitViewModel(sharedPreferences)
+    }
+
+    @Provides
+    fun provideProfileViewModel(userDao: UserDao): ProfileViewModel {
+        return ProfileViewModel(userDao)
+    }
 
 }
