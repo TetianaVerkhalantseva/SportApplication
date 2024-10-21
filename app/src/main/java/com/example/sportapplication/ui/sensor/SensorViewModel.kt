@@ -31,6 +31,7 @@ class SensorViewModel @Inject constructor(
     private val sensorDao: SensorDao
 ) : ViewModel(), LifecycleObserver {
 
+    //DATABASE &
     private var databaseUpdateTimer = Timer()
     var numberOfRecordings by mutableIntStateOf(0)
     var rowsOfData by mutableStateOf<List<SensorData>?>(null)
@@ -70,15 +71,18 @@ class SensorViewModel @Inject constructor(
 
     init {
 
+        //CLEAR DATABASE FOR TESTING REASONS
         deleteAllPointsInDatabase()
         if (!multiSensor.gyroscopeSensor.sensorActive) {
 
+            //INITIATE SENSOR LISTENERS AND ON CHANGE FUNCTIONALITY
             multiSensor.gyroscopeSensor.startListening()
             multiSensor.gyroscopeSensor.setOnSensorValuesChangedListener { values ->
                 this.rotation = values.toFloatArray()
 
                 val currentTimestamp: Long = multiSensor.gyroscopeSensor.timestamp
 
+                // CHECK INIT STATE AND INITIALIZE LATE START VALUES.
                 if (initState) {
                     initState = false
                     val initMatrix = getRotationMatrixFromOrientation(accMagOrientation)
@@ -107,7 +111,6 @@ class SensorViewModel @Inject constructor(
                         )
 
                         averageAcceleration.clear()
-
                     }
                 }
 
@@ -173,7 +176,6 @@ class SensorViewModel @Inject constructor(
     }
 
     private fun deleteAllPointsInDatabase() {
-
         CoroutineScope(Dispatchers.IO).launch {
             sensorDao.deleteAll()
         }

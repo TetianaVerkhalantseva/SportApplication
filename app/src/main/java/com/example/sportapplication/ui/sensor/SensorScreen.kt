@@ -62,6 +62,7 @@ fun SensorScreen(
         Text(text = "Filtered acceleration: ${linearAcceleration[0]}, ${linearAcceleration[1]}, ${linearAcceleration[2]}")
         Text(text = "Number of seonsor recordings stored: $numberOfRecordings")
         Text(text = "Average Accel: $currentMagnitudeAcceleration")
+
         if (rowsOfData != null) LazyColumn(Modifier.padding(top = 16.dp)) {
             items(rowsOfData) { data ->
                 Column(Modifier.padding(bottom = 8.dp)) {

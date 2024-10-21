@@ -6,14 +6,7 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "sensorData")
 data class InventoryData(
-    @PrimaryKey val timestamp: Long,
-    @ColumnInfo(name = "gyroscope_x") val gyroscopeX: Float?,
-    @ColumnInfo(name = "gyroscope_y") val gyroscopeY: Float?,
-    @ColumnInfo(name = "gyroscope_z") val gyroscopeZ: Float?,
-    @ColumnInfo(name = "accelerometer_x") val accelerometerX: Float?,
-    @ColumnInfo(name = "accelerometer_y") val accelerometerY: Float?,
-    @ColumnInfo(name = "accelerometer_z") val accelerometerZ: Float?,
-    @ColumnInfo(name = "magnetic_x") val magneticX: Float?,
-    @ColumnInfo(name = "magnetic_y") val magneticY: Float?,
-    @ColumnInfo(name = "magnetic_z") val magneticZ: Float?
+    @PrimaryKey(autoGenerate = true) val inventoryItem: Long,
+    @ColumnInfo(name = "item_id") val itemId: Long,
+    @ColumnInfo(name="item_name")val itemName: String
 )
