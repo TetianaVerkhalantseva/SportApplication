@@ -7,7 +7,7 @@ import androidx.room.Query
 import com.example.sportapplication.database.entity.SensorData
 
 @Dao
-interface SensorDao {
+interface ItemsDao {
     @Query("SELECT * FROM sensorData")
     suspend fun getAll(): List<SensorData>
 
