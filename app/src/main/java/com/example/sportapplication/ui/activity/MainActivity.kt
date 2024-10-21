@@ -1,6 +1,7 @@
 package com.example.sportapplication.ui.activity
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -19,9 +20,13 @@ import com.example.sportapplication.ui.settings.LanguageViewModel
 import com.example.sportapplication.ui.settings.LocaleHelper
 import com.example.sportapplication.ui.theme.SportApplicationTheme
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    @Inject
+    lateinit var sharedPreferences: SharedPreferences // Inject SharedPreferences
 
     override fun attachBaseContext(newBase: Context) {
         val sharedPreferences = newBase.getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
@@ -37,14 +42,14 @@ class MainActivity : ComponentActivity() {
             val languageViewModel: LanguageViewModel = hiltViewModel()
             val selectedLanguage by languageViewModel.selectedLanguage.observeAsState("en")
 
-            // Husk den nåværende verdien av språket for sammenligning
+            // Remember the present value for comparison
             val currentLanguage = remember { mutableStateOf(selectedLanguage) }
 
             // Sjekk og oppdater språket hvis det er endret
             LaunchedEffect(selectedLanguage) {
                 if (currentLanguage.value != selectedLanguage) {
                     currentLanguage.value = selectedLanguage
-                    recreate() // Restart aktiviteten for å reflektere språkendringen
+                    recreate() // Restart activity to reflect change
                 }
             }
 
@@ -64,7 +69,8 @@ class MainActivity : ComponentActivity() {
 
                     MainScreen(
                         navController = navHostController,
-                        showBottomBar = isBottomBarVisible.value
+                        showBottomBar = isBottomBarVisible.value,
+                        sharedPreferences = sharedPreferences // Pass SharedPreferences to MainScreen
                     )
                 }
             }
