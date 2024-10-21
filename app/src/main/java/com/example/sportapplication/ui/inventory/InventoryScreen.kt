@@ -14,98 +14,66 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.sportapplication.R
 import com.example.sportapplication.database.model.InventoryItem
-import com.example.sportapplication.database.model.InventoryType
+import com.example.sportapplication.database.model.Item
 
 @Composable
 fun InventoryScreenRoute() {
 
-    val viewModel : InventoryViewModel = hiltViewModel()
+    val viewModel: InventoryViewModel = hiltViewModel()
+    val inventoryItems = viewModel.inventoryItems
+    val itemList = viewModel.items
+    InventoryScreen(inventoryItems, itemList, viewModel)
 }
 
 @Composable
-fun InventoryScreen() {
-    val items = remember { mutableStateOf<List<InventoryItem>>(inventoryItems.toMutableList()) }
+fun InventoryScreen(
+    inventoryItems: ArrayList<InventoryItem>,
+    itemList: ArrayList<Item>,
+    viewModel: InventoryViewModel
+) {
+    var inventory = inventoryItems.toList()
+    var items = itemList.toList()
+
     Column {
 
         CategoryItem(
-            text = "Racks and Benches",
-            isAnyCategoryItemSelected = items.value.any { it.isSelected && it.type == InventoryType.RACKS_AND_BENCHES },
+            text = "Inventory",
+            isAnyCategoryItemSelected = inventory.any { it.isSelected },
             doOnSelectAll = {
-                            items.value = items.value.map {
-                                it.copy(
-                                    isSelected =
-                                    if (it.type == InventoryType.RACKS_AND_BENCHES) true
-                                    else it.isSelected
-                                )
-                            }
+                inventory = inventory.map {
+                    it.copy(
+                        isSelected = true
+                    )
+                }
             },
             doOnClearAll = {
-                items.value = items.value.map {
+                inventory = inventory.map {
                     it.copy(
-                        isSelected =
-                            if (it.type == InventoryType.RACKS_AND_BENCHES) false
-                            else it.isSelected
+                        isSelected = false
                     )
                 }
             }
         )
 
         InventoryLazyColumn(
-            items = items.value.filter { it.type == InventoryType.RACKS_AND_BENCHES },
-                    doOnItemSelect = { itemToSelect, boolean ->
-                        items.value = items.value.map {
-                            it.copy(
-                                isSelected =
-                                    if (it == itemToSelect) boolean
-                                    else it.isSelected
-                            )
-                        }
-                    }
-        )
-        CategoryItem(
-            text = "Resistance Bench",
-            isAnyCategoryItemSelected = items.value.any { it.isSelected && it.type == InventoryType.RESISTANCE_BANDS },
-            doOnSelectAll = {
-                items.value = items.value.map {
-                    it.copy(
-                        isSelected =
-                        if (it.type == InventoryType.RESISTANCE_BANDS) true
-                        else it.isSelected
-                    )
-                }
-            },
-            doOnClearAll = {
-                items.value = items.value.map {
-                    it.copy(
-                        isSelected =
-                        if (it.type == InventoryType.RESISTANCE_BANDS) false
-                        else it.isSelected
-                    )
-                }
-            }
-        )
-        InventoryLazyColumn(
-            items = items.value.filter { it.type == InventoryType.RESISTANCE_BANDS },
+            items = inventory,
             doOnItemSelect = { itemToSelect, boolean ->
-                items.value = items.value.map {
+                inventory = inventory.map {
                     it.copy(
                         isSelected =
                         if (it == itemToSelect) boolean
@@ -114,7 +82,41 @@ fun InventoryScreen() {
                 }
             }
         )
+        Button(onClick = { viewModel.addToInventory(itemList[0]) }) {
+            Text("Add Item")
+        }
 
+        CategoryItem(
+            text = "Item",
+            isAnyCategoryItemSelected = items.any { it.isSelected },
+            doOnSelectAll = {
+                items = items.map {
+                    it.copy(
+                        isSelected = true
+                    )
+                }
+            },
+            doOnClearAll = {
+                items = items.map {
+                    it.copy(
+                        isSelected = false
+                    )
+                }
+            }
+        )
+
+        ItemLazyColumn(
+            items = items,
+            doOnItemSelect = { itemToSelect, boolean ->
+                items = items.map {
+                    it.copy(
+                        isSelected =
+                        if (it == itemToSelect) boolean
+                        else it.isSelected
+                    )
+                }
+            }
+        )
     }
 }
 
@@ -125,15 +127,16 @@ fun CategoryItem(
     doOnSelectAll: () -> Unit,
     doOnClearAll: () -> Unit
 ) {
-    Column (
+    Column(
         modifier = Modifier
             .fillMaxWidth()
             .background(Color.Gray)
     ) {
-        Spacer(modifier = Modifier
-            .fillMaxWidth()
-            .height(1.dp)
-            .background(Color.DarkGray)
+        Spacer(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(1.dp)
+                .background(Color.DarkGray)
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -154,36 +157,50 @@ fun CategoryItem(
                         else doOnSelectAll()
                     },
                 text =
-                    if (isAnyCategoryItemSelected) "CLEAR ALL"
-                    else "SELECT ALL",
+                if (isAnyCategoryItemSelected) "CLEAR ALL"
+                else "SELECT ALL",
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.Red
             )
         }
-
         Spacer(modifier = Modifier.height(8.dp))
-
-        Spacer(modifier = Modifier
-            .fillMaxWidth()
-            .height(1.dp)
-            .background(Color.DarkGray)
+        Spacer(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(1.dp)
+                .background(Color.DarkGray)
         )
-
-
     }
 }
 
 @Composable
 fun InventoryLazyColumn(
     items: List<InventoryItem>,
-    doOnItemSelect : (InventoryItem, Boolean) -> Unit
-    ) {
+    doOnItemSelect: (InventoryItem, Boolean) -> Unit
+) {
     LazyColumn(
         modifier = Modifier.fillMaxWidth()
     ) {
-        items(items) {item ->
+        items(items) { item ->
             InventoryItemUI(
+                item = item,
+                doOnItemSelect = doOnItemSelect
+            )
+        }
+    }
+}
+
+@Composable
+fun ItemLazyColumn(
+    items: List<Item>,
+    doOnItemSelect: (Item, Boolean) -> Unit
+) {
+    LazyColumn(
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        items(items) { item ->
+            ItemUI(
                 item = item,
                 doOnItemSelect = doOnItemSelect
             )
@@ -194,16 +211,15 @@ fun InventoryLazyColumn(
 @Composable
 fun InventoryItemUI(
     item: InventoryItem,
-    doOnItemSelect : (InventoryItem, Boolean) -> Unit
-    ) {
+    doOnItemSelect: (InventoryItem, Boolean) -> Unit
+) {
     Column(
         modifier = Modifier
             .padding(vertical = 8.dp)
     ) {
 
-
         Row {
-            Image(
+            if (item.image != null) Image(
                 modifier = Modifier
                     .weight(1F)
                     .size(100.dp),
@@ -215,11 +231,11 @@ fun InventoryItemUI(
                 modifier = Modifier
                     .weight(2F)
                     .align(Alignment.CenterVertically),
-                text = stringResource(id = item.name),
+                text = item.itemName,
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
             )
-            Checkbox(
+            if (item.itemId == -1L) Checkbox(
                 modifier = Modifier
                     .align(Alignment.CenterVertically),
                 checked = item.isSelected,
@@ -230,14 +246,56 @@ fun InventoryItemUI(
                 ),
             )
         }
-        Spacer(modifier = Modifier
-            .fillMaxWidth()
-            .height(1.dp)
-            .background(Color.Gray)
+        Spacer(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(1.dp)
+                .background(Color.Gray)
         )
     }
 }
 
+
+@Composable
+fun ItemUI(
+    item: Item,
+    doOnItemSelect: (Item, Boolean) -> Unit
+) {
+    Column(
+        modifier = Modifier
+            .padding(vertical = 8.dp)
+    ) {
+
+        Row {
+            Spacer(modifier = Modifier.width(10.dp))
+            Text(
+                modifier = Modifier
+                    .weight(2F)
+                    .align(Alignment.CenterVertically),
+                text = item.itemName,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
+            )
+            if (item.itemId != -1L) Checkbox(
+                modifier = Modifier
+                    .align(Alignment.CenterVertically),
+                checked = item.isSelected,
+                onCheckedChange = { doOnItemSelect(item, it) },
+                colors = CheckboxDefaults.colors(
+                    checkedColor = Color.Red,
+                    checkmarkColor = Color.White
+                ),
+            )
+        }
+        Spacer(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(1.dp)
+                .background(Color.Gray)
+        )
+    }
+}
+/*
 val inventoryItems = listOf<InventoryItem>(
     InventoryItem(
         id = 1,
@@ -263,4 +321,4 @@ val inventoryItems = listOf<InventoryItem>(
         name = R.string.no_equipment_quests,
         type = InventoryType.RESISTANCE_BANDS
     ),
-)
+)*/

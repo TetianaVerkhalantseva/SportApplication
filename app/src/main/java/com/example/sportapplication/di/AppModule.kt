@@ -3,6 +3,8 @@ package com.example.sportapplication.di
 import android.content.Context
 import android.content.SharedPreferences
 import com.example.sportapplication.database.AppDatabase
+import com.example.sportapplication.database.dao.InventoryDao
+import com.example.sportapplication.database.dao.ItemsDao
 import com.example.sportapplication.database.dao.SensorDao
 import com.example.sportapplication.database.dao.UserDao
 import com.example.sportapplication.ui.profile.ProfileViewModel
@@ -47,5 +49,13 @@ object AppModule {
     @Provides
     @Singleton
     fun providesSensorDoa(appDatabase: AppDatabase): SensorDao = appDatabase.sensorDao()
+
+    @Provides
+    @Singleton
+    fun providesItemsDoa(appDatabase: AppDatabase): ItemsDao = appDatabase.itemsDao()
+
+    @Provides
+    @Singleton
+    fun providesInventoryDoa(appDatabase: AppDatabase): InventoryDao = appDatabase.inventoryDao()
 
 }

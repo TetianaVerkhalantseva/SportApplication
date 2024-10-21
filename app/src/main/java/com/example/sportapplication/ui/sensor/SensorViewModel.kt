@@ -2,13 +2,11 @@ package com.example.sportapplication.ui.sensor
 
 import android.hardware.SensorManager
 import android.util.Half.EPSILON
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.ViewModel
 import com.example.sportapplication.database.dao.SensorDao
 import com.example.sportapplication.database.entity.SensorData
@@ -29,9 +27,9 @@ import kotlin.math.sqrt
 class SensorViewModel @Inject constructor(
     private val multiSensor: MultiSensor,
     private val sensorDao: SensorDao
-) : ViewModel(), LifecycleObserver {
+) : ViewModel() {
 
-    //DATABASE &
+    //DATABASE & DATACOLLECTOR
     private var databaseUpdateTimer = Timer()
     var numberOfRecordings by mutableIntStateOf(0)
     var rowsOfData by mutableStateOf<List<SensorData>?>(null)
@@ -199,9 +197,6 @@ class SensorViewModel @Inject constructor(
                 sensorDao.deleteTop(1)
             }
 
-            val rowCount2 = sensorDao.rowCount()
-
-            Log.i("database Row after delete", rowCount2.toString())
             numberOfRecordings = sensorDao.rowCount()
 
             rowsOfData = sensorDao.getAll()
