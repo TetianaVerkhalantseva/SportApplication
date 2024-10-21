@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
+    id("com.google.gms.google-services")
     id("com.google.dagger.hilt.android")
 }
 
@@ -52,6 +53,9 @@ android {
 }
 
 dependencies {
+    // Google location service
+    implementation ("com.google.android.gms:play-services-location:21.2.0")
+
     // Pager
     implementation ("androidx.compose.foundation:foundation:1.7.2")
     implementation ("com.google.accompanist:accompanist-pager-indicators:0.30.1")
@@ -67,6 +71,7 @@ dependencies {
     implementation ("androidx.room:room-ktx:2.6.1")
     implementation("androidx.compose.ui:ui-text-google-fonts:1.7.2")
     implementation("androidx.compose.runtime:runtime-livedata:1.7.4")
+    //implementation("androidx.compose.material3:material3-android:1.3.0")
     kapt ("androidx.room:room-compiler:2.6.1")
 
     implementation ("com.google.dagger:hilt-android:2.51.1")
