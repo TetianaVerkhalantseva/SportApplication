@@ -1,10 +1,10 @@
 package com.example.sportapplication.ui.activity.main
 
 import android.app.Application
+import android.content.SharedPreferences
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Menu
@@ -12,7 +12,9 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -27,23 +29,38 @@ import com.example.sportapplication.ui.settings.LanguageViewModel
 import com.example.sportapplication.ui.settings.UnitViewModel
 import com.example.sportapplication.ui.settings.updateLocale
 import com.example.sportapplication.ui.theme.SportApplicationTheme
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(
     navController: NavHostController,
-    showBottomBar: Boolean
+    showBottomBar: Boolean,
+    sharedPreferences: SharedPreferences
 ) {
     var showMenu by remember { mutableStateOf(false) }
     var showLanguageMenu by remember { mutableStateOf(false) }
     var showSettingsMenu by remember { mutableStateOf(false) }
     var showUnitMenu by remember { mutableStateOf(false) }
+    var showSplash by remember { mutableStateOf(false) } // For splash screen
+
     val scope = rememberCoroutineScope()
     val languageViewModel: LanguageViewModel = hiltViewModel()
     val unitViewModel: UnitViewModel = hiltViewModel()
 
     var isDarkTheme by remember { mutableStateOf(false) }
+
+    // Check if the app is opened for the first time
+    LaunchedEffect(Unit) {
+        delay(3500)
+        val isFirstLaunch = sharedPreferences.getBoolean("isFirstLaunch", true)
+        if (isFirstLaunch) {
+            showMenu = true // Expand the menu for the first time
+            showSplash = true // Show the splash screen
+            sharedPreferences.edit().putBoolean("isFirstLaunch", false).apply()
+        }
+    }
 
     SportApplicationTheme(darkTheme = isDarkTheme) {
         Scaffold(
@@ -214,6 +231,30 @@ fun MainScreen(
             content = { padding ->
                 Box(modifier = Modifier.padding(padding)) {
                     AppNavHost(navHostController = navController)
+
+                    // Show splash screen if it's the first launch
+                    if (showSplash) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .background(Color.White.copy(alpha = 0.8f))
+                        ) {
+                            Column(
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.Center,
+                                modifier = Modifier.fillMaxSize()
+                            ) {
+                                Text(
+                                    text = stringResource(R.string.change_your_settings_here),
+                                    style = MaterialTheme.typography.bodyLarge.copy(color = Color.Black),
+                                    modifier = Modifier.padding(16.dp)
+                                )
+                                Button(onClick = { showSplash = false }) {
+                                    Text(stringResource(R.string.got_it))
+                                }
+                            }
+                        }
+                    }
                 }
             }
         )
