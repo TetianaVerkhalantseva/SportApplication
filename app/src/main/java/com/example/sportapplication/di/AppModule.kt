@@ -3,6 +3,7 @@ package com.example.sportapplication.di
 import android.content.Context
 import com.example.sportapplication.database.AppDatabase
 import com.example.sportapplication.database.dao.UserDao
+import com.example.sportapplication.database.data.PoiStorage
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,4 +24,9 @@ object AppModule {
     @Singleton
     fun provideUserDao(appDatabase: AppDatabase): UserDao = appDatabase.userDao()
 
+    @Provides
+    @Singleton
+    fun providePoiStorage(): PoiStorage {
+        return PoiStorage()
+    }
 }

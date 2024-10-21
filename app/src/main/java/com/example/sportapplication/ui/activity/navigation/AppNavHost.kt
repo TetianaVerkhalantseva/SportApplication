@@ -8,9 +8,11 @@ import androidx.navigation.compose.NavHost
 import com.example.sportapplication.ui.achievements.navigation.achievementsScreen
 import com.example.sportapplication.ui.achievements.selectedAchievement.navigation.navigateToSelectedAchievement
 import com.example.sportapplication.ui.achievements.selectedAchievement.navigation.selectedAchievementScreen
+import com.example.sportapplication.ui.event.navigation.eventScreen
+import com.example.sportapplication.ui.event.selectedEvent.navigation.navigateToSelectedEvent
+import com.example.sportapplication.ui.event.selectedEvent.navigation.selectedEventScreen
 import com.example.sportapplication.ui.introduction.navigation.INTRODUCTION_ROUTE
 import com.example.sportapplication.ui.introduction.navigation.introductionScreen
-import com.example.sportapplication.ui.inventory.InventoryScreen
 import com.example.sportapplication.ui.inventory.navigation.inventoryScreen
 import com.example.sportapplication.ui.map.navigation.mapRoute
 import com.example.sportapplication.ui.map.navigation.navigateToMap
@@ -40,11 +42,14 @@ fun AppNavHost(navHostController: NavHostController) {
                 )
             }
         )
+        mapRoute(
+            navHostController = navHostController
+        )
         questScreen(
             navHostController = navHostController,
             navigateToSelectedQuestScreen = { navHostController.navigateToSelectedQuest() }
         )
-        mapRoute(
+        selectedQuestScreen(
             navHostController = navHostController
         )
         achievementsScreen(
@@ -54,16 +59,21 @@ fun AppNavHost(navHostController: NavHostController) {
             }
 
         )
-        inventoryScreen(
-            navHostController = navHostController
-        )
         selectedAchievementScreen(
             navHostController = navHostController
         )
-        selectedQuestScreen(
+        inventoryScreen(
             navHostController = navHostController
         )
         sensorScreen(navHostController = navHostController)
+
+        eventScreen(
+            navHostController = navHostController,
+            navigateToSelectedEventScreen = { navHostController.navigateToSelectedEvent() }
+        )
+        selectedEventScreen(
+            navHostController = navHostController
+        )
     }
 
 }

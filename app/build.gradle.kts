@@ -70,6 +70,7 @@ dependencies {
     implementation ("androidx.room:room-runtime:2.6.1")
     implementation ("androidx.room:room-ktx:2.6.1")
     implementation("androidx.compose.ui:ui-text-google-fonts:1.7.2")
+    //implementation("androidx.compose.material3:material3-android:1.3.0")
     kapt ("androidx.room:room-compiler:2.6.1")
 
     implementation ("com.google.dagger:hilt-android:2.51.1")

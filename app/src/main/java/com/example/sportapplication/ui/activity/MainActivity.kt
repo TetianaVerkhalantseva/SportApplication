@@ -16,11 +16,20 @@ import com.example.sportapplication.ui.achievements.selectedAchievement.navigati
 import com.example.sportapplication.ui.introduction.navigation.INTRODUCTION_ROUTE
 import com.example.sportapplication.ui.theme.SportApplicationTheme
 import dagger.hilt.android.AndroidEntryPoint
+import org.osmdroid.config.Configuration
+import java.io.File
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Configure OSM caching to reduce map data loading by storing tiles locally
+        val osmConfig = Configuration.getInstance()
+        osmConfig.userAgentValue = packageName
+        osmConfig.osmdroidBasePath = File(cacheDir, "osmdroid")
+        osmConfig.osmdroidTileCache = File(cacheDir, "osmdroid/tiles")
+
         setContent {
             SportApplicationTheme {
                 // A surface container using the 'background' color from the theme

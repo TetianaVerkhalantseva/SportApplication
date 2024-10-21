@@ -26,4 +26,95 @@
     <string name="welcome_to_questabout">Welcome to Questabout</string>
     <string name="questabout">Questabout</string>
 
+
+    <!-- Events -->
+    <string name="event_morning_run">Morning Run</string>
+    <string name="event_morning_run_description">Start your day with a 5k run through the city park.</string>
+    <string name="event_soccer_game">Soccer Game</string>
+    <string name="event_soccer_game_description">Join a local soccer game at the stadium.</string>
+
+    <!-- Sports Locations in Tromsø -->
+    <string name="location_city_park">Prestvannet Lake</string>
+    <string name="location_stadium">Tromsøhallen</string>
+    <string name="location_romssa_arena">Romssa Arena</string>
+    <string name="location_tromsobadet">Tromsøbadet</string>
+    <string name="location_tromso_alpinpark">Tromsø Alpinpark</string>
+    <string name="location_tuil_arena">TUIL Arena</string>
+    <string name="location_kraft_sportssenter">Kraft sportssenter</string>
+    <string name="location_fløyahallen">Fløyahallen</string>
+    <string name="location_skarpmarka">Skarpmarka</string>
+    <string name="location_kroken_car_park">Kroken car park</string>
+    <string name="location_valhallhallen">Valhallhallen</string>
+    <string name="location_crossfit_nordaforr">CrossFit Nordaførr</string>
+    <string name="location_folkeparken">Folkeparken</string>
+
+
+    <!-- Quests -->
+    <string name="quest_1_name">Quest 1</string>
+    <string name="quest_1_title">Running Challenge</string>
+    <string name="quest_1_description">Complete two laps around the park.</string>
+    <string name="quest_1_reward">Reward: Sneakers</string>
+
+    <string name="quest_2_name">Quest 2</string>
+    <string name="quest_2_title">Squats Challenge</string>
+    <string name="quest_2_description">Complete 30 squats at the stadium.</string>
+    <string name="quest_2_reward">Reward: Sports Shorts</string>
+
+    <!-- General Tasks for Quests and Events -->
+    <string name="task_complete_challenge_action">Complete the challenge</string>
+    <string name="task_take_photo_photo">Take a photo to confirm completion</string>
+    <string name="task_go_action">Go to the designated location</string>
+    <string name="task_run_action">Run to the designated location</string>
+    <string name="task_bike_action">Bike to the designated location</string>
+    <string name="task_collect_item_action">Collect the item at the location</string>
+    <string name="task_check_in_action">Check in at the location</string>
+    <string name="task_participate_event_action">Participate in the event</string>
+    <string name="task_finish_activity_action">Finish the activity</string>
+    <string name="task_share_results_action">Share your results with friends</string>
+    <string name="task_wait_timer_action">Wait for the timer to finish</string>
+
+    <!-- Sports Tasks -->
+
+    <!-- Task 1: Run 5 Kilometers -->
+    <string name="task_run_5k_action">Run 5 kilometers around the designated route.</string>
+    <string name="task_run_5k_photo">Take a photo at the finish line.</string>
+
+    <!-- Task 2: Swim 500 Meters -->
+    <string name="task_swim_500m_action">Swim 500 meters in the pool.</string>
+    <string name="task_swim_500m_photo">Take a photo at the pool after completion.</string>
+
+    <!-- Task 3: Climb 1000 Steps -->
+    <string name="task_climb_1000_steps_action">Climb 1000 steps on the staircase.</string>
+    <string name="task_climb_1000_steps_photo">Take a photo at the top of the stairs.</string>
+
+    <!-- Task 4: Bike 10 Kilometers -->
+    <string name="task_bike_10k_action">Bike 10 kilometers to the specified location.</string>
+    <string name="task_bike_10k_photo">Take a photo at the finish point.</string>
+
+    <!-- Task 5: Complete 50 Push-ups -->
+    <string name="task_pushups_50_action">Do 50 push-ups as quickly as possible.</string>
+    <string name="task_pushups_50_photo">Take a photo after completing the push-ups.</string>
+
+    <!-- Task 6: Row 2 Kilometers -->
+    <string name="task_row_2k_action">Row 2 kilometers on the rowing machine.</string>
+    <string name="task_row_2k_photo">Take a photo of the rowing machine after finishing.</string>
+
+    <!-- Task 7: Hike to the Mountain Peak -->
+    <string name="task_hike_peak_action">Hike to the mountain peak located 3 kilometers away.</string>
+    <string name="task_hike_peak_photo">Take a photo at the mountain peak.</string>
+
+    <!-- Task 8: Perform 30 Burpees -->
+    <string name="task_burpees_30_action">Perform 30 burpees without stopping.</string>
+    <string name="task_burpees_30_photo">Take a photo after completing the burpees.</string>
+
+    <!-- Task 9: Run Two Laps -->
+    <string name="task_run_two_laps_action">Run two laps</string>
+    <string name="task_run_two_laps_photo">Take a photo after completing the two laps.</string>
+
+    <!-- Task 10: Do 30 Squats -->
+    <string name="task_do_squats_action">Do 30 squats</string>
+    <string name="task_do_squats_photo">Take a photo after completing the squats.</string>
+
+    <string name="default_description">Description not available</string>
+
 </resources>

@@ -31,10 +31,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -42,31 +41,38 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.sportapplication.R
 import com.example.sportapplication.database.model.Quest
-import com.example.sportapplication.database.model.Reward
 import kotlinx.coroutines.launch
 
 @Composable
 fun QuestsScreenRoute(
     navigateToSelectedQuestScreen: (Long) -> Unit
 ) {
+    // ViewModel to handle quest data
     val viewModel : QuestsViewModel = hiltViewModel()
 
+    // Pass quest data to the main screen
     QuestsScreen(
-        onQuestClick = { navigateToSelectedQuestScreen(0) } //@TODO
+        quests = viewModel.getQuests(),
+        onQuestClick = { navigateToSelectedQuestScreen(it.id) }
     )
 }
 
+// This is the QuestsScreen. Currently, all data is hardcoded and the logic is not implemented yet.
+// The screen is created to display a temporary view for now.
 @Composable
 fun QuestsScreen(
-    onQuestClick: (Quest) -> Unit
+    quests: List<Quest>, // List of quests to display
+    onQuestClick: (Quest) -> Unit // Callback for when a quest is clicked
 ) {
-    val pagerState = rememberPagerState { 2 }
+    val pagerState = rememberPagerState { 2 } // State to control the pager
     val coroutineScope = rememberCoroutineScope()
 
     Column {
+        // Header with tabs for All Quests and Favourites
         Row(
             modifier = Modifier.fillMaxWidth()
         ) {
+            // All Quests tab
             Column(
                 modifier = Modifier
                     .weight(1F)
@@ -93,6 +99,7 @@ fun QuestsScreen(
                     )
                 )
             }
+            // Favourites tab
             Column(
                 modifier = Modifier
                     .weight(1F)
@@ -120,36 +127,36 @@ fun QuestsScreen(
                 )
             }
         }
+
+        // HorizontalPager to switch between All Quests and Favourites
         HorizontalPager(
             state = pagerState,
             modifier = Modifier.fillMaxSize()
-        ) {currentPage ->
+        ) { currentPage ->
             when (currentPage) {
-                0 -> AllQuestsScreen(onQuestClick = onQuestClick)
-                1 -> FavouritesQuestsScreen(onQuestClick = onQuestClick)
+                0 -> AllQuestsScreen(quests = quests, onQuestClick = onQuestClick)
+                1 -> FavouritesQuestsScreen(quests = quests, onQuestClick = onQuestClick)
             }
         }
     }
-
-
 }
 
 @Composable
-fun FavouritesQuestsScreen(onQuestClick: (Quest) -> Unit) {
-    val quests = mutableListOf<Quest>().apply {
-        addAll(dailyQuests)
-        addAll(noEquipmentQuests)
-    }
+fun FavouritesQuestsScreen(
+    quests: List<Quest>, // List of quests to display in the favourites section
+    onQuestClick: (Quest) -> Unit // Callback when a quest is clicked
+) {
     Column {
         LazyVerticalGrid(
             modifier = Modifier
                 .fillMaxSize()
                 .systemBarsPadding(),
-            columns = GridCells.Fixed(2),
+            columns = GridCells.Fixed(2), // Display quests in 2 columns
             contentPadding = PaddingValues(horizontal = 16.dp, vertical = 16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
+            // Display each quest as a FavouriteQuestItem
             items(quests) { quest ->
                 FavouriteQuestItem(
                     quest = quest,
@@ -163,28 +170,39 @@ fun FavouritesQuestsScreen(onQuestClick: (Quest) -> Unit) {
 @Composable
 fun FavouriteQuestItem(quest: Quest, onQuestClick: (Quest) -> Unit) {
     Column(
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.clickable { onQuestClick(quest) }
     ) {
-        Image(
-            modifier = Modifier
-                .clip(RoundedCornerShape(18.dp))
-                .width(200.dp)
-                .height(150.dp),
-            imageVector = ImageVector.vectorResource(id = quest.image),
-            contentDescription = null,
-            contentScale = ContentScale.Crop
-        )
+        // If the quest has an image, display it; otherwise, show a placeholder
+        quest.image?.let { imageId ->
+            Image(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(18.dp))
+                    .width(200.dp)
+                    .height(150.dp),
+                painter = painterResource(id = imageId),
+                contentDescription = null,
+                contentScale = ContentScale.Crop
+            )
+        } ?: Spacer(modifier = Modifier
+            .width(200.dp)
+            .height(150.dp)) // Empty space if no image
+
         Spacer(modifier = Modifier.height(8.dp))
+
+        // Display the title of the quest
         Text(
             text = stringResource(id = quest.title),
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold
         )
+
         Spacer(modifier = Modifier.height(8.dp))
+
+        // Display the description or a default text if it's null
         Text(
-            modifier = Modifier
-                .width(200.dp),
-            text = stringResource(id = quest.description),
+            modifier = Modifier.width(200.dp),
+            text = stringResource(id = quest.description ?: R.string.default_description),
             fontSize = 14.sp,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
@@ -194,14 +212,16 @@ fun FavouriteQuestItem(quest: Quest, onQuestClick: (Quest) -> Unit) {
 
 @Composable
 fun AllQuestsScreen(
-    onQuestClick: (Quest) -> Unit
+    quests: List<Quest>, // List of all quests
+    onQuestClick: (Quest) -> Unit // Callback for quest selection
 ) {
     Column (
         modifier = Modifier
             .padding(start = 20.dp, end = 20.dp)
-            .verticalScroll(rememberScrollState())
+            .verticalScroll(rememberScrollState()) // Enable scrolling
     ) {
 
+        // Section for daily quests
         Text(
             text = stringResource(id = R.string.daily_quests),
             fontSize = 24.sp,
@@ -209,11 +229,13 @@ fun AllQuestsScreen(
         )
         Spacer(modifier = Modifier.height(10.dp))
         QuestsLazyRow(
-            quests = dailyQuests,
+            quests = quests,
             onQuestClick = onQuestClick
         )
 
         Spacer(modifier = Modifier.height(20.dp))
+
+        // Section for no equipment quests
         Text(
             text = stringResource(id = R.string.no_equipment_quests),
             fontSize = 24.sp,
@@ -221,7 +243,7 @@ fun AllQuestsScreen(
         )
         Spacer(modifier = Modifier.height(10.dp))
         QuestsLazyRow(
-            quests = noEquipmentQuests,
+            quests = quests,
             onQuestClick = onQuestClick
         )
     }
@@ -230,15 +252,16 @@ fun AllQuestsScreen(
 
 @Composable
 fun QuestsLazyRow(
-    quests: List<Quest>,
-    onQuestClick: (Quest) -> Unit
-    ) {
+    quests: List<Quest>, // List of quests to display horizontally
+    onQuestClick: (Quest) -> Unit // Callback when a quest is clicked
+) {
     Column {
-        LazyRow() {
+        LazyRow {
+            // Display each quest as a QuestItem
             items(quests) { quest ->
                 QuestItem(
                     quest = quest,
-                    onClick = {  onQuestClick(quest)}
+                    onClick = { onQuestClick(quest) }
                 )
                 Spacer(modifier = Modifier.width(20.dp))
             }
@@ -248,88 +271,44 @@ fun QuestsLazyRow(
 
 @Composable
 fun QuestItem(
-    quest: Quest, onClick: () -> Unit,
+    quest: Quest, onClick: () -> Unit, // Quest item with click handler
 ) {
-    Column (
-        modifier = Modifier.clickable { onClick() }
+    Column(
+        modifier = Modifier.clickable { onClick() } // Handle quest click
     ) {
-        Image(
-            modifier = Modifier
-                .clip(RoundedCornerShape(18.dp))
-                .width(200.dp)
-                .height(150.dp),
-            imageVector = ImageVector.vectorResource(id = quest.image),
-            contentDescription = null,
-            contentScale = ContentScale.Crop
-        )
+        // If the quest has an image, display it; otherwise, show a placeholder
+        quest.image?.let { imageId ->
+            Image(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(18.dp))
+                    .width(200.dp)
+                    .height(150.dp),
+                painter = painterResource(id = imageId),
+                contentDescription = null,
+                contentScale = ContentScale.Crop
+            )
+        } ?: Spacer(modifier = Modifier
+            .width(200.dp)
+            .height(150.dp)) // Placeholder if no image
+
         Spacer(modifier = Modifier.height(8.dp))
+
+        // Display the title of the quest
         Text(
             text = stringResource(id = quest.title),
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold
         )
+
         Spacer(modifier = Modifier.height(8.dp))
+
+        // Display the description or a default if null
         Text(
-            modifier = Modifier
-                .width(200.dp),
-            text = stringResource(id = quest.description),
+            modifier = Modifier.width(200.dp),
+            text = stringResource(id = quest.description ?: R.string.default_description),
             fontSize = 14.sp,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
         )
     }
 }
-
-val dailyQuests = listOf(
-    Quest(
-        image = R.drawable.ic_launcher_background,
-        title = R.string.quest_screen,
-        description = R.string.quest_description1,
-        reward = Reward(experience = 500)
-    ),
-    Quest(
-        image = R.drawable.ic_launcher_foreground,
-        title = R.string.quest_screen,
-        description = R.string.quest_description1,
-        reward = Reward(experience = 500)
-    ),
-    Quest(
-        image = R.drawable.ic_launcher_background,
-        title = R.string.quest_screen,
-        description = R.string.quest_description1,
-        reward = Reward(experience = 500)
-    ),
-    Quest(
-        image = R.drawable.ic_launcher_foreground,
-        title = R.string.quest_screen,
-        description = R.string.quest_description1,
-        reward = Reward(experience = 500)
-    ),
-)
-
-val noEquipmentQuests = listOf(
-    Quest(
-        image = R.drawable.ic_launcher_background,
-        title = R.string.quest_screen,
-        description = R.string.quest_description1,
-        reward = Reward(experience = 500)
-    ),
-    Quest(
-        image = R.drawable.ic_launcher_foreground,
-        title = R.string.quest_screen,
-        description = R.string.quest_description1,
-        reward = Reward(experience = 500)
-    ),
-    Quest(
-        image = R.drawable.ic_launcher_background,
-        title = R.string.quest_screen,
-        description = R.string.quest_description1,
-        reward = Reward(experience = 500)
-    ),
-    Quest(
-        image = R.drawable.ic_launcher_foreground,
-        title = R.string.quest_screen,
-        description = R.string.quest_description1,
-        reward = Reward(experience = 500)
-    ),
-)

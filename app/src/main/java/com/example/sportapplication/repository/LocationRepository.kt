@@ -10,6 +10,7 @@ import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -30,38 +31,39 @@ class LocationRepository @Inject constructor(
     private val fusedLocationProviderClient: FusedLocationProviderClient =
         LocationServices.getFusedLocationProviderClient(context)
 
-    @SuppressLint("MissingPermission")
+    @SuppressLint("MissingPermission") // Suppresses missing permission warning for location access
     fun getLastKnownUserLocation() {
-        val priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
-        val locationRequest = LocationRequest.create()
-        locationRequest.setInterval(1000L)
-        locationRequest.setFastestInterval(500L)
-        locationRequest.setPriority(priority)
+        // Define the priority for location accuracy, balanced between power usage and accuracy
+        val priority = Priority.PRIORITY_BALANCED_POWER_ACCURACY
 
+        // Build the location request with the given priority and interval settings
+        val locationRequest = LocationRequest.Builder(priority, 1000L) // Request location every 1000 milliseconds
+            .setMinUpdateIntervalMillis(500L) // Set the minimum interval between updates to 500 milliseconds
+            .build()
+
+        // Create a location callback to handle location updates
         val locationCallBack = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult) {
 
+                // If a location is available, emit it to the state and log the coordinates
                 locationResult.lastLocation?.let {
-                //locationResult.locations?.firstOrNull()?.let {
-                //locationResult.locations.forEach {
                     CoroutineScope(Dispatchers.IO).launch {
-                        _userLocationState.emit(
-                            it
-                        )
+                        _userLocationState.emit(it) // Update the user location state asynchronously
                     }
+
                     Log.e(
                         "WatchingSomeStuff",
                         "latitude= ${it.latitude}, longitude = ${it.longitude}"
                     )
                 }
             }
-
         }
 
+        // Request location updates with the built location request and callback, using the main thread looper
         fusedLocationProviderClient.requestLocationUpdates(
             locationRequest,
             locationCallBack,
-            Looper.myLooper()
+            Looper.myLooper() // Ensure that callbacks are dispatched on the current thread's looper
         )
     }
 }
