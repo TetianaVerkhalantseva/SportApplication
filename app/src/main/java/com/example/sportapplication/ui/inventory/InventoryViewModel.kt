@@ -41,6 +41,7 @@ class InventoryViewModel @Inject constructor(
     )
 
     init {
+        
         prepopulateItems()
         getAllItems()
         getAllInventoryItems()

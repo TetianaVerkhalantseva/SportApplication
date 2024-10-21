@@ -15,5 +15,6 @@ data class SensorData(
     @ColumnInfo(name = "accelerometer_z") val accelerometerZ: Float?,
     @ColumnInfo(name = "magnetic_x") val magneticX: Float?,
     @ColumnInfo(name = "magnetic_y") val magneticY: Float?,
-    @ColumnInfo(name = "magnetic_z") val magneticZ: Float?
+    @ColumnInfo(name = "magnetic_z") val magneticZ: Float?,
+    @ColumnInfo(name = "magnitude_of_acceleration") val magnitudeOfAcceleration: Float
 )

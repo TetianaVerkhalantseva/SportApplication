@@ -20,6 +20,7 @@ import java.util.Timer
 import javax.inject.Inject
 import kotlin.concurrent.fixedRateTimer
 import kotlin.math.cos
+import kotlin.math.pow
 import kotlin.math.sin
 import kotlin.math.sqrt
 
@@ -51,6 +52,7 @@ class SensorViewModel @Inject constructor(
 
     //ACCELEROMETER
     var acceleration by mutableStateOf(floatArrayOf(0f, 0f, 0f))
+    var magnitudeOfAcceleration by mutableStateOf(0f)
 
     //MAGNETIC_FIELD
     var orientation by mutableStateOf(floatArrayOf(0f, 0f, 0f))
@@ -89,33 +91,12 @@ class SensorViewModel @Inject constructor(
                     databaseUpdateTimer =
                         fixedRateTimer("databaseUpdateTimer", true, 1000L, 1000L) {
                             updateDatabase()
+                            averagingFunction()
                         }
-                    averagingTimer = fixedRateTimer("averagingTimer", true, 5000L, 5000L) {
-                        val numberOfEntries = averageAcceleration.size
-                        var summedX = 0f
-                        var summedY = 0f
-                        var summedZ = 0f
-
-                        averageAcceleration.forEach {
-                            summedX += it[0]
-                            summedY += it[1]
-                            summedZ += it[2]
-                        }
-
-                        currentAverageAcceleration = floatArrayOf(
-                            summedX / numberOfEntries,
-                            summedY / numberOfEntries,
-                            summedZ / numberOfEntries
-                        )
-
-                        averageAcceleration.clear()
-                    }
                 }
 
 
                 val deltaRotationVector = FloatArray(4) { 0f }
-
-
                 val dT = (currentTimestamp - timestamp) * NS2S
 
                 if (currentTimestamp != 0L) {
@@ -166,19 +147,21 @@ class SensorViewModel @Inject constructor(
         }
     }
 
-
+    //USE SENSOR MANAGER FUNCTIONS TO HELP GET ORIENTATION
     private fun calculateAccMagOrientation() {
         if (SensorManager.getRotationMatrix(rotationMatrix, null, acceleration, magnet)) {
             SensorManager.getOrientation(rotationMatrix, accMagOrientation)
         }
     }
 
+    //DELETE DATABASE FOR TESTING PURPOSES
     private fun deleteAllPointsInDatabase() {
         CoroutineScope(Dispatchers.IO).launch {
             sensorDao.deleteAll()
         }
     }
 
+    //UPDATE DATABASE WITH DATAPOINTS
     private fun updateDatabase() {
         CoroutineScope(Dispatchers.IO).launch {
             sensorDao.insertRow(
@@ -186,7 +169,7 @@ class SensorViewModel @Inject constructor(
                     Date().time,
                     rotation[0], rotation[1], rotation[2],
                     acceleration[0], acceleration[1], acceleration[2],
-                    magnet[0], magnet[1], magnet[2]
+                    magnet[0], magnet[1], magnet[2], magnitudeOfAcceleration
                 )
             )
 
@@ -202,27 +185,39 @@ class SensorViewModel @Inject constructor(
             rowsOfData = sensorDao.getAll()
 
         }
-        /*
-    if(databaseTimestamp == 0L){
-        databaseTimestamp = currentTimestamp
+
     }
 
-    if (currentTimestamp - databaseTimestamp > 1000){
-        CoroutineScope(Dispatchers.IO).launch {  sensorDoa.insertRow(
-            SensorData(
-                currentTimestamp,
-                rotation[0], rotation[1], rotation[2],
-                acceleration[0], acceleration[1], acceleration[2],
-                magnet[0], magnet[1], magnet[2]
-            )
-        )}
-        databaseTimestamp = currentTimestamp
-    }*/
+    //FUNCTION TO AVERAGE ACCELERATION VALUES
+    fun averagingFunction() {
+        val numberOfEntries = averageAcceleration.size
+        var summedX = 0f
+        var summedY = 0f
+        var summedZ = 0f
+
+        averageAcceleration.forEach {
+            summedX += it[0]
+            summedY += it[1]
+            summedZ += it[2]
+        }
+
+        currentAverageAcceleration = floatArrayOf(
+            summedX / numberOfEntries,
+            summedY / numberOfEntries,
+            summedZ / numberOfEntries
+        )
+
+        magnitudeOfAcceleration =
+            sqrt(summedX.pow(2) + summedY.pow(2) + summedZ.pow(2))
+
+        averageAcceleration.clear()
+
     }
+
 
 }
 
-
+//ALGORITHM TO MULTIPLY MATRICES USED IN FILTERING DATA
 fun multiplyMatrices(matrixA: FloatArray, matrixB: FloatArray): FloatArray {
     val result = FloatArray(9)
 
@@ -242,6 +237,7 @@ fun multiplyMatrices(matrixA: FloatArray, matrixB: FloatArray): FloatArray {
 }
 
 
+//USE VALUES FROM GYROSCOPE TO GET ROTATION
 fun getRotationFromGyroscope(values: FloatArray, deltaRotationVector: FloatArray, dT: Float) {
 
     var axisX: Float = values[0]
@@ -266,6 +262,7 @@ fun getRotationFromGyroscope(values: FloatArray, deltaRotationVector: FloatArray
 
 }
 
+//GET A ROTATION MATRIX FROM THE ORIENTATION VALUES
 fun getRotationMatrixFromOrientation(orientation: FloatArray): FloatArray {
     val xM = FloatArray(9)
     val yM = FloatArray(9)
@@ -315,3 +312,5 @@ fun getRotationMatrixFromOrientation(orientation: FloatArray): FloatArray {
     resultMatrix = multiplyMatrices(zM, resultMatrix)
     return resultMatrix
 }
+
+
