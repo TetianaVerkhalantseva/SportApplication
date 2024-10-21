@@ -58,4 +58,96 @@
     <string name="pois_visited">Besuchte POIs</string>
 
 
+
+
+    <!-- Events -->
+    <string name="event_morning_run">Morgenlauf</string>
+    <string name="event_morning_run_description">Beginnen Sie Ihren Tag mit einem 5 km Lauf durch den Stadtpark.</string>
+    <string name="event_soccer_game">Fußballspiel</string>
+    <string name="event_soccer_game_description">Nehmen Sie an einem lokalen Fußballspiel im Stadion teil.</string>
+
+    <!-- Sports Locations in Tromsø -->
+    <string name="location_city_park">Prestvannet See</string>
+    <string name="location_stadium">Tromsøhallen</string>
+    <string name="location_romssa_arena">Romssa Arena</string>
+    <string name="location_tromsobadet">Tromsøbadet</string>
+    <string name="location_tromso_alpinpark">Tromsø Alpinpark</string>
+    <string name="location_tuil_arena">TUIL Arena</string>
+    <string name="location_kraft_sportssenter">Kraft Sportzentrum</string>
+    <string name="location_fløyahallen">Fløyahalle</string>
+    <string name="location_skarpmarka">Skarpmarka</string>
+    <string name="location_kroken_car_park">Kroken Parkplatz</string>
+    <string name="location_valhallhallen">Valhallhallen</string>
+    <string name="location_crossfit_nordaforr">CrossFit Nordaførr</string>
+    <string name="location_folkeparken">Folkeparken</string>
+
+
+    <!-- Quests -->
+    <string name="quest_1_name">Quest 1</string>
+    <string name="quest_1_title">Lauf Herausforderung</string>
+    <string name="quest_1_description">Laufen Sie zwei Runden um den Park.</string>
+    <string name="quest_1_reward">Belohnung: Sneakers</string>
+
+    <string name="quest_2_name">Quest 2</string>
+    <string name="quest_2_title">Kniebeugen Herausforderung</string>
+    <string name="quest_2_description">Machen Sie 30 Kniebeugen im Stadion.</string>
+    <string name="quest_2_reward">Belohnung: Sportshorts</string>
+
+    <!-- General Tasks for Quests and Events -->
+    <string name="task_complete_challenge_action">Schließe die Herausforderung ab</string>
+    <string name="task_take_photo_photo">Mach ein Foto zur Bestätigung der Fertigstellung</string>
+    <string name="task_go_action">Gehe zum angegebenen Ort</string>
+    <string name="task_run_action">Laufe zum angegebenen Ort</string>
+    <string name="task_bike_action">Fahre mit dem Fahrrad zum angegebenen Ort</string>
+    <string name="task_collect_item_action">Sammle das Objekt am Ort ein</string>
+    <string name="task_check_in_action">Melde dich am Ort an</string>
+    <string name="task_participate_event_action">Nimm an der Veranstaltung teil</string>
+    <string name="task_finish_activity_action">Beende die Aktivität</string>
+    <string name="task_share_results_action">Teile deine Ergebnisse mit Freunden</string>
+    <string name="task_wait_timer_action">Warte, bis der Timer abläuft</string>
+
+    <!-- Sports Tasks -->
+
+    <!-- Task 1: Run 5 Kilometers -->
+    <string name="task_run_5k_action">Laufen Sie 5 Kilometer auf der angegebenen Strecke.</string>
+    <string name="task_run_5k_photo">Machen Sie ein Foto an der Ziellinie.</string>
+
+    <!-- Task 2: Swim 500 Meters -->
+    <string name="task_swim_500m_action">Schwimmen Sie 500 Meter im Pool.</string>
+    <string name="task_swim_500m_photo">Machen Sie ein Foto nach dem Schwimmen.</string>
+
+    <!-- Task 3: Climb 1000 Steps -->
+    <string name="task_climb_1000_steps_action">Steigen Sie 1000 Stufen auf der Treppe.</string>
+    <string name="task_climb_1000_steps_photo">Machen Sie ein Foto oben auf der Treppe.</string>
+
+    <!-- Task 4: Bike 10 Kilometers -->
+    <string name="task_bike_10k_action">Fahren Sie 10 Kilometer zum angegebenen Ort.</string>
+    <string name="task_bike_10k_photo">Machen Sie ein Foto am Zielort.</string>
+
+    <!-- Task 5: Complete 50 Push-ups -->
+    <string name="task_pushups_50_action">Machen Sie 50 Liegestütze so schnell wie möglich.</string>
+    <string name="task_pushups_50_photo">Machen Sie ein Foto nach den Liegestützen.</string>
+
+    <!-- Task 6: Row 2 Kilometers -->
+    <string name="task_row_2k_action">Rudern Sie 2 Kilometer auf dem Rudergerät.</string>
+    <string name="task_row_2k_photo">Machen Sie ein Foto des Rudergeräts nach dem Rudern.</string>
+
+    <!-- Task 7: Hike to the Mountain Peak -->
+    <string name="task_hike_peak_action">Wandern Sie zum 3 Kilometer entfernten Berggipfel.</string>
+    <string name="task_hike_peak_photo">Machen Sie ein Foto auf dem Gipfel.</string>
+
+    <!-- Task 8: Perform 30 Burpees -->
+    <string name="task_burpees_30_action">Machen Sie 30 Burpees ohne Pause.</string>
+    <string name="task_burpees_30_photo">Machen Sie ein Foto nach den Burpees.</string>
+
+    <!-- Task 9: Run Two Laps -->
+    <string name="task_run_two_laps_action">Laufen Sie zwei Runden</string>
+    <string name="task_run_two_laps_photo">Machen Sie ein Foto nach den zwei Runden.</string>
+
+    <!-- Task 10: Do 30 Squats -->
+    <string name="task_do_squats_action">Machen Sie 30 Kniebeugen</string>
+    <string name="task_do_squats_photo">Machen Sie ein Foto nach den Kniebeugen.</string>
+
+    <string name="default_description">Beschreibung nicht verfügbar</string>
+
 </resources>
