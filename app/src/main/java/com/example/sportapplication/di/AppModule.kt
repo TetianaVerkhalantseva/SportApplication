@@ -3,6 +3,7 @@ package com.example.sportapplication.di
 import android.content.Context
 import android.content.SharedPreferences
 import com.example.sportapplication.database.AppDatabase
+import com.example.sportapplication.database.dao.SensorDao
 import com.example.sportapplication.database.dao.UserDao
 import com.example.sportapplication.ui.profile.ProfileViewModel
 import com.example.sportapplication.ui.settings.UnitViewModel
@@ -42,5 +43,9 @@ object AppModule {
     fun provideProfileViewModel(userDao: UserDao): ProfileViewModel {
         return ProfileViewModel(userDao)
     }
+
+    @Provides
+    @Singleton
+    fun providesSensorDoa(appDatabase: AppDatabase): SensorDao = appDatabase.sensorDao()
 
 }
