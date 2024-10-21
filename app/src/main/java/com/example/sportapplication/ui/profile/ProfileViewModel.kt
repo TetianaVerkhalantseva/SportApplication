@@ -15,9 +15,11 @@ class ProfileViewModel @Inject constructor(
     private val userDao: UserDao
 ) : ViewModel() {
 
+    // MutableStateFlow to hold the current nickname. Initially set to "CurrentNickname"
     private val _nickname = MutableStateFlow("CurrentNickname")
     val nickname: StateFlow<String> = _nickname
 
+    // Fetch the user data from the database
     init {
         viewModelScope.launch {
             val user = userDao.getUser()
@@ -26,7 +28,7 @@ class ProfileViewModel @Inject constructor(
             }
         }
     }
-
+    // Function to update the nickname. True/false.
     suspend fun updateNickname(newNickname: String): Boolean {
         return try {
             val user = userDao.getUser()

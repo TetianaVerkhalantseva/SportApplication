@@ -7,6 +7,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
+// Defines the default appearance of buttons, text fields etc. in the app.
+
 // Primary Button with blue background and white text
 @Composable
 fun PrimaryButton(

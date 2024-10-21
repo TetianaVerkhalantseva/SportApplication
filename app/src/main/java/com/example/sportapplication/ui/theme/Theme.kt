@@ -20,7 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 
 
-
+// Defining color schemes for dark mode
 private val darkScheme = darkColorScheme(
     primary = primaryDark,
     onPrimary = onPrimaryDark,
@@ -52,6 +52,7 @@ private val darkScheme = darkColorScheme(
     inversePrimary = inversePrimaryDark
 )
 
+// Defining color schemes for light mode
 private val lightScheme = lightColorScheme(
     primary = primaryLight,
     onPrimary = onPrimaryLight,
@@ -83,6 +84,7 @@ private val lightScheme = lightColorScheme(
     inversePrimary = inversePrimaryLight
 )
 
+// Additional light and dark schemes with medium and high contrast variations for accessibility
 private val mediumContrastLightColorScheme = lightColorScheme(
     primary = primaryLightMediumContrast,
     onPrimary = onPrimaryLightMediumContrast,
@@ -210,7 +212,7 @@ private val highContrastDarkColorScheme = darkColorScheme(
     inversePrimary = inversePrimaryDarkHighContrast
 
 )
-
+// A data class to group color attributes together
 @Immutable
 data class ColorFamily(
     val color: Color,
@@ -223,7 +225,7 @@ val unspecified_scheme = ColorFamily(
     Color.Unspecified, Color.Unspecified, Color.Unspecified, Color.Unspecified
 )
 
-
+// Composable function that applies the chosen theme to the application
 @Composable
 fun SportApplicationTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),

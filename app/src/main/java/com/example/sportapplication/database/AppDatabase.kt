@@ -11,8 +11,8 @@ import com.example.sportapplication.database.dao.UserDao
 import com.example.sportapplication.database.entity.SensorData
 import com.example.sportapplication.database.entity.User
 
-@Database(entities = [User::class, SensorData::class], version = 1)
-abstract class AppDatabase : RoomDatabase() {
+@Database(entities = [User::class, SensorData::class], version = 2)
+abstract class AppDatabase: RoomDatabase() {
 
     companion object {
         private var INSTANCE: AppDatabase? = null

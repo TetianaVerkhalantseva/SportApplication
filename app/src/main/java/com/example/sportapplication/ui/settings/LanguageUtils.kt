@@ -5,6 +5,8 @@ import android.content.res.Configuration
 import android.os.LocaleList
 import java.util.*
 
+// Updates the app’s locale to a new language based on the languageCode parameter
+
 fun Application.updateLocale(languageCode: String) {
     val locale = Locale(languageCode)
     Locale.setDefault(locale)

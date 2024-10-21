@@ -1,8 +1,8 @@
 package com.example.sportapplication.ui.theme
 import androidx.compose.ui.graphics.Color
 
+//Color scheme for the app
 val topAppBarBorderLight = Color(0xFFFF00FF) // Neon pink - might be used later for contrast.
-
 val primaryLight = Color(0xFFfc5200)
 val onPrimaryLight = Color(0xFFFFFFFF)
 val primaryContainerLight = Color(0xFFfc631a)

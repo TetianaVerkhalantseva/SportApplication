@@ -45,7 +45,7 @@ class MainActivity : ComponentActivity() {
             // Remember the present value for comparison
             val currentLanguage = remember { mutableStateOf(selectedLanguage) }
 
-            // Sjekk og oppdater språket hvis det er endret
+            // Check and update language if changed.
             LaunchedEffect(selectedLanguage) {
                 if (currentLanguage.value != selectedLanguage) {
                     currentLanguage.value = selectedLanguage
