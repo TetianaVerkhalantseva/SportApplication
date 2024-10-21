@@ -25,9 +25,7 @@ fun SensorScreenRoute() {
     val numberOfRecordings = viewModel.numberOfRecordings
     val rowsOfData = viewModel.rowsOfData
     val currentAverageAcceleration = viewModel.currentAverageAcceleration
-    val currentMagnitudeAcceleration = sqrt(
-        currentAverageAcceleration[0].pow(2) + currentAverageAcceleration[1].pow(2) + currentAverageAcceleration[2].pow(2)
-    )
+    val currentMagnitudeAcceleration = viewModel.magnitudeOfAcceleration
 
 
     SensorScreen(
@@ -38,6 +36,7 @@ fun SensorScreenRoute() {
         linearAcceleration,
         numberOfRecordings,
         rowsOfData,
+        currentAverageAcceleration,
         currentMagnitudeAcceleration
     )
 }
@@ -51,6 +50,7 @@ fun SensorScreen(
     linearAcceleration: SnapshotStateList<Float>,
     numberOfRecordings: Int,
     rowsOfData: List<SensorData>?,
+    currentAverageAcceleration: FloatArray,
     currentMagnitudeAcceleration: Float
 ) {
     Column {
@@ -61,7 +61,10 @@ fun SensorScreen(
         Text(text = "Raw acceleration: ${acceleration[0]}, ${acceleration[1]}, ${acceleration[2]}")
         Text(text = "Filtered acceleration: ${linearAcceleration[0]}, ${linearAcceleration[1]}, ${linearAcceleration[2]}")
         Text(text = "Number of seonsor recordings stored: $numberOfRecordings")
-        Text(text = "Average Accel: $currentMagnitudeAcceleration")
+
+        Text(text = "Average Accel: ${currentAverageAcceleration[0]}, ${currentAverageAcceleration[0]}, ${currentAverageAcceleration[0]}")
+        Text(text = "Magnitude Accel: $currentMagnitudeAcceleration")
+
         if (rowsOfData != null) LazyColumn(Modifier.padding(top = 16.dp)) {
             items(rowsOfData) { data ->
                 Column(Modifier.padding(bottom = 8.dp)) {
