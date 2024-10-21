@@ -13,14 +13,17 @@ import com.example.sportapplication.ui.event.selectedEvent.navigation.navigateTo
 import com.example.sportapplication.ui.event.selectedEvent.navigation.selectedEventScreen
 import com.example.sportapplication.ui.introduction.navigation.INTRODUCTION_ROUTE
 import com.example.sportapplication.ui.introduction.navigation.introductionScreen
+import com.example.sportapplication.ui.inventory.InventoryScreen
 import com.example.sportapplication.ui.inventory.navigation.inventoryScreen
 import com.example.sportapplication.ui.map.navigation.mapRoute
 import com.example.sportapplication.ui.map.navigation.navigateToMap
+import com.example.sportapplication.ui.profile.navigation.profileRoute // Import profileRoute
 import com.example.sportapplication.ui.quest.navigation.questScreen
 import com.example.sportapplication.ui.quest.selectedQuest.navigation.navigateToSelectedQuest
 import com.example.sportapplication.ui.quest.selectedQuest.navigation.selectedQuestScreen
 
 import com.example.sportapplication.ui.sensor.navigation.sensorScreen
+
 private const val GENERAL_ROUTE = "GENERAL_ROUTE"
 
 @Composable
@@ -42,14 +45,11 @@ fun AppNavHost(navHostController: NavHostController) {
                 )
             }
         )
-        mapRoute(
-            navHostController = navHostController
-        )
         questScreen(
             navHostController = navHostController,
             navigateToSelectedQuestScreen = { navHostController.navigateToSelectedQuest() }
         )
-        selectedQuestScreen(
+        mapRoute(
             navHostController = navHostController
         )
         achievementsScreen(
@@ -59,13 +59,18 @@ fun AppNavHost(navHostController: NavHostController) {
             }
 
         )
-        selectedAchievementScreen(
-            navHostController = navHostController
-        )
         inventoryScreen(
             navHostController = navHostController
         )
+        selectedAchievementScreen(
+            navHostController = navHostController
+        )
+        selectedQuestScreen(
+            navHostController = navHostController
+        )
         sensorScreen(navHostController = navHostController)
+
+        profileRoute(navHostController = navHostController)
 
         eventScreen(
             navHostController = navHostController,
@@ -74,6 +79,6 @@ fun AppNavHost(navHostController: NavHostController) {
         selectedEventScreen(
             navHostController = navHostController
         )
-    }
 
+    }
 }

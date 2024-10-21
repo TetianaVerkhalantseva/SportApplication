@@ -12,7 +12,7 @@ import javax.inject.Singleton
 object SensorModule {
     @Provides
     @Singleton
-    fun provideGyroscopeSensor(app: Application): MultiSensor {
+    fun provideMultiSensor(app: Application): MultiSensor {
         val multiSensor = MultiSensor(AccelerometerSensor(app),GyroscopeSensor(app), MagneticSensor(app))
         return multiSensor
     }
