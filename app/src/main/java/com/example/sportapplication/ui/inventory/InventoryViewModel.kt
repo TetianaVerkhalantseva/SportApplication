@@ -41,7 +41,7 @@ class InventoryViewModel @Inject constructor(
     )
 
     init {
-        
+
         prepopulateItems()
         getAllItems()
         getAllInventoryItems()
@@ -121,22 +121,21 @@ class InventoryViewModel @Inject constructor(
     private fun prepopulateItems() {
         CoroutineScope(Dispatchers.IO).launch {
             val itemsInDao = itemsDao.getAll()
-            if (itemsInDao.size < 1) {
-                val prepopItems = arrayOf(
-                    Item(itemId = 0, itemName = "TemporaryItem1"),
-                    Item(itemId = 0, itemName = "TemporaryItem2"),
-                    Item(itemId = 0, itemName = "TemporaryItem3"),
-                )
-                prepopItems.forEach { item ->
-                    itemsDao.insertItem(
-                        ItemsData(
-                            itemId = item.itemId,
-                            itemName = item.itemName
-                        )
+            val prepopItems = arrayOf(
+                Item(itemId = 0, itemName = "TemporaryItem1"),
+                Item(itemId = 0, itemName = "TemporaryItem2"),
+                Item(itemId = 0, itemName = "TemporaryItem3"),
+            )
+            prepopItems.forEach { item ->
+                itemsDao.insertItem(
+                    ItemsData(
+                        itemId = item.itemId,
+                        itemName = item.itemName
                     )
-                }
-
+                )
             }
+
+
         }
     }
 
