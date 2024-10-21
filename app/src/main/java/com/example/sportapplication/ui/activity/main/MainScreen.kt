@@ -39,13 +39,17 @@ fun MainScreen(
     showBottomBar: Boolean,
     sharedPreferences: SharedPreferences
 ) {
+    // State variables for managing the visibility of various menus and splash screen
     var showMenu by remember { mutableStateOf(false) }
     var showLanguageMenu by remember { mutableStateOf(false) }
     var showSettingsMenu by remember { mutableStateOf(false) }
     var showUnitMenu by remember { mutableStateOf(false) }
     var showSplash by remember { mutableStateOf(false) } // For splash screen
 
+    // Coroutine scope for launching coroutine jobs within the composable
     val scope = rememberCoroutineScope()
+
+    // ViewModels for managing language and unit settings
     val languageViewModel: LanguageViewModel = hiltViewModel()
     val unitViewModel: UnitViewModel = hiltViewModel()
 
@@ -61,7 +65,7 @@ fun MainScreen(
             sharedPreferences.edit().putBoolean("isFirstLaunch", false).apply()
         }
     }
-
+    // Applying the app's theme, either dark or light, based on the state
     SportApplicationTheme(darkTheme = isDarkTheme) {
         Scaffold(
             topBar = {
@@ -84,12 +88,13 @@ fun MainScreen(
                                 tint = MaterialTheme.colorScheme.onPrimaryContainer
                             )
                         }
+                        // Dropdown menu for different options
                         DropdownMenu(
                             expanded = showMenu,
                             onDismissRequest = { showMenu = false },
                             modifier = Modifier.background(MaterialTheme.colorScheme.primaryContainer)
                         ) {
-                            // Profile menu item
+
                             DropdownMenuItem(
                                 text = { Text(stringResource(R.string.profile), style = MaterialTheme.typography.bodyLarge) },
                                 onClick = {

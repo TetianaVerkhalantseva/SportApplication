@@ -10,6 +10,7 @@ import androidx.compose.ui.text.googlefonts.GoogleFont
 import androidx.compose.ui.text.googlefonts.Font
 import com.example.sportapplication.R
 
+// Fonts available in the app.
 
 val provider = GoogleFont.Provider(
     providerAuthority = "com.google.android.gms.fonts",

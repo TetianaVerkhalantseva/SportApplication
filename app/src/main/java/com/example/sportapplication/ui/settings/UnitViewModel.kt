@@ -9,6 +9,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+// This is a viewmodel to be used at a later stage in the development for conversion of different metrics.
+
 @HiltViewModel
 class UnitViewModel @Inject constructor(
     private val sharedPreferences: SharedPreferences

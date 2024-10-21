@@ -18,12 +18,15 @@ import com.example.sportapplication.ui.theme.PrimaryButton
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+// Profile screen where a user can view/change username and see player statistics.
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(navController: NavHostController, viewModel: ProfileViewModel = hiltViewModel()) {
     val nickname by viewModel.nickname.collectAsState()
     val coroutineScope = rememberCoroutineScope()
 
+    // State variables for managing nickname input, editing state, and status message
     var nicknameTextFieldValue by remember { mutableStateOf(TextFieldValue("")) }
     var isEdited by remember { mutableStateOf(false) }
     var statusMessage by remember { mutableStateOf<Int?>(null) }
@@ -161,6 +164,7 @@ fun ProfileScreen(navController: NavHostController, viewModel: ProfileViewModel 
     )
 }
 
+// Display individual statistic items with a label and value
 @Composable
 fun StatisticItem(label: String, value: String) {
     Row(

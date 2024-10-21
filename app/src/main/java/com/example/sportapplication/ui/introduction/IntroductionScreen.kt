@@ -49,7 +49,7 @@ fun IntroductionScreen(
             .background(MaterialTheme.colorScheme.background)
             .padding(16.dp)
     ) {
-        // Welcome message at the top with blue color
+        // Welcome message at the top
         Text(
             text = stringResource(R.string.welcome_to_questabout_2),
             style = MaterialTheme.typography.titleLarge,
@@ -58,7 +58,7 @@ fun IntroductionScreen(
                 .padding(bottom = 24.dp) // Increased spacing below welcome message
         )
 
-        // Upper 50% scrollable text section
+        // Upper scrollable text section
         LazyColumn(
             modifier = Modifier
                 .weight(1f)
