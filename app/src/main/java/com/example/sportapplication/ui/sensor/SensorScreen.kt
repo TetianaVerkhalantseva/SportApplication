@@ -11,6 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.sportapplication.database.entity.SensorData
+import kotlin.math.pow
+import kotlin.math.sqrt
 
 @Composable
 fun SensorScreenRoute() {
@@ -23,12 +25,10 @@ fun SensorScreenRoute() {
     val numberOfRecordings = viewModel.numberOfRecordings
     val rowsOfData = viewModel.rowsOfData
     val currentAverageAcceleration = viewModel.currentAverageAcceleration
-    val currentMagnitudeAcceleration = Math.sqrt(
-        Math.pow(currentAverageAcceleration[0].toDouble(), 2.0) + Math.pow(
-            currentAverageAcceleration[1].toDouble(),
-            2.0
-        ) + Math.pow(currentAverageAcceleration[2].toDouble(), 2.0)
+    val currentMagnitudeAcceleration = sqrt(
+        currentAverageAcceleration[0].pow(2) + currentAverageAcceleration[1].pow(2) + currentAverageAcceleration[2].pow(2)
     )
+
 
     SensorScreen(
         rotation,
@@ -51,7 +51,7 @@ fun SensorScreen(
     linearAcceleration: SnapshotStateList<Float>,
     numberOfRecordings: Int,
     rowsOfData: List<SensorData>?,
-    currentMagnitudeAcceleration: Double
+    currentMagnitudeAcceleration: Float
 ) {
     Column {
         Text(text = "Sensor screen")
