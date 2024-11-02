@@ -59,4 +59,95 @@
 
 
 
+
+    <!-- Events -->
+    <string name="event_morning_run">Carrera Matutina</string>
+    <string name="event_morning_run_description">Comienza tu día con una carrera de 5 km por el parque de la ciudad.</string>
+    <string name="event_soccer_game">Partido de Fútbol</string>
+    <string name="event_soccer_game_description">Únete a un partido de fútbol local en el estadio.</string>
+
+    <!-- Sports Locations in Tromsø -->
+    <string name="location_city_park">Lago Prestvannet</string>
+    <string name="location_stadium">Tromsøhallen</string>
+    <string name="location_romssa_arena">Arena Romssa</string>
+    <string name="location_tromsobadet">Tromsøbadet</string>
+    <string name="location_tromso_alpinpark">Parque Alpino de Tromsø</string>
+    <string name="location_tuil_arena">Arena TUIL</string>
+    <string name="location_kraft_sportssenter">Centro Deportivo Kraft</string>
+    <string name="location_fløyahallen">Fløyahallen</string>
+    <string name="location_skarpmarka">Skarpmarka</string>
+    <string name="location_kroken_car_park">Estacionamiento de Kroken</string>
+    <string name="location_valhallhallen">Valhallhallen</string>
+    <string name="location_crossfit_nordaforr">CrossFit Nordaførr</string>
+    <string name="location_folkeparken">Folkeparken</string>
+
+    <!-- Quests -->
+    <string name="quest_1_name">Misión 1</string>
+    <string name="quest_1_title">Desafío de Correr</string>
+    <string name="quest_1_description">Corre dos vueltas alrededor del parque.</string>
+    <string name="quest_1_reward">Recompensa: Zapatillas</string>
+
+    <string name="quest_2_name">Misión 2</string>
+    <string name="quest_2_title">Desafío de Sentadillas</string>
+    <string name="quest_2_description">Haz 30 sentadillas en el estadio.</string>
+    <string name="quest_2_reward">Recompensa: Pantalones cortos deportivos</string>
+
+
+    <!-- General Tasks for Quests and Events -->
+    <string name="task_complete_challenge_action">Completa el desafío</string>
+    <string name="task_take_photo_photo">Toma una foto para confirmar la finalización</string>
+    <string name="task_go_action">Ve al lugar designado</string>
+    <string name="task_run_action">Corre al lugar designado</string>
+    <string name="task_bike_action">Anda en bicicleta al lugar designado</string>
+    <string name="task_collect_item_action">Recoge el objeto en el lugar</string>
+    <string name="task_check_in_action">Regístrate en el lugar</string>
+    <string name="task_participate_event_action">Participa en el evento</string>
+    <string name="task_finish_activity_action">Termina la actividad</string>
+    <string name="task_share_results_action">Comparte tus resultados con amigos</string>
+    <string name="task_wait_timer_action">Espera a que termine el temporizador</string>
+
+    <!-- Sports Tasks -->
+
+    <!-- Task 1: Run 5 Kilometers -->
+    <string name="task_run_5k_action">Corre 5 kilómetros en la ruta designada.</string>
+    <string name="task_run_5k_photo">Toma una foto en la línea de meta.</string>
+
+    <!-- Task 2: Swim 500 Meters -->
+    <string name="task_swim_500m_action">Nada 500 metros en la piscina.</string>
+    <string name="task_swim_500m_photo">Toma una foto después de nadar.</string>
+
+    <!-- Task 3: Climb 1000 Steps -->
+    <string name="task_climb_1000_steps_action">Sube 1000 escalones en la escalera.</string>
+    <string name="task_climb_1000_steps_photo">Toma una foto en la cima de las escaleras.</string>
+
+    <!-- Task 4: Bike 10 Kilometers -->
+    <string name="task_bike_10k_action">Anda en bicicleta 10 kilómetros hasta el lugar especificado.</string>
+    <string name="task_bike_10k_photo">Toma una foto en el punto de llegada.</string>
+
+    <!-- Task 5: Complete 50 Push-ups -->
+    <string name="task_pushups_50_action">Haz 50 flexiones lo más rápido posible.</string>
+    <string name="task_pushups_50_photo">Toma una foto después de terminar las flexiones.</string>
+
+    <!-- Task 6: Row 2 Kilometers -->
+    <string name="task_row_2k_action">Rema 2 kilómetros en la máquina de remo.</string>
+    <string name="task_row_2k_photo">Toma una foto de la máquina de remo después de terminar.</string>
+
+    <!-- Task 7: Hike to the Mountain Peak -->
+    <string name="task_hike_peak_action">Camina hasta el pico de la montaña, ubicado a 3 kilómetros.</string>
+    <string name="task_hike_peak_photo">Toma una foto en el pico de la montaña.</string>
+
+    <!-- Task 8: Perform 30 Burpees -->
+    <string name="task_burpees_30_action">Haz 30 burpees sin detenerte.</string>
+    <string name="task_burpees_30_photo">Toma una foto después de terminar los burpees.</string>
+
+    <!-- Task 9: Run Two Laps -->
+    <string name="task_run_two_laps_action">Corre dos vueltas</string>
+    <string name="task_run_two_laps_photo">Toma una foto después de terminar las dos vueltas.</string>
+
+    <!-- Task 10: Do 30 Squats -->
+    <string name="task_do_squats_action">Haz 30 sentadillas</string>
+    <string name="task_do_squats_photo">Toma una foto después de terminar las sentadillas.</string>
+
+    <string name="default_description">Descripción no disponible</string>
+
 </resources>

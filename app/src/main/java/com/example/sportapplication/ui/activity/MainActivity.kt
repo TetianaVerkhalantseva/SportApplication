@@ -1,5 +1,6 @@
 package com.example.sportapplication.ui.activity
 
+// import MainScreen
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -20,6 +21,8 @@ import com.example.sportapplication.ui.settings.LanguageViewModel
 import com.example.sportapplication.ui.settings.LocaleHelper
 import com.example.sportapplication.ui.theme.SportApplicationTheme
 import dagger.hilt.android.AndroidEntryPoint
+import org.osmdroid.config.Configuration
+import java.io.File
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -38,6 +41,13 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // Configure OSM caching to reduce map data loading by storing tiles locally
+        val osmConfig = Configuration.getInstance()
+        osmConfig.userAgentValue = packageName
+        osmConfig.osmdroidBasePath = File(cacheDir, "osmdroid")
+        osmConfig.osmdroidTileCache = File(cacheDir, "osmdroid/tiles")
+
+
         setContent {
             val languageViewModel: LanguageViewModel = hiltViewModel()
             val selectedLanguage by languageViewModel.selectedLanguage.observeAsState("en")
@@ -54,11 +64,13 @@ class MainActivity : ComponentActivity() {
             }
 
             SportApplicationTheme {
+                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val isBottomBarVisible = remember { mutableStateOf(true) }
+                    val viewModel : MainActivityViewModel = hiltViewModel()
                     val navHostController = rememberNavController()
 
                     navHostController.addOnDestinationChangedListener { _, destination, _ ->
