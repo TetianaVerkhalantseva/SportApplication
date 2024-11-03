@@ -79,6 +79,10 @@ fun MainScreen(
                         titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
                     ),
                     actions = {
+
+                        BatteryIndicator(batteryViewModel = batteryViewModel)
+                        Spacer(modifier = Modifier.width(16.dp))
+
                         IconButton(onClick = { showMenu = !showMenu }) {
                             Icon(
                                 imageVector = Icons.Default.Menu,
@@ -89,7 +93,6 @@ fun MainScreen(
 
                         Spacer(modifier = Modifier.width(16.dp))
 
-                        BatteryIndicator(batteryViewModel = batteryViewModel)
 
                         DropdownMenu(
                             expanded = showMenu,
@@ -97,7 +100,12 @@ fun MainScreen(
                             modifier = Modifier.background(MaterialTheme.colorScheme.primaryContainer)
                         ) {
                             DropdownMenuItem(
-                                text = { Text(stringResource(R.string.profile), style = MaterialTheme.typography.bodyLarge) },
+                                text = {
+                                    Text(
+                                        stringResource(R.string.profile),
+                                        style = MaterialTheme.typography.bodyLarge
+                                    )
+                                },
                                 onClick = {
                                     showMenu = false
                                     navController.navigateToProfile()
@@ -112,7 +120,12 @@ fun MainScreen(
                             )
 
                             DropdownMenuItem(
-                                text = { Text(stringResource(R.string.change_language), style = MaterialTheme.typography.bodyLarge) },
+                                text = {
+                                    Text(
+                                        stringResource(R.string.change_language),
+                                        style = MaterialTheme.typography.bodyLarge
+                                    )
+                                },
                                 onClick = {
                                     showLanguageMenu = !showLanguageMenu
                                 },
@@ -141,11 +154,18 @@ fun MainScreen(
 
                                     languages.forEach { (code, name) ->
                                         DropdownMenuItem(
-                                            text = { Text(name, style = MaterialTheme.typography.bodyLarge) },
+                                            text = {
+                                                Text(
+                                                    name,
+                                                    style = MaterialTheme.typography.bodyLarge
+                                                )
+                                            },
                                             onClick = {
                                                 scope.launch {
                                                     languageViewModel.setLanguage(code)
-                                                    (navController.context.applicationContext as? Application)?.updateLocale(code)
+                                                    (navController.context.applicationContext as? Application)?.updateLocale(
+                                                        code
+                                                    )
                                                     showLanguageMenu = false
                                                     showMenu = false
                                                     (navController.context as ComponentActivity).recreate()
@@ -157,7 +177,12 @@ fun MainScreen(
                             }
 
                             DropdownMenuItem(
-                                text = { Text(stringResource(R.string.settings), style = MaterialTheme.typography.bodyLarge) },
+                                text = {
+                                    Text(
+                                        stringResource(R.string.settings),
+                                        style = MaterialTheme.typography.bodyLarge
+                                    )
+                                },
                                 onClick = {
                                     showSettingsMenu = !showSettingsMenu
                                 },
@@ -177,7 +202,12 @@ fun MainScreen(
                                     modifier = Modifier.background(MaterialTheme.colorScheme.primaryContainer)
                                 ) {
                                     DropdownMenuItem(
-                                        text = { Text(stringResource(R.string.change_unit), style = MaterialTheme.typography.bodyLarge) },
+                                        text = {
+                                            Text(
+                                                stringResource(R.string.change_unit),
+                                                style = MaterialTheme.typography.bodyLarge
+                                            )
+                                        },
                                         onClick = {
                                             showUnitMenu = !showUnitMenu
                                         }
@@ -197,7 +227,12 @@ fun MainScreen(
 
                                             units.forEach { (unitType, displayName) ->
                                                 DropdownMenuItem(
-                                                    text = { Text(displayName, style = MaterialTheme.typography.bodyLarge) },
+                                                    text = {
+                                                        Text(
+                                                            displayName,
+                                                            style = MaterialTheme.typography.bodyLarge
+                                                        )
+                                                    },
                                                     onClick = {
                                                         scope.launch {
                                                             unitViewModel.setUnitSystem(unitType)
@@ -214,7 +249,12 @@ fun MainScreen(
                             }
 
                             DropdownMenuItem(
-                                text = { Text(stringResource(R.string.change_theme), style = MaterialTheme.typography.bodyLarge) },
+                                text = {
+                                    Text(
+                                        stringResource(R.string.change_theme),
+                                        style = MaterialTheme.typography.bodyLarge
+                                    )
+                                },
                                 onClick = {
                                     isDarkTheme = !isDarkTheme
                                     showMenu = false
