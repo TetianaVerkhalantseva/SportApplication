@@ -37,7 +37,6 @@ fun BatteryIndicator(
 
     Column(Modifier
         .clickable {
-            batteryViewModel.decreaseBatteryLevel() // Simulate battery drain on click
             isSecondary = !isSecondary
         }) {
         AnimatedVisibility(visible = !isSecondary) {
@@ -136,45 +135,3 @@ fun getBatteryColor(batteryLevel: Int): Color {
     return Color(red, green, 0)
 }
 
-
-/*
-
-            Box(
-                modifier = Modifier
-                    .size(160.dp, 160.dp)
-                    .background(
-                        Color(
-                            (255 * (((0.5 * (colorPercent - 0.5)) / (sqrt(
-                                0.015 + (colorPercent - 0.5).pow(2)
-                            ))) + 0.5)).toInt(),
-                            (255 * (((-0.5 * (colorPercent - 1)) / (sqrt(
-                                0.015 + (colorPercent - 1).pow(2)
-                            ))) + 0.5)).toInt(), 0, 255
-                        )
-                    )
-            )
- */
-
-/*
-Canvas(modifier = Modifier.size(width = 24.dp, height = 12.dp)) {
-            // Draw the battery frame
-            drawRect(
-                color = Color.Gray,
-                size = size,
-                style = Stroke(width = 2f)
-            )
-
-            // Draw the fill based on the battery level
-            drawRect(
-                color = batteryColor,
-                size = size.copy(width = size.width * (batteryLevel / 100f))
-            )
-
-            // Draw the battery tip (to resemble a real battery icon)
-            drawRect(
-                color = Color.Gray,
-                topLeft = Offset(x = size.width, y = size.height * 0.25f),
-                size = size.copy(width = size.width * 0.1f, height = size.height * 0.5f)
-            )
-        }
- */

@@ -85,9 +85,5 @@ class BatteryViewModel @Inject constructor(
         getApplication<Application>().registerReceiver(batteryReceiver, intentFilter)
     }
 
-    // Method to manually decrease the battery level by 10%
-    fun decreaseBatteryLevel() {
-        val currentLevel = _batteryLevel.value ?: 100
-        _batteryLevel.value = (currentLevel - 10).coerceAtLeast(0)
-    }
+
 }
