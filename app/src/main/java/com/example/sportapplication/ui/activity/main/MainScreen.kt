@@ -6,9 +6,9 @@ import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -25,6 +25,8 @@ import androidx.navigation.NavHostController
 import com.example.sportapplication.R
 import com.example.sportapplication.ui.activity.navigation.AppNavHost
 import com.example.sportapplication.ui.profile.navigation.navigateToProfile
+import com.example.sportapplication.ui.settings.BatteryIndicator
+import com.example.sportapplication.ui.settings.BatteryViewModel
 import com.example.sportapplication.ui.settings.LanguageViewModel
 import com.example.sportapplication.ui.settings.UnitViewModel
 import com.example.sportapplication.ui.settings.updateLocale
@@ -39,33 +41,29 @@ fun MainScreen(
     showBottomBar: Boolean,
     sharedPreferences: SharedPreferences
 ) {
-    // State variables for managing the visibility of various menus and splash screen
     var showMenu by remember { mutableStateOf(false) }
     var showLanguageMenu by remember { mutableStateOf(false) }
     var showSettingsMenu by remember { mutableStateOf(false) }
     var showUnitMenu by remember { mutableStateOf(false) }
-    var showSplash by remember { mutableStateOf(false) } // For splash screen
+    var showSplash by remember { mutableStateOf(false) }
 
-    // Coroutine scope for launching coroutine jobs within the composable
-    val scope = rememberCoroutineScope()
-
-    // ViewModels for managing language and unit settings
     val languageViewModel: LanguageViewModel = hiltViewModel()
     val unitViewModel: UnitViewModel = hiltViewModel()
+    val batteryViewModel: BatteryViewModel = hiltViewModel()
 
+    val scope = rememberCoroutineScope()
     var isDarkTheme by remember { mutableStateOf(false) }
 
-    // Check if the app is opened for the first time
     LaunchedEffect(Unit) {
         delay(3500)
         val isFirstLaunch = sharedPreferences.getBoolean("isFirstLaunch", true)
         if (isFirstLaunch) {
-            showMenu = true // Expand the menu for the first time
-            showSplash = true // Show the splash screen
+            showMenu = true
+            showSplash = true
             sharedPreferences.edit().putBoolean("isFirstLaunch", false).apply()
         }
     }
-    // Applying the app's theme, either dark or light, based on the state
+
     SportApplicationTheme(darkTheme = isDarkTheme) {
         Scaffold(
             topBar = {
@@ -81,6 +79,10 @@ fun MainScreen(
                         titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
                     ),
                     actions = {
+
+                        BatteryIndicator(batteryViewModel = batteryViewModel)
+                        Spacer(modifier = Modifier.width(16.dp))
+
                         IconButton(onClick = { showMenu = !showMenu }) {
                             Icon(
                                 imageVector = Icons.Default.Menu,
@@ -88,18 +90,25 @@ fun MainScreen(
                                 tint = MaterialTheme.colorScheme.onPrimaryContainer
                             )
                         }
-                        // Dropdown menu for different options
+
+                        Spacer(modifier = Modifier.width(16.dp))
+
+
                         DropdownMenu(
                             expanded = showMenu,
                             onDismissRequest = { showMenu = false },
                             modifier = Modifier.background(MaterialTheme.colorScheme.primaryContainer)
                         ) {
-
                             DropdownMenuItem(
-                                text = { Text(stringResource(R.string.profile), style = MaterialTheme.typography.bodyLarge) },
+                                text = {
+                                    Text(
+                                        stringResource(R.string.profile),
+                                        style = MaterialTheme.typography.bodyLarge
+                                    )
+                                },
                                 onClick = {
                                     showMenu = false
-                                    navController.navigateToProfile() // Navigates to profile screen
+                                    navController.navigateToProfile()
                                 },
                                 leadingIcon = {
                                     Icon(
@@ -111,7 +120,12 @@ fun MainScreen(
                             )
 
                             DropdownMenuItem(
-                                text = { Text(stringResource(R.string.change_language), style = MaterialTheme.typography.bodyLarge) },
+                                text = {
+                                    Text(
+                                        stringResource(R.string.change_language),
+                                        style = MaterialTheme.typography.bodyLarge
+                                    )
+                                },
                                 onClick = {
                                     showLanguageMenu = !showLanguageMenu
                                 },
@@ -140,11 +154,18 @@ fun MainScreen(
 
                                     languages.forEach { (code, name) ->
                                         DropdownMenuItem(
-                                            text = { Text(name, style = MaterialTheme.typography.bodyLarge) },
+                                            text = {
+                                                Text(
+                                                    name,
+                                                    style = MaterialTheme.typography.bodyLarge
+                                                )
+                                            },
                                             onClick = {
                                                 scope.launch {
                                                     languageViewModel.setLanguage(code)
-                                                    (navController.context.applicationContext as? Application)?.updateLocale(code)
+                                                    (navController.context.applicationContext as? Application)?.updateLocale(
+                                                        code
+                                                    )
                                                     showLanguageMenu = false
                                                     showMenu = false
                                                     (navController.context as ComponentActivity).recreate()
@@ -156,7 +177,12 @@ fun MainScreen(
                             }
 
                             DropdownMenuItem(
-                                text = { Text(stringResource(R.string.settings), style = MaterialTheme.typography.bodyLarge) },
+                                text = {
+                                    Text(
+                                        stringResource(R.string.settings),
+                                        style = MaterialTheme.typography.bodyLarge
+                                    )
+                                },
                                 onClick = {
                                     showSettingsMenu = !showSettingsMenu
                                 },
@@ -176,7 +202,12 @@ fun MainScreen(
                                     modifier = Modifier.background(MaterialTheme.colorScheme.primaryContainer)
                                 ) {
                                     DropdownMenuItem(
-                                        text = { Text(stringResource(R.string.change_unit), style = MaterialTheme.typography.bodyLarge) },
+                                        text = {
+                                            Text(
+                                                stringResource(R.string.change_unit),
+                                                style = MaterialTheme.typography.bodyLarge
+                                            )
+                                        },
                                         onClick = {
                                             showUnitMenu = !showUnitMenu
                                         }
@@ -196,7 +227,12 @@ fun MainScreen(
 
                                             units.forEach { (unitType, displayName) ->
                                                 DropdownMenuItem(
-                                                    text = { Text(displayName, style = MaterialTheme.typography.bodyLarge) },
+                                                    text = {
+                                                        Text(
+                                                            displayName,
+                                                            style = MaterialTheme.typography.bodyLarge
+                                                        )
+                                                    },
                                                     onClick = {
                                                         scope.launch {
                                                             unitViewModel.setUnitSystem(unitType)
@@ -213,7 +249,12 @@ fun MainScreen(
                             }
 
                             DropdownMenuItem(
-                                text = { Text(stringResource(R.string.change_theme), style = MaterialTheme.typography.bodyLarge) },
+                                text = {
+                                    Text(
+                                        stringResource(R.string.change_theme),
+                                        style = MaterialTheme.typography.bodyLarge
+                                    )
+                                },
                                 onClick = {
                                     isDarkTheme = !isDarkTheme
                                     showMenu = false
@@ -237,7 +278,6 @@ fun MainScreen(
                 Box(modifier = Modifier.padding(padding)) {
                     AppNavHost(navHostController = navController)
 
-                    // Show splash screen if it's the first launch
                     if (showSplash) {
                         Box(
                             modifier = Modifier
