@@ -15,8 +15,5 @@
 local.properties
 .idea
 
-# Ignore local IDE configuration for deployment target dropdown
-/.idea/deploymentTargetDropDown.xml
-
 # Ignore all .idea folder contents
 .idea/
