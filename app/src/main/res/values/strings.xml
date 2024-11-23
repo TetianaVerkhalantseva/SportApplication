@@ -6,6 +6,11 @@
     <string name="achievements_screen">Achieve</string>
     <string name="sensor_screen">Sensor</string>
 
+    <!-- Map Screen -->
+    <string name="achieved_achievement_reward_placeholder">You got new achievement and %1$d experience!</string>
+    <string name="start_event_quests">Start event with quests</string>
+    <string name="event">Event</string>
+
     <!-- Achievements Screen -->
     <string name="achievements">Achievements</string>
     <string name="total_workouts">Total Workouts</string>

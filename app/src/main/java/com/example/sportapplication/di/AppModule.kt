@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import com.example.sportapplication.database.AppDatabase
+import com.example.sportapplication.database.dao.AchievedEventsDao
 import com.example.sportapplication.database.dao.SensorDao
 import com.example.sportapplication.database.dao.UserDao
 import com.example.sportapplication.database.data.PoiStorage
@@ -29,6 +30,10 @@ object AppModule {
     @Provides
     @Singleton
     fun provideUserDao(appDatabase: AppDatabase): UserDao = appDatabase.userDao()
+
+    @Provides
+    @Singleton
+    fun provideAchievedEventsDao(appDatabase: AppDatabase): AchievedEventsDao = appDatabase.achievedEventsDao()
 
     @Provides
     @Singleton

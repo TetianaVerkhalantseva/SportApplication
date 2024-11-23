@@ -53,6 +53,9 @@ android {
 }
 
 dependencies {
+    // Distance between locations
+    implementation ("com.google.maps.android:android-maps-utils:3.9.0")
+
     // Google location service
     implementation ("com.google.android.gms:play-services-location:21.2.0")
 
