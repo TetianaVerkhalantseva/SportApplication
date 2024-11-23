@@ -9,12 +9,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -36,14 +36,14 @@ fun SelectedAchievementRoute(
     achievementId: Long?,
     onBackClick: () -> Unit
 ) {
-    val viewModel : SelectedAchievementViewModel = hiltViewModel()
+    val viewModel: SelectedAchievementViewModel = hiltViewModel()
     val achievement by viewModel.selectedAchievement.collectAsState()
 
     LaunchedEffect(key1 = achievementId) {
         viewModel.getAchievementById(achievementId)
     }
 
-    SelectedAchievementScreen (
+    SelectedAchievementScreen(
         achievement = achievement,
         onBackClick = onBackClick
     )
@@ -52,13 +52,13 @@ fun SelectedAchievementRoute(
 @Composable
 fun SelectedAchievementScreen(
     achievement: Achievement?,
-    onBackClick : () -> Unit
+    onBackClick: () -> Unit
 ) {
-    Column (
+    Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Box (
+        Box(
             modifier = Modifier
                 .align(Alignment.Start)
                 .size(48.dp)
@@ -67,7 +67,7 @@ fun SelectedAchievementScreen(
                 }
         ) {
             Icon(
-                imageVector = Icons.Default.Close,
+                imageVector = Icons.Filled.Close, // Updated to Material 3 Icons
                 contentDescription = null,
                 tint = Color.Gray
             )
@@ -78,7 +78,7 @@ fun SelectedAchievementScreen(
                     .size(300.dp),
                 imageVector = ImageVector.vectorResource(id = achievement.icon),
                 contentDescription = null,
-                tint = Color.Unspecified //@TODO gray when not achieved, color when achieved
+                tint = Color.Unspecified // @TODO gray when not achieved, color when achieved
             )
 
             //@TODO Add date when achieved
@@ -89,9 +89,8 @@ fun SelectedAchievementScreen(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-
             Text(
-                text = stringResource(id = achievement.notAchievedDescription), //@TODO when achieved and not achieved - different description
+                text = stringResource(id = achievement.notAchievedDescription), // @TODO different description for achieved/not achieved
                 fontSize = 14.sp
             )
 
@@ -103,13 +102,12 @@ fun SelectedAchievementScreen(
                 onClick = { /*TODO*/ },
                 colors = ButtonDefaults.outlinedButtonColors(
                     containerColor = Color.Red,
-                    contentColor = Color.Unspecified
+                    contentColor = Color.White // Updated to use correct colors
                 ),
             ) {
                 Text(
                     text = stringResource(id = R.string.share_badge),
-                    fontSize = 16.sp,
-                    color = Color.White
+                    fontSize = 16.sp
                 )
             }
         }
