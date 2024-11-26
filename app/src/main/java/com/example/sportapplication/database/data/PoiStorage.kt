@@ -19,7 +19,7 @@ class PoiStorage @Inject constructor() {
             icon = R.drawable.ic_shoes,
             description = R.string.event_morning_run_description,
             locationId = 13,
-            startTime = 1732324252665,
+            startTime = 1732566860807,
             duration = 3600000,
             questsIds = listOf(1, 2)),
         Event(
@@ -28,16 +28,16 @@ class PoiStorage @Inject constructor() {
             icon = R.drawable.ic_fitness_tracker,
             description = R.string.event_soccer_game_description,
             locationId = 3,
-            startTime = 1732324252665,
+            startTime = 1732570701718,
             duration = 5400000,
-            questsIds = listOf(2)),
+            questsIds = listOf(1, 2)),
         Event(
             id = 3,
             name = R.string.event_soccer_game,
             icon = R.drawable.ic_fitness_tracker,
             description = R.string.event_soccer_game_description,
             locationId = 6,
-            startTime = 1732324252665,
+            startTime = 1732566860807,
             duration = 1800000,
             questsIds = listOf(2)),
         Event(
@@ -46,7 +46,7 @@ class PoiStorage @Inject constructor() {
             icon = R.drawable.ic_fitness_tracker,
             description = R.string.event_soccer_game_description,
             locationId = 8,
-            startTime = 1732324252665,
+            startTime = 1732566860807,
             duration = 2700000,
             questsIds = listOf(2)),
         Event(
@@ -55,16 +55,16 @@ class PoiStorage @Inject constructor() {
             icon = R.drawable.ic_fitness_tracker,
             description = R.string.event_soccer_game_description,
             locationId = 1,
-            startTime = 1732324252665,
+            startTime = 1732566860807,
             duration = 7200000,
-            questsIds = listOf(2)),
+            questsIds = listOf(2, 3)),
         Event(
             id = 6,
             name = R.string.event_soccer_game,
             icon = R.drawable.ic_fitness_tracker,
             description = R.string.event_soccer_game_description,
             locationId = 10,
-            startTime = 1732324252665,
+            startTime = 1732566860807,
             duration = 10800000,
             questsIds = listOf(2))
     )
@@ -161,9 +161,11 @@ class PoiStorage @Inject constructor() {
             description = R.string.quest_1_description,
             locationWithTasks = listOf(
                 LocationWithTasks(
-                    interestingLocation = interestingLocations[0],
+                    interestingLocation = interestingLocations[3],
                     tasks = listOf(
-                        Task(id = 1, description = R.string.task_run_two_laps_action, isCompleted = false, requiresPhoto = true)
+                        Task(id = 1, description = R.string.task_run_two_laps_action, isCompleted = false, requiresPhoto = true),
+                        Task(id = 2, description = R.string.task_burpees_30_action, isCompleted = false, requiresPhoto = true),
+                        Task(id = 3, description = R.string.task_pushups_50_action, isCompleted = false, requiresPhoto = true),
                     )
                 )
             ),
@@ -181,7 +183,17 @@ class PoiStorage @Inject constructor() {
                 LocationWithTasks(
                     interestingLocation = interestingLocations[11],
                     tasks = listOf(
-                        Task(id = 2, description = R.string.task_do_squats_action, isCompleted = false, requiresPhoto = true)
+                        Task(id = 2, description = R.string.task_do_squats_action, isCompleted = false, requiresPhoto = true),
+                        Task(id = 2, description = R.string.task_burpees_30_action, isCompleted = false, requiresPhoto = true),
+                        Task(id = 3, description = R.string.task_pushups_50_action, isCompleted = false, requiresPhoto = true),
+                    )
+                ),
+                LocationWithTasks(
+                    interestingLocation = interestingLocations[12],
+                    tasks = listOf(
+                        Task(id = 2, description = R.string.task_do_squats_action, isCompleted = false, requiresPhoto = true),
+                        Task(id = 2, description = R.string.task_burpees_30_action, isCompleted = false, requiresPhoto = true),
+                        Task(id = 3, description = R.string.task_pushups_50_action, isCompleted = false, requiresPhoto = true),
                     )
                 )
             ),
