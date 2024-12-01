@@ -1,7 +1,7 @@
 package com.example.sportapplication.database.data
 
 import com.example.sportapplication.R
-import com.example.sportapplication.database.model.Event
+import com.example.sportapplication.database.model.EventResponseBody
 import com.example.sportapplication.database.model.InterestingLocation
 import com.example.sportapplication.database.model.LocationWithTasks
 import com.example.sportapplication.database.model.Quest
@@ -9,64 +9,31 @@ import com.example.sportapplication.database.model.Reward
 import com.example.sportapplication.database.model.Task
 import javax.inject.Inject
 
+const val EVENT_REWARD_MULTIPLIER = 3
+
 class PoiStorage @Inject constructor() {
 
     // List of events
-    val events = listOf(
-        Event(
+    // Update if you need the startTime of events on: https://fusionauth.io/dev-tools/date-time
+    val eventResponseBodies = listOf(
+        EventResponseBody(
             id = 1,
             name = R.string.event_morning_run,
             icon = R.drawable.ic_shoes,
             description = R.string.event_morning_run_description,
             locationId = 13,
-            startTime = 1732566860807,
+            startTime = 1732932115167,
             duration = 3600000,
-            questsIds = listOf(1, 2)),
-        Event(
+            questsIds = listOf(3)),
+        EventResponseBody(
             id = 2,
             name = R.string.event_soccer_game,
             icon = R.drawable.ic_fitness_tracker,
             description = R.string.event_soccer_game_description,
             locationId = 3,
-            startTime = 1732570701718,
+            startTime = 1732932115167,
             duration = 5400000,
-            questsIds = listOf(1, 2)),
-        Event(
-            id = 3,
-            name = R.string.event_soccer_game,
-            icon = R.drawable.ic_fitness_tracker,
-            description = R.string.event_soccer_game_description,
-            locationId = 6,
-            startTime = 1732566860807,
-            duration = 1800000,
-            questsIds = listOf(2)),
-        Event(
-            id = 4,
-            name = R.string.event_soccer_game,
-            icon = R.drawable.ic_fitness_tracker,
-            description = R.string.event_soccer_game_description,
-            locationId = 8,
-            startTime = 1732566860807,
-            duration = 2700000,
-            questsIds = listOf(2)),
-        Event(
-            id = 5,
-            name = R.string.event_soccer_game,
-            icon = R.drawable.ic_fitness_tracker,
-            description = R.string.event_soccer_game_description,
-            locationId = 1,
-            startTime = 1732566860807,
-            duration = 7200000,
-            questsIds = listOf(2, 3)),
-        Event(
-            id = 6,
-            name = R.string.event_soccer_game,
-            icon = R.drawable.ic_fitness_tracker,
-            description = R.string.event_soccer_game_description,
-            locationId = 10,
-            startTime = 1732566860807,
-            duration = 10800000,
-            questsIds = listOf(2))
+            questsIds = listOf(1, 2, 3))
     )
 
     // List of interestingLocations
@@ -110,8 +77,8 @@ class PoiStorage @Inject constructor() {
             id = 7,
             name = R.string.location_kraft_sportssenter, // Kraft sportssenter
             icon = R.drawable.ic_gym,
-            latitude = 69.68284244169863,
-            longitude = 18.965686224149145),
+            latitude = 69.682609,
+            longitude = 18.965725),
         InterestingLocation(
             id = 8,
             name = R.string.location_fløyahallen, // Fløyahallen
@@ -161,7 +128,7 @@ class PoiStorage @Inject constructor() {
             description = R.string.quest_1_description,
             locationWithTasks = listOf(
                 LocationWithTasks(
-                    interestingLocation = interestingLocations[3],
+                    interestingLocation = interestingLocations[2],
                     tasks = listOf(
                         Task(id = 1, description = R.string.task_run_two_laps_action, isCompleted = false, requiresPhoto = true),
                         Task(id = 2, description = R.string.task_burpees_30_action, isCompleted = false, requiresPhoto = true),
@@ -187,13 +154,24 @@ class PoiStorage @Inject constructor() {
                         Task(id = 2, description = R.string.task_burpees_30_action, isCompleted = false, requiresPhoto = true),
                         Task(id = 3, description = R.string.task_pushups_50_action, isCompleted = false, requiresPhoto = true),
                     )
-                ),
+                )
+            ),
+            isCompleted = false,
+            reward = Reward(experience = 800)
+        ),
+        Quest(
+            id = 3,
+            icon = R.drawable.ic_quest_1,
+            image = R.drawable.ic_quest_2_image,
+            name = R.string.quest_3_name,
+            title = R.string.quest_3_title,
+            description = R.string.quest_3_description,
+            locationWithTasks = listOf(
                 LocationWithTasks(
                     interestingLocation = interestingLocations[12],
                     tasks = listOf(
-                        Task(id = 2, description = R.string.task_do_squats_action, isCompleted = false, requiresPhoto = true),
-                        Task(id = 2, description = R.string.task_burpees_30_action, isCompleted = false, requiresPhoto = true),
-                        Task(id = 3, description = R.string.task_pushups_50_action, isCompleted = false, requiresPhoto = true),
+                        Task(id = 2, description = R.string.task_bike_10k_photo, isCompleted = false, requiresPhoto = true),
+                        Task(id = 2, description = R.string.task_bike_action, isCompleted = false, requiresPhoto = true)
                     )
                 )
             ),

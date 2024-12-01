@@ -1,7 +1,7 @@
 package com.example.sportapplication.repository
 
 import com.example.sportapplication.database.data.PoiStorage
-import com.example.sportapplication.database.model.Event
+import com.example.sportapplication.database.model.EventResponseBody
 import com.example.sportapplication.database.model.Quest
 import com.example.sportapplication.database.model.Reward
 import com.example.sportapplication.database.model.Task
@@ -12,18 +12,18 @@ class PoiRepository @Inject constructor(
 ) {
     fun getQuests() = poiStorage.quests
 
-    fun getEvents() = poiStorage.events
+    fun getEvents() = poiStorage.eventResponseBodies
 
     fun getLocations() = poiStorage.interestingLocations
 
     fun findQuestById(id: Long) = poiStorage.quests.find { it.id == id }
 
-    fun findEventById(id: Long) = poiStorage.events.find { it.id == id }
+    fun findEventById(id: Long) = poiStorage.eventResponseBodies.find { it.id == id }
 
     fun findLocationById(id: Long) = poiStorage.interestingLocations.find { it.id == id }
 
-    fun isEventActive(event: Event, currentTime: Long): Boolean {
-        return event.isActive(currentTime)
+    fun isEventActive(eventResponseBody: EventResponseBody, currentTime: Long): Boolean {
+        return eventResponseBody.isActive(currentTime)
     }
 
     // Checks if a task is completed
@@ -36,12 +36,12 @@ class PoiRepository @Inject constructor(
     }
 
     // Full check to determine if the event is completed
-    fun isEventCompleted(event: Event, userAtLocation: Boolean, currentTime: Long): Boolean {
+    fun isEventCompleted(eventResponseBody: EventResponseBody, userAtLocation: Boolean, currentTime: Long): Boolean {
         // Check if the event is active and if the user is at the interestingLocation
-        if (!isEventActive(event, currentTime) || !userAtLocation) return false
+        if (!isEventActive(eventResponseBody, currentTime) || !userAtLocation) return false
 
         // Check if the task is completed (if a task exists)
-        return isTaskCompleted(event.task)
+        return isTaskCompleted(eventResponseBody.task)
     }
 
     // Find quests by interestingLocation ID
@@ -49,7 +49,7 @@ class PoiRepository @Inject constructor(
         quest.locationWithTasks.any { it.interestingLocation.id == locationId }
     }
 
-    fun findEventsByLocation(locationId: Long) = poiStorage.events.filter { it.locationId == locationId }
+    fun findEventsByLocation(locationId: Long) = poiStorage.eventResponseBodies.filter { it.locationId == locationId }
 
     // Find all tasks for a specific interestingLocation
     fun getTasksForLocation(locationId: Long): List<Task> {

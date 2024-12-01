@@ -4,7 +4,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.google.android.gms.maps.model.LatLng
 
-data class Event(
+data class EventResponseBody(
     val id: Long,
     @StringRes val name: Int,
     @DrawableRes val icon: Int,   // Icon for the map marker
@@ -13,7 +13,7 @@ data class Event(
     val startTime: Long,     // Start time of the event (in milliseconds)
     val duration: Long,      // Duration of the event (in milliseconds)
     val task: Task? = null,   // Optional task for the event
-    val questsIds: List<Long>
+    val questsIds: List<Long>,
 ) {
 
     var coordinate: LatLng? = null
