@@ -1,4 +1,4 @@
-package com.example.sportapplication.ui.sensor.sensorPackage
+package com.example.sportapplication.utils.sensorPackage
 
 import android.app.Application
 import dagger.Module
@@ -13,7 +13,10 @@ object SensorModule {
     @Provides
     @Singleton
     fun provideMultiSensor(app: Application): MultiSensor {
-        val multiSensor = MultiSensor(AccelerometerSensor(app),GyroscopeSensor(app), MagneticSensor(app))
+        val multiSensor = MultiSensor(
+            AccelerometerSensor(app),
+            GyroscopeSensor(app), MagneticSensor(app)
+        )
         return multiSensor
     }
 }

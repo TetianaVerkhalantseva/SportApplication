@@ -1,4 +1,4 @@
-package com.example.sportapplication.ui.settings
+package com.example.sportapplication.ui.settings.batteryindicator
 
 import android.app.Application
 import android.content.BroadcastReceiver
@@ -64,7 +64,6 @@ class BatteryViewModel @Inject constructor(
 
         differences.forEach() { difference -> sumDifferences += difference }
 
-        Log.i("BATTERYDIFFERNECE", "${sumDifferences.toString()} ${differences.size}")
         if (differences.size > 0)
             averageBatteryDifference = sumDifferences / differences.size
     }
