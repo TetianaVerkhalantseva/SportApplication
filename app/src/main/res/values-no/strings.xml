@@ -59,4 +59,95 @@
 
 
 
+
+    <!-- Events -->
+    <string name="event_morning_run">Morgentur</string>
+    <string name="event_morning_run_description">Start dagen din med en 5 km løpetur gjennom byparken.</string>
+    <string name="event_soccer_game">Fotballkamp</string>
+    <string name="event_soccer_game_description">Bli med på en lokal fotballkamp på stadion.</string>
+
+    <!-- Sports Locations in Tromsø -->
+    <string name="location_city_park">Prestvannet</string>
+    <string name="location_stadium">Tromsøhallen</string>
+    <string name="location_romssa_arena">Romssa Arena</string>
+    <string name="location_tromsobadet">Tromsøbadet</string>
+    <string name="location_tromso_alpinpark">Tromsø Alpinpark</string>
+    <string name="location_tuil_arena">TUIL Arena</string>
+    <string name="location_kraft_sportssenter">Kraft Sportssenter</string>
+    <string name="location_fløyahallen">Fløyahallen</string>
+    <string name="location_skarpmarka">Skarpmarka</string>
+    <string name="location_kroken_car_park">Kroken parkeringsplass</string>
+    <string name="location_valhallhallen">Valhallhallen</string>
+    <string name="location_crossfit_nordaforr">CrossFit Nordaførr</string>
+    <string name="location_folkeparken">Folkeparken</string>
+
+    <!-- Quests -->
+    <string name="quest_1_name">Oppdrag 1</string>
+    <string name="quest_1_title">Løpeutfordring</string>
+    <string name="quest_1_description">Løp to runder rundt parken.</string>
+    <string name="quest_1_reward">Belønning: Joggesko</string>
+
+    <string name="quest_2_name">Oppdrag 2</string>
+    <string name="quest_2_title">Knebøyutfordring</string>
+    <string name="quest_2_description">Gjør 30 knebøy på stadion.</string>
+    <string name="quest_2_reward">Belønning: Sportshorts</string>
+
+
+    <!-- General Tasks for Quests and Events -->
+    <string name="task_complete_challenge_action">Fullfør utfordringen</string>
+    <string name="task_take_photo_photo">Ta et bilde for å bekrefte fullføringen</string>
+    <string name="task_go_action">Gå til det angitte stedet</string>
+    <string name="task_run_action">Løp til det angitte stedet</string>
+    <string name="task_bike_action">Sykl til det angitte stedet</string>
+    <string name="task_collect_item_action">Samle objektet på stedet</string>
+    <string name="task_check_in_action">Sjekk inn på stedet</string>
+    <string name="task_participate_event_action">Delta i arrangementet</string>
+    <string name="task_finish_activity_action">Fullfør aktiviteten</string>
+    <string name="task_share_results_action">Del resultatene med venner</string>
+    <string name="task_wait_timer_action">Vent til timeren er ferdig</string>
+
+    <!-- Sports Tasks -->
+
+    <!-- Task 1: Run 5 Kilometers -->
+    <string name="task_run_5k_action">Løp 5 kilometer på den angitte ruten.</string>
+    <string name="task_run_5k_photo">Ta et bilde ved mållinjen.</string>
+
+    <!-- Task 2: Swim 500 Meters -->
+    <string name="task_swim_500m_action">Svøm 500 meter i bassenget.</string>
+    <string name="task_swim_500m_photo">Ta et bilde etter svømmingen.</string>
+
+    <!-- Task 3: Climb 1000 Steps -->
+    <string name="task_climb_1000_steps_action">Gå opp 1000 trinn i trappen.</string>
+    <string name="task_climb_1000_steps_photo">Ta et bilde på toppen av trappen.</string>
+
+    <!-- Task 4: Bike 10 Kilometers -->
+    <string name="task_bike_10k_action">Sykl 10 kilometer til det angitte stedet.</string>
+    <string name="task_bike_10k_photo">Ta et bilde ved ankomst.</string>
+
+    <!-- Task 5: Complete 50 Push-ups -->
+    <string name="task_pushups_50_action">Gjør 50 armhevinger så raskt som mulig.</string>
+    <string name="task_pushups_50_photo">Ta et bilde etter armhevingene.</string>
+
+    <!-- Task 6: Row 2 Kilometers -->
+    <string name="task_row_2k_action">Ro 2 kilometer på romaskinen.</string>
+    <string name="task_row_2k_photo">Ta et bilde av romaskinen etter at du er ferdig.</string>
+
+    <!-- Task 7: Hike to the Mountain Peak -->
+    <string name="task_hike_peak_action">Gå til fjelltoppen som ligger 3 kilometer unna.</string>
+    <string name="task_hike_peak_photo">Ta et bilde på fjelltoppen.</string>
+
+    <!-- Task 8: Perform 30 Burpees -->
+    <string name="task_burpees_30_action">Gjør 30 burpees uten stopp.</string>
+    <string name="task_burpees_30_photo">Ta et bilde etter burpeesene.</string>
+
+    <!-- Task 9: Run Two Laps -->
+    <string name="task_run_two_laps_action">Løp to runder</string>
+    <string name="task_run_two_laps_photo">Ta et bilde etter at du har fullført to runder.</string>
+
+    <!-- Task 10: Do 30 Squats -->
+    <string name="task_do_squats_action">Gjør 30 knebøy</string>
+    <string name="task_do_squats_photo">Ta et bilde etter knebøyene.</string>
+
+    <string name="default_description">Beskrivelse ikke tilgjengelig</string>
+
 </resources>

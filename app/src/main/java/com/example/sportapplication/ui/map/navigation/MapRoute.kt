@@ -5,6 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
+import com.example.sportapplication.ui.event.selectedEvent.navigation.navigateToSelectedEvent
 import com.example.sportapplication.ui.map.MapScreenRoute
 import com.example.sportapplication.ui.quest.selectedQuest.navigation.navigateToSelectedQuest
 
@@ -20,7 +21,9 @@ fun NavGraphBuilder.mapRoute(
         route = MAP_ROUTE
     ) {
         MapScreenRoute(
-            navigateToSelectedMarkerScreen = { navHostController.navigateToSelectedQuest() }
+            navigateToSelectedMarkerQuestScreen = { navHostController.navigateToSelectedQuest() },
+            navigateToSelectedMarkerEventScreen = { navHostController.navigateToSelectedEvent() }
+
             //navigateToMainScreen = { navHostController.navigateToMain() }
         )
     }
