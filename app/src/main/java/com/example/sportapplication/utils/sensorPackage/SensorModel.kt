@@ -1,4 +1,4 @@
-package com.example.sportapplication.ui.sensor
+package com.example.sportapplication.utils.sensorPackage
 
 import android.hardware.SensorManager
 import android.util.Half.EPSILON
@@ -10,27 +10,23 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.example.sportapplication.database.dao.SensorDao
 import com.example.sportapplication.database.entity.SensorData
-import com.example.sportapplication.ui.sensor.sensorPackage.MultiSensor
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.Date
 import java.util.Timer
-import javax.inject.Inject
 import kotlin.concurrent.fixedRateTimer
+import kotlin.math.abs
 import kotlin.math.cos
-import kotlin.math.pow
 import kotlin.math.sin
 import kotlin.math.sqrt
 
-@HiltViewModel
-class SensorViewModel @Inject constructor(
+
+class SensorModel (
     private val multiSensor: MultiSensor,
     private val sensorDao: SensorDao
 ) : ViewModel() {
 
-    //DATABASE & DATACOLLECTOR
     private var databaseUpdateTimer = Timer()
     var numberOfRecordings by mutableIntStateOf(0)
     var rowsOfData by mutableStateOf<List<SensorData>?>(null)
@@ -52,7 +48,6 @@ class SensorViewModel @Inject constructor(
 
     //ACCELEROMETER
     var acceleration by mutableStateOf(floatArrayOf(0f, 0f, 0f))
-    var magnitudeOfAcceleration by mutableStateOf(0f)
 
     //MAGNETIC_FIELD
     var orientation by mutableStateOf(floatArrayOf(0f, 0f, 0f))
@@ -71,18 +66,15 @@ class SensorViewModel @Inject constructor(
 
     init {
 
-        //CLEAR DATABASE FOR TESTING REASONS
         deleteAllPointsInDatabase()
         if (!multiSensor.gyroscopeSensor.sensorActive) {
 
-            //INITIATE SENSOR LISTENERS AND ON CHANGE FUNCTIONALITY
             multiSensor.gyroscopeSensor.startListening()
             multiSensor.gyroscopeSensor.setOnSensorValuesChangedListener { values ->
                 this.rotation = values.toFloatArray()
 
                 val currentTimestamp: Long = multiSensor.gyroscopeSensor.timestamp
 
-                // CHECK INIT STATE AND INITIALIZE LATE START VALUES.
                 if (initState) {
                     initState = false
                     val initMatrix = getRotationMatrixFromOrientation(accMagOrientation)
@@ -91,12 +83,34 @@ class SensorViewModel @Inject constructor(
                     databaseUpdateTimer =
                         fixedRateTimer("databaseUpdateTimer", true, 1000L, 1000L) {
                             updateDatabase()
-                            averagingFunction()
                         }
+                    averagingTimer = fixedRateTimer("averagingTimer", true, 5000L, 5000L) {
+                        val numberOfEntries = averageAcceleration.size
+                        var summedX = 0f
+                        var summedY = 0f
+                        var summedZ = 0f
+
+                        averageAcceleration.forEach {
+                            summedX += abs(it[0])
+                            summedY += abs(it[1])
+                            summedZ += abs(it[2])
+                        }
+
+                        currentAverageAcceleration = floatArrayOf(
+                            summedX / numberOfEntries,
+                            summedY / numberOfEntries,
+                            summedZ / numberOfEntries
+                        )
+
+                        averageAcceleration.clear()
+
+                    }
                 }
 
 
                 val deltaRotationVector = FloatArray(4) { 0f }
+
+
                 val dT = (currentTimestamp - timestamp) * NS2S
 
                 if (currentTimestamp != 0L) {
@@ -104,6 +118,7 @@ class SensorViewModel @Inject constructor(
                 }
 
                 timestamp = currentTimestamp
+
 
                 val deltaRotationMatrix = FloatArray(9) { 0f }
 
@@ -147,21 +162,20 @@ class SensorViewModel @Inject constructor(
         }
     }
 
-    //USE SENSOR MANAGER FUNCTIONS TO HELP GET ORIENTATION
+
     private fun calculateAccMagOrientation() {
         if (SensorManager.getRotationMatrix(rotationMatrix, null, acceleration, magnet)) {
             SensorManager.getOrientation(rotationMatrix, accMagOrientation)
         }
     }
 
-    //DELETE DATABASE FOR TESTING PURPOSES
     private fun deleteAllPointsInDatabase() {
+
         CoroutineScope(Dispatchers.IO).launch {
             sensorDao.deleteAll()
         }
     }
 
-    //UPDATE DATABASE WITH DATAPOINTS
     private fun updateDatabase() {
         CoroutineScope(Dispatchers.IO).launch {
             sensorDao.insertRow(
@@ -169,7 +183,7 @@ class SensorViewModel @Inject constructor(
                     Date().time,
                     rotation[0], rotation[1], rotation[2],
                     acceleration[0], acceleration[1], acceleration[2],
-                    magnet[0], magnet[1], magnet[2], magnitudeOfAcceleration
+                    magnet[0], magnet[1], magnet[2]
                 )
             )
 
@@ -179,7 +193,6 @@ class SensorViewModel @Inject constructor(
 
                 sensorDao.deleteTop(1)
             }
-
             numberOfRecordings = sensorDao.rowCount()
 
             rowsOfData = sensorDao.getAll()
@@ -188,36 +201,9 @@ class SensorViewModel @Inject constructor(
 
     }
 
-    //FUNCTION TO AVERAGE ACCELERATION VALUES
-    fun averagingFunction() {
-        val numberOfEntries = averageAcceleration.size
-        var summedX = 0f
-        var summedY = 0f
-        var summedZ = 0f
-
-        averageAcceleration.forEach {
-            summedX += it[0]
-            summedY += it[1]
-            summedZ += it[2]
-        }
-
-        currentAverageAcceleration = floatArrayOf(
-            summedX / numberOfEntries,
-            summedY / numberOfEntries,
-            summedZ / numberOfEntries
-        )
-
-        magnitudeOfAcceleration =
-            sqrt(summedX.pow(2) + summedY.pow(2) + summedZ.pow(2))
-
-        averageAcceleration.clear()
-
-    }
-
-
 }
 
-//ALGORITHM TO MULTIPLY MATRICES USED IN FILTERING DATA
+
 fun multiplyMatrices(matrixA: FloatArray, matrixB: FloatArray): FloatArray {
     val result = FloatArray(9)
 
@@ -237,8 +223,7 @@ fun multiplyMatrices(matrixA: FloatArray, matrixB: FloatArray): FloatArray {
 }
 
 
-//USE VALUES FROM GYROSCOPE TO GET ROTATION
-fun getRotationFromGyroscope(values: FloatArray, deltaRotationVector: FloatArray, dT: Float) {
+private fun getRotationFromGyroscope(values: FloatArray, deltaRotationVector: FloatArray, dT: Float) {
 
     var axisX: Float = values[0]
     var axisY: Float = values[1]
@@ -262,7 +247,6 @@ fun getRotationFromGyroscope(values: FloatArray, deltaRotationVector: FloatArray
 
 }
 
-//GET A ROTATION MATRIX FROM THE ORIENTATION VALUES
 fun getRotationMatrixFromOrientation(orientation: FloatArray): FloatArray {
     val xM = FloatArray(9)
     val yM = FloatArray(9)
@@ -312,5 +296,3 @@ fun getRotationMatrixFromOrientation(orientation: FloatArray): FloatArray {
     resultMatrix = multiplyMatrices(zM, resultMatrix)
     return resultMatrix
 }
-
-

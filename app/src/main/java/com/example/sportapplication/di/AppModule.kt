@@ -11,7 +11,7 @@ import com.example.sportapplication.database.dao.SensorDao
 import com.example.sportapplication.database.dao.UserDao
 import com.example.sportapplication.database.data.PoiStorage
 import com.example.sportapplication.ui.profile.ProfileViewModel
-import com.example.sportapplication.ui.settings.BatteryViewModel
+import com.example.sportapplication.ui.settings.batteryindicator.BatteryViewModel
 import com.example.sportapplication.ui.settings.UnitViewModel
 import dagger.Module
 import dagger.Provides

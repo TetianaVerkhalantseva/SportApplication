@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
@@ -47,12 +48,13 @@ import androidx.navigation.NavHostController
 import com.example.sportapplication.R
 import com.example.sportapplication.ui.activity.navigation.AppNavHost
 import com.example.sportapplication.ui.profile.navigation.navigateToProfile
-import com.example.sportapplication.ui.settings.BatteryIndicator
-import com.example.sportapplication.ui.settings.BatteryViewModel
+import com.example.sportapplication.ui.settings.batteryindicator.BatteryIndicator
+import com.example.sportapplication.ui.settings.batteryindicator.BatteryViewModel
 import com.example.sportapplication.ui.settings.LanguageViewModel
 import com.example.sportapplication.ui.settings.UnitViewModel
 import com.example.sportapplication.ui.settings.updateLocale
 import com.example.sportapplication.ui.theme.SportApplicationTheme
+import com.example.sportapplication.utils.sensorPackage.SensorModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -61,7 +63,8 @@ import kotlinx.coroutines.launch
 fun MainScreen(
     navController: NavHostController,
     showBottomBar: Boolean,
-    sharedPreferences: SharedPreferences
+    sharedPreferences: SharedPreferences,
+    sensors: SensorModel
 ) {
     var showMenu by remember { mutableStateOf(false) }
     var showLanguageMenu by remember { mutableStateOf(false) }
@@ -89,6 +92,7 @@ fun MainScreen(
     SportApplicationTheme(darkTheme = isDarkTheme) {
         Scaffold(
             topBar = {
+                Column{
                 TopAppBar(
                     title = {
                         Text(
@@ -291,6 +295,11 @@ fun MainScreen(
                         }
                     }
                 )
+
+                    Column(Modifier.fillMaxWidth().background(Color(getcolor(sensors), 0.25f, 0.95f)).padding(2.dp), horizontalAlignment = Alignment.CenterHorizontally){
+                        Text("Activity Level", color = Color.White)
+                    }
+                }
             },
             bottomBar = {
                 if (showBottomBar) BottomNavBar(navController = navController)
@@ -325,4 +334,8 @@ fun MainScreen(
             }
         )
     }
+}
+
+fun getcolor(sensors:SensorModel): Float{
+    return (((sensors.currentAverageAcceleration[0]+sensors.currentAverageAcceleration[1]+sensors.currentAverageAcceleration[2])/10)).coerceIn(0f, 255f)
 }

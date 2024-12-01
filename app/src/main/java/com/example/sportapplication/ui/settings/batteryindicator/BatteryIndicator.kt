@@ -1,4 +1,4 @@
-package com.example.sportapplication.ui.settings
+package com.example.sportapplication.ui.settings.batteryindicator
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
