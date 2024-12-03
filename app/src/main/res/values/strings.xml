@@ -69,6 +69,7 @@
     <string name="inventory_items">Inventory Items</string>
     <string name="completed_tasks">Completed Tasks</string>
     <string name="pois_visited">POIs Visited</string>
+    <string name="choose_avatar">Choose avatar</string>
 
 
 
@@ -167,5 +168,16 @@
     <string name="task_do_squats_photo">Take a photo after completing the squats.</string>
 
     <string name="default_description">Description not available</string>
+
+    <!-- About Us -->
+    <string name="about_us">About Us</string>
+    <string name="developer_name_1">Lill-Kristin Karlsen</string>
+    <string name="developer_name_2">Tetiana Verkhalantseva</string>
+    <string name="developer_name_3">Oliver Stanislaw Sokol</string>
+    <string name="product_idea">Product Idea</string>
+    <string name="this_app_was_created_to_help_users_achieve_their_fitness_and_outdoor_goals_through_gamification_the_app_tracks_user_activity_and_provides_fun_challenges">This app was created to help users achieve their fitness and outdoor goals through gamification. The app tracks user activity and provides fun challenges.</string>
+    <string name="meet_the_team_behind_this_app">Meet the team behind this app:</string>
+    <string name="developer">Developer</string>
+
 
 </resources>

@@ -1,11 +1,13 @@
 package com.example.sportapplication.repository
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.map
 import com.example.sportapplication.database.dao.AchievedEventsDao
 import com.example.sportapplication.database.dao.UserDao
 import com.example.sportapplication.database.entity.AchievedEvent
 import com.example.sportapplication.database.entity.User
 import com.example.sportapplication.database.model.EventResponseBody
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class UserRepository @Inject constructor(
@@ -39,4 +41,6 @@ class UserRepository @Inject constructor(
             achievedEvents.find { it.id == event.id.toString() } == null
         }
     }
+
+
 }

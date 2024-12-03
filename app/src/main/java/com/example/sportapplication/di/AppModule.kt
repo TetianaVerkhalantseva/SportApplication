@@ -8,6 +8,7 @@ import com.example.sportapplication.database.dao.AchievedEventsDao
 import com.example.sportapplication.database.dao.SensorDao
 import com.example.sportapplication.database.dao.UserDao
 import com.example.sportapplication.database.data.PoiStorage
+import com.example.sportapplication.repository.UserRepository
 import com.example.sportapplication.ui.profile.ProfileViewModel
 import com.example.sportapplication.ui.settings.batteryindicator.BatteryViewModel
 import com.example.sportapplication.ui.settings.UnitViewModel
@@ -66,5 +67,6 @@ object AppModule {
     fun provideBatteryViewModel(@ApplicationContext context: Context): BatteryViewModel {
         return BatteryViewModel(context.applicationContext as Application)
     }
+
 
 }
