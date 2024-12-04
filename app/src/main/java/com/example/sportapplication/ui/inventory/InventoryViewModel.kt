@@ -1,8 +1,6 @@
 package com.example.sportapplication.ui.inventory
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.sportapplication.database.dao.InventoryDao
 import com.example.sportapplication.database.dao.ItemsDao
@@ -21,7 +19,8 @@ class InventoryViewModel @Inject constructor(
     private val inventoryDao: InventoryDao,
     private val itemsDao: ItemsDao
 ) : ViewModel() {
-    var inventoryItems by mutableStateOf(
+
+    var inventoryItems =
         arrayListOf(
             InventoryItem(
                 inventoryId = null,
@@ -30,21 +29,21 @@ class InventoryViewModel @Inject constructor(
                 image = null
             )
         )
-    )
-    var items by mutableStateOf(
+
+    var items =
         arrayListOf(
             Item(
                 itemId = -1,
                 itemName = "No Items"
             )
         )
-    )
+
 
     init {
-
         prepopulateItems()
         getAllItems()
         getAllInventoryItems()
+        Log.i("Items Population", items.size.toString())
     }
 
     private fun getAllItems() {
@@ -66,6 +65,7 @@ class InventoryViewModel @Inject constructor(
 
         }
     }
+
 
     fun addToInventory(item: Item) {
         CoroutineScope(Dispatchers.IO).launch {
@@ -121,20 +121,23 @@ class InventoryViewModel @Inject constructor(
     private fun prepopulateItems() {
         CoroutineScope(Dispatchers.IO).launch {
             val itemsInDao = itemsDao.getAll()
-            val prepopItems = arrayOf(
-                Item(itemId = 0, itemName = "TemporaryItem1"),
-                Item(itemId = 0, itemName = "TemporaryItem2"),
-                Item(itemId = 0, itemName = "TemporaryItem3"),
-            )
-            prepopItems.forEach { item ->
-                itemsDao.insertItem(
-                    ItemsData(
-                        itemId = item.itemId,
-                        itemName = item.itemName
-                    )
-                )
-            }
 
+            if (itemsInDao.isEmpty()) {
+                val prepopItems = arrayOf(
+                    Item(itemId = 0, itemName = "TemporaryItem1"),
+                    Item(itemId = 0, itemName = "TemporaryItem2"),
+                    Item(itemId = 0, itemName = "TemporaryItem3"),
+                )
+                prepopItems.forEach { item ->
+                    itemsDao.insertItem(
+                        ItemsData(
+                            itemId = item.itemId,
+                            itemName = item.itemName
+                        )
+                    )
+                }
+
+            }
 
         }
     }
