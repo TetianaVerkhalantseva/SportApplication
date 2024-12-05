@@ -1,9 +1,12 @@
 package com.example.sportapplication.ui.inventory
 
 import android.util.Log
+import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.sportapplication.database.dao.InventoryDao
 import com.example.sportapplication.database.dao.ItemsDao
+import com.example.sportapplication.database.data.ItemRepository
 import com.example.sportapplication.database.entity.InventoryData
 import com.example.sportapplication.database.entity.ItemsData
 import com.example.sportapplication.database.model.InventoryItem
@@ -11,19 +14,23 @@ import com.example.sportapplication.database.model.Item
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.forEach
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class InventoryViewModel @Inject constructor(
-    private val inventoryDao: InventoryDao,
-    private val itemsDao: ItemsDao
+    private val itemRepository: ItemRepository
+    /*private val inventoryDao: InventoryDao,
+    private val itemsDao: ItemsDao*/
 ) : ViewModel() {
 
     var inventoryItems =
-        arrayListOf(
+        mutableStateListOf(
             InventoryItem(
-                inventoryId = null,
+                inventoryId = 0,
                 itemId = -1,
                 itemName = "No Items",
                 image = null
@@ -31,13 +38,30 @@ class InventoryViewModel @Inject constructor(
         )
 
     var items =
-        arrayListOf(
+        mutableStateListOf(
             Item(
                 itemId = -1,
                 itemName = "No Items"
             )
         )
 
+    init {
+        viewModelScope.launch(){
+            itemRepository.prepopulateItems()
+
+            items.clear()
+            itemRepository.getAllItems().forEach{
+                item -> items.add(Item(itemId = item.itemId, itemName = item.itemName))
+            }
+
+        }
+    }
+
+    //val allItems = itemRepository.getAllItems()
+
+
+
+/*
 
     init {
         prepopulateItems()
@@ -141,5 +165,5 @@ class InventoryViewModel @Inject constructor(
 
         }
     }
-
+*/
 }

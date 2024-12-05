@@ -3,12 +3,14 @@ package com.example.sportapplication.di
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.room.Room
 import com.example.sportapplication.database.AppDatabase
 import com.example.sportapplication.database.dao.InventoryDao
 import com.example.sportapplication.database.dao.ItemsDao
 import com.example.sportapplication.database.dao.AchievedEventsDao
 import com.example.sportapplication.database.dao.SensorDao
 import com.example.sportapplication.database.dao.UserDao
+import com.example.sportapplication.database.data.ItemRepository
 import com.example.sportapplication.database.data.PoiStorage
 import com.example.sportapplication.ui.profile.ProfileViewModel
 import com.example.sportapplication.ui.settings.batteryindicator.BatteryViewModel
@@ -26,8 +28,9 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideAppDatabase(@ApplicationContext appContext: Context): AppDatabase =
-        AppDatabase.getDatabase(appContext)
+    fun provideAppDatabase(@ApplicationContext appContext: Context): AppDatabase {
+        return Room.databaseBuilder(appContext, AppDatabase::class.java, "app_database").build()
+    }
 
     @Provides
     @Singleton
@@ -65,11 +68,22 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun providesItemsDoa(appDatabase: AppDatabase): ItemsDao = appDatabase.itemsDao()
+    fun providesItemsDoa(appDatabase: AppDatabase): ItemsDao{
+        return appDatabase.itemsDao()
+    }
 
     @Provides
     @Singleton
-    fun providesInventoryDoa(appDatabase: AppDatabase): InventoryDao = appDatabase.inventoryDao()
+    fun providesInventoryDoa(appDatabase: AppDatabase): InventoryDao {
+        return appDatabase.inventoryDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideItemsRepository(itemsDao: ItemsDao, inventoryDao: InventoryDao): ItemRepository {
+        return ItemRepository(itemsDao, inventoryDao)
+    }
+
 
     @Provides
     @Singleton

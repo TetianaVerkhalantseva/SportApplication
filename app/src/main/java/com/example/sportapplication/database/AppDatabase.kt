@@ -17,10 +17,10 @@ import com.example.sportapplication.database.entity.User
 
 @Database(entities = [User::class, SensorData::class, AchievedEvent::class, ItemsData::class, InventoryData::class], version = 2)
 abstract class AppDatabase: RoomDatabase() {
-
+/*
     companion object {
+        @Volatile
         private var INSTANCE: AppDatabase? = null
-
         fun getDatabase(context: Context): AppDatabase {
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
@@ -34,7 +34,7 @@ abstract class AppDatabase: RoomDatabase() {
             }
         }
     }
-
+*/
     abstract fun inventoryDao(): InventoryDao
     abstract fun itemsDao(): ItemsDao
     abstract fun userDao(): UserDao

@@ -11,6 +11,9 @@ interface InventoryDao {
     @Query("SELECT * FROM inventoryData")
     suspend fun getAll(): List<InventoryData>
 
+    @Query("SELECT * FROM  inventoryData where inventoryItemId = :itemId")
+    suspend fun getInventoryDataById(itemId: Long): InventoryData
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertItem(inventoryData: InventoryData)
 

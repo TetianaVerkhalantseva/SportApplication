@@ -14,11 +14,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -42,12 +42,12 @@ fun InventoryScreenRoute() {
 
 @Composable
 fun InventoryScreen(
-    inventoryItems: ArrayList<InventoryItem>,
-    itemList: ArrayList<Item>,
+    inventoryItems: SnapshotStateList<InventoryItem>,
+    itemList:SnapshotStateList<Item>,
     viewModel: InventoryViewModel
 ) {
-    var inventory = inventoryItems.toList()
-    var items = itemList.toList()
+    var inventory = inventoryItems.toMutableList()
+    var items = itemList.toMutableList()
 
     Column {
 
@@ -59,14 +59,14 @@ fun InventoryScreen(
                     it.copy(
                         isSelected = true
                     )
-                }
+                }.toMutableList()
             },
             doOnClearAll = {
                 inventory = inventory.map {
                     it.copy(
                         isSelected = false
                     )
-                }
+                }.toMutableList()
             }
         )
 
@@ -79,12 +79,12 @@ fun InventoryScreen(
                         if (it == itemToSelect) boolean
                         else it.isSelected
                     )
-                }
+                }.toMutableList()
             }
         )
-        Button(onClick = { viewModel.addToInventory(itemList[0]) }) {
+        /*Button(onClick = { viewModel.addToInventory(itemList[0]) }) {
             Text("Add Item")
-        }
+        }*/
 
         CategoryItem(
             text = "Item",
@@ -94,14 +94,14 @@ fun InventoryScreen(
                     it.copy(
                         isSelected = true
                     )
-                }
+                }.toMutableList()
             },
             doOnClearAll = {
                 items = items.map {
                     it.copy(
                         isSelected = false
                     )
-                }
+                }.toMutableList()
             }
         )
 
@@ -114,7 +114,7 @@ fun InventoryScreen(
                         if (it == itemToSelect) boolean
                         else it.isSelected
                     )
-                }
+                }.toMutableList()
             }
         )
     }
