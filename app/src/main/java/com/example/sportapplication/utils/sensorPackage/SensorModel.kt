@@ -1,35 +1,31 @@
-package com.example.sportapplication.ui.sensor
+package com.example.sportapplication.utils.sensorPackage
 
 import android.hardware.SensorManager
 import android.util.Half.EPSILON
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.ViewModel
 import com.example.sportapplication.database.dao.SensorDao
 import com.example.sportapplication.database.entity.SensorData
-import com.example.sportapplication.ui.sensor.sensorPackage.MultiSensor
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.Date
 import java.util.Timer
-import javax.inject.Inject
 import kotlin.concurrent.fixedRateTimer
+import kotlin.math.abs
 import kotlin.math.cos
 import kotlin.math.sin
 import kotlin.math.sqrt
 
-@HiltViewModel
-class SensorViewModel @Inject constructor(
+
+class SensorModel (
     private val multiSensor: MultiSensor,
     private val sensorDao: SensorDao
-) : ViewModel(), LifecycleObserver {
+) : ViewModel() {
 
     private var databaseUpdateTimer = Timer()
     var numberOfRecordings by mutableIntStateOf(0)
@@ -95,9 +91,9 @@ class SensorViewModel @Inject constructor(
                         var summedZ = 0f
 
                         averageAcceleration.forEach {
-                            summedX += it[0]
-                            summedY += it[1]
-                            summedZ += it[2]
+                            summedX += abs(it[0])
+                            summedY += abs(it[1])
+                            summedZ += abs(it[2])
                         }
 
                         currentAverageAcceleration = floatArrayOf(
@@ -122,6 +118,7 @@ class SensorViewModel @Inject constructor(
                 }
 
                 timestamp = currentTimestamp
+
 
                 val deltaRotationMatrix = FloatArray(9) { 0f }
 
@@ -196,31 +193,12 @@ class SensorViewModel @Inject constructor(
 
                 sensorDao.deleteTop(1)
             }
-
-            val rowCount2 = sensorDao.rowCount()
-
-            Log.i("database Row after delete", rowCount2.toString())
             numberOfRecordings = sensorDao.rowCount()
 
             rowsOfData = sensorDao.getAll()
 
         }
-        /*
-    if(databaseTimestamp == 0L){
-        databaseTimestamp = currentTimestamp
-    }
 
-    if (currentTimestamp - databaseTimestamp > 1000){
-        CoroutineScope(Dispatchers.IO).launch {  sensorDoa.insertRow(
-            SensorData(
-                currentTimestamp,
-                rotation[0], rotation[1], rotation[2],
-                acceleration[0], acceleration[1], acceleration[2],
-                magnet[0], magnet[1], magnet[2]
-            )
-        )}
-        databaseTimestamp = currentTimestamp
-    }*/
     }
 
 }
@@ -245,7 +223,7 @@ fun multiplyMatrices(matrixA: FloatArray, matrixB: FloatArray): FloatArray {
 }
 
 
-fun getRotationFromGyroscope(values: FloatArray, deltaRotationVector: FloatArray, dT: Float) {
+private fun getRotationFromGyroscope(values: FloatArray, deltaRotationVector: FloatArray, dT: Float) {
 
     var axisX: Float = values[0]
     var axisY: Float = values[1]
