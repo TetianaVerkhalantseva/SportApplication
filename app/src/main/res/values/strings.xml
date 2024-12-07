@@ -22,6 +22,14 @@
     <string name="quest_is_completed">Quest is completed!</string>
     <string name="start_completing_quest">Start completing quest</string>
 
+
+    <!-- User Statuses -->
+    <string name="status_v1">New</string>
+    <string name="status_v2">Skilled</string>
+    <string name="status_v3">Expert</string>
+    <string name="status_v4">Pro +</string>
+
+
     <!-- Achievements Screen -->
     <string name="achievements">Achievements</string>
     <string name="total_workouts">Total Workouts</string>

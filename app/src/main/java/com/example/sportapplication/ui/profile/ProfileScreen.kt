@@ -28,6 +28,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
@@ -73,7 +74,19 @@ fun ProfileScreen(navController: NavHostController, viewModel: ProfileViewModel 
         topBar = {
             TopAppBar(
                 title = {
-                    Text(text = stringResource(R.string.profile), style = MaterialTheme.typography.titleLarge)
+                    Row {
+                        Text(
+                            modifier = Modifier.weight(1F),
+                            text = stringResource(R.string.profile),
+                            style = MaterialTheme.typography.titleLarge
+                        )
+                        Spacer(modifier = Modifier.weight(1F))
+                        UserStatus(
+                            modifier = Modifier,
+                            userExperience = userExperience
+                        )
+
+                    }
                 },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
@@ -191,6 +204,41 @@ fun ProfileScreen(navController: NavHostController, viewModel: ProfileViewModel 
         }
     )
 }
+
+@Composable
+fun UserStatus(
+    modifier: Modifier,
+    userExperience: Long
+) {
+    Text(
+        modifier = modifier,
+        text = getUserStatus(userExperience),
+        style = MaterialTheme.typography.titleLarge,
+        color = getUserStatusColor(userExperience)
+    )
+}
+
+@Composable
+fun getUserStatus(userExperience: Long): String =
+    when {
+        userExperience in 0..500 -> stringResource(id = R.string.status_v1)
+        userExperience in 501..3000 -> stringResource(id = R.string.status_v2)
+        userExperience in 3001..5000 -> stringResource(id = R.string.status_v3)
+        userExperience > 5000 -> stringResource(id = R.string.status_v4)
+        else -> stringResource(id = R.string.status_v1)
+    }
+
+
+@Composable
+fun getUserStatusColor(userExperience: Long): Color =
+    when {
+        userExperience in 0..500 -> MaterialTheme.colorScheme.onSecondaryContainer
+        userExperience in 501..3000 -> MaterialTheme.colorScheme.tertiary
+        userExperience in 3001..5000 -> MaterialTheme.colorScheme.error
+        userExperience > 5000 -> MaterialTheme.colorScheme.primary
+        else -> MaterialTheme.colorScheme.onSecondaryContainer
+    }
+
 
 // Display individual statistic items with a label and value
 @Composable
