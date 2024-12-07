@@ -9,6 +9,7 @@ import com.example.sportapplication.database.entity.AchievedQuest
 import com.example.sportapplication.database.entity.User
 import com.example.sportapplication.database.model.EventResponseBody
 import com.example.sportapplication.database.model.Quest
+import com.example.sportapplication.database.sharedPreferences.AppSharedPreferences
 import javax.inject.Inject
 
 class UserRepository @Inject constructor(
@@ -16,6 +17,7 @@ class UserRepository @Inject constructor(
     private val achievedEventsDao: AchievedEventsDao,
     private val achievedQuestsDao: AchievedQuestsDao,
     private val poiRepository: PoiRepository,
+    private val prefs: AppSharedPreferences
 ){
 
     suspend fun insertUser(user: User) {
@@ -25,6 +27,8 @@ class UserRepository @Inject constructor(
     suspend fun getAllUsers(): List<User> {
         return userDao.getAllUsers()
     }
+
+    fun getUserExperience() = prefs.userExperience
 
     suspend fun insertAchievedEvent(eventId: String) {
         achievedEventsDao.insert(AchievedEvent(id = eventId))

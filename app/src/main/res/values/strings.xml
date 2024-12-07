@@ -71,6 +71,8 @@
     <string name="total_achievements">Total Achievements</string>
     <string name="inventory_items">Inventory Items</string>
     <string name="completed_tasks">Completed Tasks</string>
+    <string name="completed_events">Completed Events</string>
+    <string name="experience">Experience</string>
     <string name="pois_visited">POIs Visited</string>
 
 
