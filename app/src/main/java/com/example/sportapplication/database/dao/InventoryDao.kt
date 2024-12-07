@@ -1,6 +1,7 @@
 package com.example.sportapplication.database.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -11,8 +12,8 @@ interface InventoryDao {
     @Query("SELECT * FROM inventoryData")
     suspend fun getAll(): List<InventoryData>
 
-    @Query("SELECT * FROM  inventoryData where inventoryItemId = :itemId")
-    suspend fun getInventoryDataById(itemId: Long): InventoryData
+    @Query("SELECT * FROM  inventoryData where inventory_id = :inventoryId")
+    suspend fun getInventoryDataById(inventoryId: Long): InventoryData
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertItem(inventoryData: InventoryData)
@@ -22,5 +23,8 @@ interface InventoryDao {
 
     @Query("Delete From inventoryData")
     suspend fun deleteAll()
+
+    @Delete
+    fun deleteItem(item: InventoryData)
 
 }

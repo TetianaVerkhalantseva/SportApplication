@@ -1,9 +1,9 @@
 package com.example.sportapplication.ui.inventory
 
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -14,22 +14,22 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Checkbox
-import androidx.compose.material3.CheckboxDefaults
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.sportapplication.database.entity.ItemCategory
 import com.example.sportapplication.database.model.InventoryItem
 import com.example.sportapplication.database.model.Item
+import com.example.sportapplication.database.model.itemCategoryToDrawable
 
 @Composable
 fun InventoryScreenRoute() {
@@ -46,76 +46,29 @@ fun InventoryScreen(
     itemList:SnapshotStateList<Item>,
     viewModel: InventoryViewModel
 ) {
-    var inventory = inventoryItems.toMutableList()
-    var items = itemList.toMutableList()
+    val inventory = inventoryItems.toMutableList()
+    val items = itemList.toMutableList()
 
     Column {
 
         CategoryItem(
             text = "Inventory",
-            isAnyCategoryItemSelected = inventory.any { it.isSelected },
-            doOnSelectAll = {
-                inventory = inventory.map {
-                    it.copy(
-                        isSelected = true
-                    )
-                }.toMutableList()
-            },
-            doOnClearAll = {
-                inventory = inventory.map {
-                    it.copy(
-                        isSelected = false
-                    )
-                }.toMutableList()
-            }
         )
 
         InventoryLazyColumn(
-            items = inventory,
-            doOnItemSelect = { itemToSelect, boolean ->
-                inventory = inventory.map {
-                    it.copy(
-                        isSelected =
-                        if (it == itemToSelect) boolean
-                        else it.isSelected
-                    )
-                }.toMutableList()
-            }
+            items = inventory
         )
-        /*Button(onClick = { viewModel.addToInventory(itemList[0]) }) {
+        Button(onClick = { viewModel.addItemToInventoryById(1) }) {
             Text("Add Item")
-        }*/
+        }
 
         CategoryItem(
             text = "Item",
-            isAnyCategoryItemSelected = items.any { it.isSelected },
-            doOnSelectAll = {
-                items = items.map {
-                    it.copy(
-                        isSelected = true
-                    )
-                }.toMutableList()
-            },
-            doOnClearAll = {
-                items = items.map {
-                    it.copy(
-                        isSelected = false
-                    )
-                }.toMutableList()
-            }
+
         )
 
         ItemLazyColumn(
-            items = items,
-            doOnItemSelect = { itemToSelect, boolean ->
-                items = items.map {
-                    it.copy(
-                        isSelected =
-                        if (it == itemToSelect) boolean
-                        else it.isSelected
-                    )
-                }.toMutableList()
-            }
+            items = items
         )
     }
 }
@@ -123,9 +76,6 @@ fun InventoryScreen(
 @Composable
 fun CategoryItem(
     text: String,
-    isAnyCategoryItemSelected: Boolean,
-    doOnSelectAll: () -> Unit,
-    doOnClearAll: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -149,20 +99,7 @@ fun CategoryItem(
                 modifier = Modifier.align(Alignment.CenterVertically)
             )
             Spacer(modifier = Modifier.weight(1F))
-            Text(
-                modifier = Modifier
-                    .align(Alignment.CenterVertically)
-                    .clickable {
-                        if (isAnyCategoryItemSelected) doOnClearAll()
-                        else doOnSelectAll()
-                    },
-                text =
-                if (isAnyCategoryItemSelected) "CLEAR ALL"
-                else "SELECT ALL",
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.Red
-            )
+
         }
         Spacer(modifier = Modifier.height(8.dp))
         Spacer(
@@ -176,16 +113,14 @@ fun CategoryItem(
 
 @Composable
 fun InventoryLazyColumn(
-    items: List<InventoryItem>,
-    doOnItemSelect: (InventoryItem, Boolean) -> Unit
+    items: List<InventoryItem>
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxWidth()
     ) {
         items(items) { item ->
             InventoryItemUI(
-                item = item,
-                doOnItemSelect = doOnItemSelect
+                item = item
             )
         }
     }
@@ -194,15 +129,13 @@ fun InventoryLazyColumn(
 @Composable
 fun ItemLazyColumn(
     items: List<Item>,
-    doOnItemSelect: (Item, Boolean) -> Unit
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxWidth()
     ) {
         items(items) { item ->
             ItemUI(
-                item = item,
-                doOnItemSelect = doOnItemSelect
+                item = item
             )
         }
     }
@@ -210,8 +143,7 @@ fun ItemLazyColumn(
 
 @Composable
 fun InventoryItemUI(
-    item: InventoryItem,
-    doOnItemSelect: (InventoryItem, Boolean) -> Unit
+    item: InventoryItem
 ) {
     Column(
         modifier = Modifier
@@ -219,11 +151,11 @@ fun InventoryItemUI(
     ) {
 
         Row {
-            if (item.image != null) Image(
+            if (item.itemCategory != ItemCategory.PLACEHOLDER) Image(
                 modifier = Modifier
                     .weight(1F)
-                    .size(100.dp),
-                imageVector = ImageVector.vectorResource(id = item.image),
+                    .size(50.dp),
+                painter = painterResource(itemCategoryToDrawable(item.itemCategory)),
                 contentDescription = null
             )
             Spacer(modifier = Modifier.width(10.dp))
@@ -235,16 +167,12 @@ fun InventoryItemUI(
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
             )
-            if (item.itemId == -1L) Checkbox(
-                modifier = Modifier
-                    .align(Alignment.CenterVertically),
-                checked = item.isSelected,
-                onCheckedChange = { doOnItemSelect(item, it) },
-                colors = CheckboxDefaults.colors(
-                    checkedColor = Color.Red,
-                    checkmarkColor = Color.White
-                ),
-            )
+            if (item.itemId != -1L) {
+                Button(onClick={Log.i("click test item", "clicked")}){
+                    Text("TODO: Delete")
+                }
+            }
+
         }
         Spacer(
             modifier = Modifier
@@ -258,8 +186,7 @@ fun InventoryItemUI(
 
 @Composable
 fun ItemUI(
-    item: Item,
-    doOnItemSelect: (Item, Boolean) -> Unit
+    item: Item
 ) {
     Column(
         modifier = Modifier
@@ -276,16 +203,11 @@ fun ItemUI(
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
             )
-            if (item.itemId != -1L) Checkbox(
-                modifier = Modifier
-                    .align(Alignment.CenterVertically),
-                checked = item.isSelected,
-                onCheckedChange = { doOnItemSelect(item, it) },
-                colors = CheckboxDefaults.colors(
-                    checkedColor = Color.Red,
-                    checkmarkColor = Color.White
-                ),
-            )
+            if (item.itemId != -1L) {
+
+                Log.i("test item", "item")
+            }
+
         }
         Spacer(
             modifier = Modifier

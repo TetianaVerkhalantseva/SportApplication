@@ -1,47 +1,44 @@
 package com.example.sportapplication.ui.inventory
 
-import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.sportapplication.database.dao.InventoryDao
-import com.example.sportapplication.database.dao.ItemsDao
 import com.example.sportapplication.database.data.ItemRepository
-import com.example.sportapplication.database.entity.InventoryData
-import com.example.sportapplication.database.entity.ItemsData
+import com.example.sportapplication.database.entity.ItemCategory
+import com.example.sportapplication.database.entity.ItemType
 import com.example.sportapplication.database.model.InventoryItem
 import com.example.sportapplication.database.model.Item
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.forEach
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class InventoryViewModel @Inject constructor(
     private val itemRepository: ItemRepository
-    /*private val inventoryDao: InventoryDao,
-    private val itemsDao: ItemsDao*/
 ) : ViewModel() {
+
+    private val emptyInventoryItem = InventoryItem(
+        inventoryId = -1,
+        itemId = -1,
+        itemName = "No Items",
+        itemCategory = ItemCategory.PLACEHOLDER,
+        itemType = ItemType.INAPPLICABLE
+    )
 
     var inventoryItems =
         mutableStateListOf(
-            InventoryItem(
-                inventoryId = 0,
-                itemId = -1,
-                itemName = "No Items",
-                image = null
-            )
+            emptyInventoryItem
         )
 
     var items =
         mutableStateListOf(
             Item(
                 itemId = -1,
-                itemName = "No Items"
+                itemName = "No Items",
+                itemType = ItemType.INAPPLICABLE,
+                itemCategory = ItemCategory.PLACEHOLDER
             )
         )
 
@@ -51,11 +48,51 @@ class InventoryViewModel @Inject constructor(
 
             items.clear()
             itemRepository.getAllItems().forEach{
-                item -> items.add(Item(itemId = item.itemId, itemName = item.itemName))
+                item -> items.add(Item(itemId = item.itemId, itemName = item.itemName, itemType = item.itemType, itemCategory = item.itemCategory))
+            }
+
+
+            val inventoryInDao = itemRepository.getAllInventory()
+            if(inventoryInDao.isNotEmpty()){
+                inventoryItems.clear()
+                inventoryInDao.forEach{ item ->
+                    inventoryItems.add(InventoryItem(inventoryId = item.inventoryId, itemId = item.itemId, itemName = item.itemName, itemType = item.itemType, itemCategory = item.itemCategory  ))
+                }
             }
 
         }
     }
+
+    fun addItemToInventoryById(itemId: Int){
+        CoroutineScope(Dispatchers.IO).launch {
+            val item = itemRepository.getItemById(itemId)
+
+            val updatedInventory = itemRepository.insertItemToInventory(item)
+
+            if(updatedInventory.isNotEmpty()){
+                inventoryItems.clear()
+                updatedInventory.forEach { inventoryItem -> inventoryItems.add(inventoryItem) }
+            }
+
+
+        }
+    }
+
+    fun removeItemFromInventoryById(inventoryId: Long){
+        CoroutineScope(Dispatchers.IO).launch {
+            val updatedInventory = itemRepository.removeItemFromInventory(inventoryId)
+            inventoryItems.clear()
+
+            if(updatedInventory.isEmpty()){
+                inventoryItems.add(emptyInventoryItem)
+            } else{
+                updatedInventory.forEach{inventoryItem -> inventoryItems.add(inventoryItem)}
+            }
+
+        }
+    }
+
+
 
     //val allItems = itemRepository.getAllItems()
 
