@@ -18,7 +18,7 @@ import com.example.sportapplication.ui.settings.UnitViewModel
 import com.example.sportapplication.ui.settings.batteryindicator.BatteryViewModel
 import dagger.Module
 import dagger.Provides
-import dagger.hilt.InstallInS
+import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
