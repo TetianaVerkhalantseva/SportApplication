@@ -1,6 +1,5 @@
 package com.example.sportapplication.ui.activity
 
-// import MainScreen
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -9,14 +8,16 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.*
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
-import com.example.sportapplication.ui.achievements.selectedAchievement.navigation.SELECTED_ACHIEVEMENT_ROUTE_WITH_ARGUMENTS
 import com.example.sportapplication.ui.activity.main.MainScreen
-import com.example.sportapplication.ui.introduction.navigation.INTRODUCTION_ROUTE
+import com.example.sportapplication.ui.profile.ProfileViewModel
 import com.example.sportapplication.ui.settings.LanguageViewModel
 import com.example.sportapplication.ui.settings.LocaleHelper
 import com.example.sportapplication.ui.theme.SportApplicationTheme
@@ -47,7 +48,6 @@ class MainActivity : ComponentActivity() {
         osmConfig.osmdroidBasePath = File(cacheDir, "osmdroid")
         osmConfig.osmdroidTileCache = File(cacheDir, "osmdroid/tiles")
 
-
         setContent {
             val languageViewModel: LanguageViewModel = hiltViewModel()
             val selectedLanguage by languageViewModel.selectedLanguage.observeAsState("en")
@@ -70,22 +70,21 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val isBottomBarVisible = remember { mutableStateOf(true) }
-                    val viewModel : MainActivityViewModel = hiltViewModel()
+                    val viewModel: MainActivityViewModel = hiltViewModel()
+                    val profileViewModel: ProfileViewModel = hiltViewModel()
                     val navHostController = rememberNavController()
 
                     val sensors = viewModel.sensors
 
-                    navHostController.addOnDestinationChangedListener { _, destination, _ ->
-                        isBottomBarVisible.value =
-                            destination.route != INTRODUCTION_ROUTE &&
-                                    destination.route != SELECTED_ACHIEVEMENT_ROUTE_WITH_ARGUMENTS
-                    }
-
                     MainScreen(
                         navController = navHostController,
                         showBottomBar = isBottomBarVisible.value,
-                        sharedPreferences = sharedPreferences, // Pass SharedPreferences to MainScreen
-                        sensors = sensors
+                        sharedPreferences = sharedPreferences,
+                        sensors = sensors,
+                        viewModel = profileViewModel,
+                        setBottomBarVisibility = {
+                            isBottomBarVisible.value = it
+                        }
                     )
                 }
             }

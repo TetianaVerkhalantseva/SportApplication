@@ -17,13 +17,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
 fun BatteryIndicator(
-    batteryViewModel: BatteryViewModel = hiltViewModel()
+    batteryViewModel: BatteryViewModel = hiltViewModel(),
+    modifier: Modifier
 ) {
     // Observing battery level from the view model
     val batteryLevel by batteryViewModel.batteryLevel.observeAsState(100)
@@ -36,7 +38,8 @@ fun BatteryIndicator(
 
 
     Column(Modifier
-        .clickable {
+        .clickable
+        {
             isSecondary = !isSecondary
         }) {
         AnimatedVisibility(visible = !isSecondary) {
@@ -57,16 +60,18 @@ fun BatteryIndicator(
                         .clip(RoundedCornerShape(45))
                         .background(Color(255, 255, 255, 255))
                         .padding(4.dp)
+
                 )
-                Spacer(modifier = Modifier.width(8.dp))
+               // Spacer(modifier = Modifier.width(2.dp))
 
                 // Custom battery icon filled based on battery level
 
-                Row(verticalAlignment = Alignment.CenterVertically) {
+                Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.scale(0.65F)) {
                     Row(
                         Modifier
                             .border(2.dp, Color.White, shape = RoundedCornerShape(20))
-                            .padding(4.dp),
+                            .padding(4.dp)
+                            ,
                         horizontalArrangement = Arrangement.Absolute.spacedBy(2.dp),
 
                         ) {

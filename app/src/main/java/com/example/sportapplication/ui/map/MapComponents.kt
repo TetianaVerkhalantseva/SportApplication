@@ -115,6 +115,7 @@ fun EventDialog(
 @Composable
 fun CountdownTimer(
     modifier: Modifier,
+    color: Color = MaterialTheme.colorScheme.error,
     tillTimeInMilliseconds: Long
 ) {
     val remainingTime = remember {
@@ -143,7 +144,8 @@ fun CountdownTimer(
         modifier = modifier
     ) {
         Text(
-            text = timeText
+            text = timeText,
+            color = color
         )
     }
 }

@@ -1,8 +1,10 @@
 package com.example.sportapplication.ui.event
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.sportapplication.database.model.EventResponseBody
+import com.example.sportapplication.repository.model.EventWithQuestsUI
 
 @Composable
 fun EventsScreenRoute(
@@ -10,18 +12,23 @@ fun EventsScreenRoute(
 ) {
     // ViewModel to work with event data
     val viewModel: EventViewModel = hiltViewModel()
+    val events by viewModel.events.collectAsState()
 
     // Send event data to the screen
     EventsScreen(
-        eventResponseBodies = viewModel.getEvents(),
+        events = events,
         onEventClick = { navigateToSelectedEventScreen(it.id) }
     )
 }
 
 @Composable
 fun EventsScreen(
-    eventResponseBodies: List<EventResponseBody>,
-    onEventClick: (EventResponseBody) -> Unit
+    events: List<EventWithQuestsUI>,
+    onEventClick: (EventWithQuestsUI) -> Unit
 ) {
-    // Here will be the logic for displaying the list of events
+    LazyEventsColumn(
+        events = events,
+        onEventClick = onEventClick
+    )
 }
+

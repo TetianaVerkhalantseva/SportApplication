@@ -11,6 +11,7 @@ class AppSharedPreferences @Inject constructor(
 
     companion object {
         private const val USER_EXPERIENCE = "user_experience"
+        private const val SHOW_SPLASH = "show_splash"
     }
 
     var userExperience: Long
@@ -19,5 +20,13 @@ class AppSharedPreferences @Inject constructor(
         }
         get() {
             return sharedPreferences.getLong(USER_EXPERIENCE, 0)
+        }
+
+    var showSplash: Boolean
+        set(value)  {
+            sharedPreferences.edit().putBoolean(SHOW_SPLASH, value).apply()
+        }
+        get() {
+            return sharedPreferences.getBoolean(SHOW_SPLASH, true)
         }
 }

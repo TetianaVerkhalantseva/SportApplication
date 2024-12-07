@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SportApplication</string>
+    <string name="app_name">Questabout</string>
     <string name="map_screen">Map</string>
     <string name="quest_screen">Quest</string>
     <string name="inventory_screen">Inventory</string>
@@ -21,13 +21,33 @@
     <string name="quest">Guest</string>
     <string name="quest_is_completed">Quest is completed!</string>
     <string name="start_completing_quest">Start completing quest</string>
+    <string name="completed">Completed</string>
+    <string name="active">Active</string>
+
+
+    <!-- User Statuses -->
+    <string name="status_v1">New</string>
+    <string name="status_v2">Skilled</string>
+    <string name="status_v3">Expert</string>
+    <string name="status_v4">Pro +</string>
+
 
     <!-- Achievements Screen -->
     <string name="achievements">Achievements</string>
     <string name="total_workouts">Total Workouts</string>
     <string name="workouts_in_a_week">Workouts in a Week</string>
-    <string name="share_badge">Share Badge</string>
-
+    <string name="icon_1_quest">1 Quest</string>
+    <string name="icon_3_quest">3 Quests</string>
+    <string name="icon_10_quest">10 Quests</string>
+    <string name="icon_1_event">1 Event</string>
+    <string name="icon_3_event">3 Events</string>
+    <string name="icon_10_event">10 Events</string>
+    <string name="icon_100xp">100 XP</string>
+    <string name="icon_1000xp">1000 XP</string>
+    <string name="icon_3000xp">3000 XP</string>
+    <string name="icon_new">Newbie</string>
+    <string name="icon_skilled">Skilled</string>
+    <string name="icon_pro">Pro</string>
 
     <!-- Quests Screen -->
     <string name="all_quests">All quests</string>
@@ -35,6 +55,9 @@
     <string name="daily_quests">Daily quests</string>
     <string name="no_equipment_quests">No Equipment Quests</string>
     <string name="quest_description1">Do this 4 times then do that 123123 times and be happy</string>
+
+    <!-- Selected Event Screen -->
+    <string name="go_to_map">Go to Map</string>
 
     <!-- Selected Quest Screen -->
     <string name="start_quiz">Start Quiz</string>
@@ -71,16 +94,23 @@
     <string name="total_achievements">Total Achievements</string>
     <string name="inventory_items">Inventory Items</string>
     <string name="completed_tasks">Completed Tasks</string>
+    <string name="completed_events">Completed Events</string>
+    <string name="experience">Experience</string>
     <string name="pois_visited">POIs Visited</string>
+    <string name="choose_avatar">Choose avatar</string>
 
 
 
 
     <!-- Events -->
+    <string name="events">Events</string>
     <string name="event_morning_run">Morning Run</string>
     <string name="event_morning_run_description">Start your day with a 5k run through the city park.</string>
     <string name="event_soccer_game">Soccer Game</string>
     <string name="event_soccer_game_description">Join a local soccer game at the stadium.</string>
+    <string name="amount_of_locations_event_placeholder">Amount of Locations: %1$d</string>
+    <string name="amount_of_tasks_event_placeholder">Amount of Tasks: %1$d</string>
+    <string name="event_reward_placeholder">Reward: %1$d experience</string>
 
     <!-- Sports Locations in Tromsø -->
     <string name="location_city_park">Prestvannet Lake</string>
@@ -104,6 +134,7 @@
     <string name="quest_1_title">Running Challenge</string>
     <string name="quest_1_description">Complete two laps around the park.</string>
     <string name="quest_1_reward">Reward: Sneakers</string>
+    <string name="amount_of_tasks_quest_placeholder">Amount of Tasks: %1$d</string>
 
     <string name="quest_2_name">Quest 2</string>
     <string name="quest_2_title">Squats Challenge</string>
@@ -171,5 +202,16 @@
     <string name="task_do_squats_photo">Take a photo after completing the squats.</string>
 
     <string name="default_description">Description not available</string>
+
+    <!-- About Us -->
+    <string name="about_us">About Us</string>
+    <string name="developer_name_1">Lill-Kristin Karlsen</string>
+    <string name="developer_name_2">Tetiana Verkhalantseva</string>
+    <string name="developer_name_3">Oliver Stanislaw Sokol</string>
+    <string name="product_idea">Product Idea</string>
+    <string name="this_app_was_created_to_help_users_achieve_their_fitness_and_outdoor_goals_through_gamification_the_app_tracks_user_activity_and_provides_fun_challenges">This app was created to help users achieve their fitness and outdoor goals through gamification. The app tracks user activity and provides fun challenges.</string>
+    <string name="meet_the_team_behind_this_app">Meet the team behind this app:</string>
+    <string name="developer">Developer</string>
+
 
 </resources>

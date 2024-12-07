@@ -13,7 +13,6 @@ import com.example.sportapplication.database.dao.SensorDao
 import com.example.sportapplication.database.dao.UserDao
 import com.example.sportapplication.repository.ItemRepository
 import com.example.sportapplication.database.data.PoiStorage
-import com.example.sportapplication.ui.profile.ProfileViewModel
 import com.example.sportapplication.ui.settings.UnitViewModel
 import com.example.sportapplication.ui.settings.batteryindicator.BatteryViewModel
 import dagger.Module
@@ -64,11 +63,6 @@ object AppModule {
     }
 
     @Provides
-    fun provideProfileViewModel(userDao: UserDao): ProfileViewModel {
-        return ProfileViewModel(userDao)
-    }
-
-    @Provides
     @Singleton
     fun providesSensorDoa(appDatabase: AppDatabase): SensorDao = appDatabase.sensorDao()
 
@@ -96,5 +90,6 @@ object AppModule {
     fun provideBatteryViewModel(@ApplicationContext context: Context): BatteryViewModel {
         return BatteryViewModel(context.applicationContext as Application)
     }
+
 
 }
