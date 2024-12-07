@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SportApplication</string>
+    <string name="app_name">Questabout</string>
     <string name="map_screen">Map</string>
     <string name="quest_screen">Quest</string>
     <string name="inventory_screen">Inventory</string>
@@ -21,6 +21,8 @@
     <string name="quest">Guest</string>
     <string name="quest_is_completed">Quest is completed!</string>
     <string name="start_completing_quest">Start completing quest</string>
+    <string name="completed">Completed</string>
+    <string name="active">Active</string>
 
 
     <!-- User Statuses -->
@@ -34,8 +36,18 @@
     <string name="achievements">Achievements</string>
     <string name="total_workouts">Total Workouts</string>
     <string name="workouts_in_a_week">Workouts in a Week</string>
-    <string name="share_badge">Share Badge</string>
-
+    <string name="icon_1_quest">1 Quest</string>
+    <string name="icon_3_quest">3 Quests</string>
+    <string name="icon_10_quest">10 Quests</string>
+    <string name="icon_1_event">1 Event</string>
+    <string name="icon_3_event">3 Events</string>
+    <string name="icon_10_event">10 Events</string>
+    <string name="icon_100xp">100 XP</string>
+    <string name="icon_1000xp">1000 XP</string>
+    <string name="icon_3000xp">3000 XP</string>
+    <string name="icon_new">Newbie</string>
+    <string name="icon_skilled">Skilled</string>
+    <string name="icon_pro">Pro</string>
 
     <!-- Quests Screen -->
     <string name="all_quests">All quests</string>
@@ -43,6 +55,9 @@
     <string name="daily_quests">Daily quests</string>
     <string name="no_equipment_quests">No Equipment Quests</string>
     <string name="quest_description1">Do this 4 times then do that 123123 times and be happy</string>
+
+    <!-- Selected Event Screen -->
+    <string name="go_to_map">Go to Map</string>
 
     <!-- Selected Quest Screen -->
     <string name="start_quiz">Start Quiz</string>
@@ -87,10 +102,14 @@
 
 
     <!-- Events -->
+    <string name="events">Events</string>
     <string name="event_morning_run">Morning Run</string>
     <string name="event_morning_run_description">Start your day with a 5k run through the city park.</string>
     <string name="event_soccer_game">Soccer Game</string>
     <string name="event_soccer_game_description">Join a local soccer game at the stadium.</string>
+    <string name="amount_of_locations_event_placeholder">Amount of Locations: %1$d</string>
+    <string name="amount_of_tasks_event_placeholder">Amount of Tasks: %1$d</string>
+    <string name="event_reward_placeholder">Reward: %1$d experience</string>
 
     <!-- Sports Locations in Tromsø -->
     <string name="location_city_park">Prestvannet Lake</string>
@@ -114,6 +133,7 @@
     <string name="quest_1_title">Running Challenge</string>
     <string name="quest_1_description">Complete two laps around the park.</string>
     <string name="quest_1_reward">Reward: Sneakers</string>
+    <string name="amount_of_tasks_quest_placeholder">Amount of Tasks: %1$d</string>
 
     <string name="quest_2_name">Quest 2</string>
     <string name="quest_2_title">Squats Challenge</string>

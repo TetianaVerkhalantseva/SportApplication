@@ -21,6 +21,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.sportapplication.R
 import com.example.sportapplication.ui.achievements.navigation.ACHIEVEMENTS_ROUTE
+import com.example.sportapplication.ui.event.navigation.EVENT_ROUTE
 import com.example.sportapplication.ui.inventory.navigation.INVENTORY_ROUTE
 import com.example.sportapplication.ui.map.navigation.MAP_ROUTE
 import com.example.sportapplication.ui.model.BottomNavItem
@@ -37,6 +38,11 @@ fun BottomNavBar(
                 name = R.string.map_screen,
                 icon = R.drawable.ic_launcher_foreground,
                 route = MAP_ROUTE
+            ),
+            BottomNavItem(
+                name = R.string.events,
+                icon = R.drawable.ic_launcher_foreground,
+                route = EVENT_ROUTE
             ),
             BottomNavItem(
                 name = R.string.quest_screen,

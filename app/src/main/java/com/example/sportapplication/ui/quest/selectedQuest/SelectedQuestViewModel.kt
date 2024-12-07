@@ -1,9 +1,9 @@
-package com.example.sportapplication.ui.event
+package com.example.sportapplication.ui.quest.selectedQuest
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.sportapplication.database.model.Quest
 import com.example.sportapplication.repository.UserRepository
-import com.example.sportapplication.repository.model.EventWithQuestsUI
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -11,16 +11,20 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class EventViewModel @Inject constructor(
+class SelectedQuestViewModel @Inject constructor(
     private val userRepository: UserRepository
-) : ViewModel() {
+): ViewModel() {
 
-    private val _events = MutableStateFlow<List<EventWithQuestsUI>>(emptyList())
-    val events = _events.asStateFlow()
+    private val _quest = MutableStateFlow<Quest?>(null)
+    val quest = _quest.asStateFlow()
 
-    init {
+
+    fun setQuestId(questId: Long?) {
         viewModelScope.launch {
-            _events.emit(userRepository.getAllEventsWithQuestsUI())
+            questId?.let {
+                _quest.emit(userRepository.getQuestUIById(questId))
+            }
         }
     }
+
 }

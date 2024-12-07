@@ -7,6 +7,7 @@ import com.example.sportapplication.database.dao.UserDao
 import com.example.sportapplication.database.entity.AchievedEvent
 import com.example.sportapplication.database.entity.AchievedQuest
 import com.example.sportapplication.database.entity.User
+import com.example.sportapplication.repository.AchievementsRepository
 import com.example.sportapplication.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,7 +19,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
     private val userDao: UserDao,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val achievementsRepository: AchievementsRepository
 ) : ViewModel() {
 
     // MutableStateFlow to hold the current nickname. Initially set to "CurrentNickname"
@@ -31,6 +33,10 @@ class ProfileViewModel @Inject constructor(
     val completedQuestsAmount = _completedQuestsAmount.asStateFlow()
     private val _completedEventsAmount = MutableStateFlow(0)
     val completedEventsAmount = _completedEventsAmount.asStateFlow()
+    private val _completedAchievementsAmount = MutableStateFlow(0)
+    val completedAchievementsAmount = _completedAchievementsAmount.asStateFlow()
+    private val _poiVisitedAmount = MutableStateFlow(0)
+    val poiVisitedAmount = _poiVisitedAmount.asStateFlow()
 
     val achievedQuestsLiveData = userRepository.getAllAchievedQuestsLiveData()
     val _questsObserver = Observer<List<AchievedQuest>> {
@@ -62,6 +68,18 @@ class ProfileViewModel @Inject constructor(
         viewModelScope.launch {
             achievedQuestsLiveData.observeForever(_questsObserver)
             achievedEventsLiveData.observeForever(_eventsObserver)
+
+            _completedAchievementsAmount.emit(achievementsRepository.getAmountOfAchievedAchievements())
+
+            val achievedEvents = userRepository.getAllAchievedEvents()
+            val achievedQuests = userRepository.getAllAchievedQuests()
+            _poiVisitedAmount.emit(
+                achievedEvents.sumOf {
+                    it.questsIds.size
+                }.plus(
+                    achievedQuests.size
+                )
+            )
         }
     }
     // Function to update the nickname. True/false.

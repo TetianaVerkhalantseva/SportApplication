@@ -35,15 +35,6 @@ class PoiRepository @Inject constructor(
         return task.isCompleted && (!task.requiresPhoto || task.photoUrl != null)
     }
 
-    // Full check to determine if the event is completed
-    fun isEventCompleted(eventResponseBody: EventResponseBody, userAtLocation: Boolean, currentTime: Long): Boolean {
-        // Check if the event is active and if the user is at the interestingLocation
-        if (!isEventActive(eventResponseBody, currentTime) || !userAtLocation) return false
-
-        // Check if the task is completed (if a task exists)
-        return isTaskCompleted(eventResponseBody.task)
-    }
-
     // Find quests by interestingLocation ID
     fun findQuestsByLocation(locationId: Long) = poiStorage.eventQuests.filter { quest ->
         quest.locationWithTasks.any { it.interestingLocation.id == locationId }

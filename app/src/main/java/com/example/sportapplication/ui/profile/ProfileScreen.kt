@@ -22,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -37,6 +38,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.sportapplication.R
 import com.example.sportapplication.ui.theme.PrimaryButton
+import com.example.sportapplication.utils.getUserStatus
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -58,10 +60,12 @@ fun ProfileScreen(navController: NavHostController, viewModel: ProfileViewModel 
     val completedQuests by viewModel.completedQuestsAmount.collectAsState()
     val completedEvents by viewModel.completedEventsAmount.collectAsState()
     val distanceTraveled = "120 km"
-    val totalAchievements = 5
-    val inventoryItems = 30
+    val totalAchievements by viewModel.completedAchievementsAmount.collectAsState()
+    var inventoryItems by remember {
+        mutableIntStateOf(0)
+    }
 
-    val poisVisited = 15
+    val poisVisited by viewModel.poiVisitedAmount.collectAsState()
 
     // Update only if the user has not started editing
     LaunchedEffect(nickname) {
@@ -218,15 +222,6 @@ fun UserStatus(
     )
 }
 
-@Composable
-fun getUserStatus(userExperience: Long): String =
-    when {
-        userExperience in 0..500 -> stringResource(id = R.string.status_v1)
-        userExperience in 501..3000 -> stringResource(id = R.string.status_v2)
-        userExperience in 3001..5000 -> stringResource(id = R.string.status_v3)
-        userExperience > 5000 -> stringResource(id = R.string.status_v4)
-        else -> stringResource(id = R.string.status_v1)
-    }
 
 
 @Composable

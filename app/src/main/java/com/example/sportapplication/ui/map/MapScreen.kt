@@ -53,8 +53,8 @@ private const val DEFAULT_MAP_POSITION_LON = 18.964080
 
 @Composable
 fun MapScreenRoute(
-    navigateToSelectedMarkerQuestScreen: () -> Unit,
-    navigateToSelectedMarkerEventScreen: () -> Unit
+    navigateToSelectedMarkerQuestScreen: (Long) -> Unit,
+    navigateToSelectedMarkerEventScreen: (Long) -> Unit
 ) {
     val viewModel : MapViewModel = hiltViewModel()
     val requestLocationAccessState by viewModel.requestLocationAccessState.collectAsState()
@@ -103,7 +103,7 @@ fun MapScreenRoute(
         onDismissEventDialog = { viewModel.onDismissEventDialog() },
         onEventClick = {
             if (!viewModel.onEventClick(it))
-                navigateToSelectedMarkerEventScreen()
+                navigateToSelectedMarkerEventScreen(it.id)
         },
         onEventQuestComplete = { viewModel.onEventQuestComplete(it) },
         onDismissEventQuestlines = { viewModel.onDismissEventQuestlines() },
@@ -114,7 +114,7 @@ fun MapScreenRoute(
         onConfirmCompletedEventClick = { viewModel.onConfirmCompletedEventClick() },
         onQuestClick = {
             if (!viewModel.onQuestClick(it))
-                navigateToSelectedMarkerQuestScreen()
+                navigateToSelectedMarkerQuestScreen(it.id)
         }
     )
 }
@@ -143,8 +143,8 @@ fun MapScreen(
     onQuestTaskCompleted: () -> Unit,
     onDismissQuestInProgress: () -> Unit,
     onConfirmCompletedQuestDialog: () -> Unit,
-    navigateToSelectedMarkerQuestScreen: () -> Unit,
-    navigateToSelectedMarkerEventScreen: () -> Unit,
+    navigateToSelectedMarkerQuestScreen: (Long) -> Unit,
+    navigateToSelectedMarkerEventScreen: (Long) -> Unit,
     onStartEventClick: () -> Unit,
     onDismissEventDialog: () -> Unit,
     onEventClick: (EventResponseBody) -> Unit,
@@ -261,8 +261,8 @@ fun OSMMapView(
     eventQuests: List<EventQuest>,
     eventResponseBodies: List<EventResponseBody>,
     quests: List<Quest>,
-    navigateToSelectedMarkerQuestScreen: () -> Unit,
-    navigateToSelectedMarkerEventScreen: () -> Unit,
+    navigateToSelectedMarkerQuestScreen: (Long) -> Unit,
+    navigateToSelectedMarkerEventScreen: (Long) -> Unit,
     onEventClick: (EventResponseBody) -> Unit,
     onQuestClick: (Quest) -> Unit
 ) {
@@ -419,8 +419,8 @@ fun updateMarkerIcons(
     eventQuests: List<EventQuest>,
     quests: List<Quest>,
     eventResponseBodies: List<EventResponseBody>,
-    navigateToSelectedMarkerQuestScreen: () -> Unit,
-    navigateToSelectedMarkerEventScreen: () -> Unit,
+    navigateToSelectedMarkerQuestScreen: (Long) -> Unit,
+    navigateToSelectedMarkerEventScreen: (Long) -> Unit,
     onEventClick: (EventResponseBody) -> Unit,
     onQuestClick: (Quest) -> Unit
 ) {
