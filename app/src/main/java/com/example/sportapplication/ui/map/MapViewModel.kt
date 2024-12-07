@@ -197,10 +197,7 @@ class MapViewModel @Inject constructor(
                 completedEventsIds = achievedEvents
 
                 viewModelScope.launch {
-
-                    val tmp = _events.value.filter { !achievedEventsIds.contains(it.id.toString()) }
-
-                    _events.emit(tmp )
+                    _events.emit(_events.value.filter { !achievedEventsIds.contains(it.id.toString()) })
                 }
             }
         }
@@ -294,6 +291,11 @@ class MapViewModel @Inject constructor(
                 if (currentSelectedQuestLineIndex == currentQuestLines?.lastIndex
                     && it.quest.locationWithTasks.lastIndex == it.locationWithTaskIndex
                     && it.quest.locationWithTasks.getOrNull(it.locationWithTaskIndex)?.tasks?.lastIndex == it.taskIndex) {
+                    _eventsQuestline.emit(null)
+                    _currentSavedAchievedEvent = null
+                    _currentSavedEventsQuestLine = null
+                    _savedAchievedEventQuestLineInAnotherLocation = null
+
                     var totalReward = 0L
                     currentQuestLines.forEach {
                         totalReward += it.quest.reward.experience
@@ -304,9 +306,6 @@ class MapViewModel @Inject constructor(
                     _currentEventInProgress?.let {
                         userRepository.insertAchievedEvent(it.id.toString())
                     }
-                    _currentSavedAchievedEvent = null
-                    _currentSavedEventsQuestLine = null
-                    _savedAchievedEventQuestLineInAnotherLocation = null
 
                     _completedEventDialogState.emit(
                         CompletedEvent(
@@ -418,6 +417,7 @@ class MapViewModel @Inject constructor(
 
     fun onDismissEventQuestlines() {
         viewModelScope.launch {
+            onDismissEventDialog()
             _eventsQuestline.emit(null)
         }
     }
