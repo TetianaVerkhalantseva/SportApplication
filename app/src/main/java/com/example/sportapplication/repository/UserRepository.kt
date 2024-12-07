@@ -20,15 +20,7 @@ class UserRepository @Inject constructor(
     private val achievedQuestsDao: AchievedQuestsDao,
     private val poiRepository: PoiRepository,
     private val prefs: AppSharedPreferences
-){
-
-    suspend fun insertUser(user: User) {
-        userDao.insertUser(user)
-    }
-
-    suspend fun getAllUsers(): List<User> {
-        return userDao.getAllUsers()
-    }
+) {
 
     fun getUserExperience() = prefs.userExperience
 
