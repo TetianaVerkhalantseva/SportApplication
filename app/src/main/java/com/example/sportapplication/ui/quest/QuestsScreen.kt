@@ -40,7 +40,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.sportapplication.R
-import com.example.sportapplication.database.model.Quest
+import com.example.sportapplication.database.model.EventQuest
 import kotlinx.coroutines.launch
 
 @Composable
@@ -52,7 +52,7 @@ fun QuestsScreenRoute(
 
     // Pass quest data to the main screen
     QuestsScreen(
-        quests = viewModel.getQuests(),
+        eventQuests = viewModel.getQuests(),
         onQuestClick = { navigateToSelectedQuestScreen(it.id) }
     )
 }
@@ -61,8 +61,8 @@ fun QuestsScreenRoute(
 // The screen is created to display a temporary view for now.
 @Composable
 fun QuestsScreen(
-    quests: List<Quest>, // List of quests to display
-    onQuestClick: (Quest) -> Unit // Callback for when a quest is clicked
+    eventQuests: List<EventQuest>, // List of quests to display
+    onQuestClick: (EventQuest) -> Unit // Callback for when a quest is clicked
 ) {
     val pagerState = rememberPagerState { 2 } // State to control the pager
     val coroutineScope = rememberCoroutineScope()
@@ -134,8 +134,8 @@ fun QuestsScreen(
             modifier = Modifier.fillMaxSize()
         ) { currentPage ->
             when (currentPage) {
-                0 -> AllQuestsScreen(quests = quests, onQuestClick = onQuestClick)
-                1 -> FavouritesQuestsScreen(quests = quests, onQuestClick = onQuestClick)
+                0 -> AllQuestsScreen(eventQuests = eventQuests, onQuestClick = onQuestClick)
+                1 -> FavouritesQuestsScreen(eventQuests = eventQuests, onQuestClick = onQuestClick)
             }
         }
     }
@@ -143,8 +143,8 @@ fun QuestsScreen(
 
 @Composable
 fun FavouritesQuestsScreen(
-    quests: List<Quest>, // List of quests to display in the favourites section
-    onQuestClick: (Quest) -> Unit // Callback when a quest is clicked
+    eventQuests: List<EventQuest>, // List of quests to display in the favourites section
+    onQuestClick: (EventQuest) -> Unit // Callback when a quest is clicked
 ) {
     Column {
         LazyVerticalGrid(
@@ -157,9 +157,9 @@ fun FavouritesQuestsScreen(
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             // Display each quest as a FavouriteQuestItem
-            items(quests) { quest ->
+            items(eventQuests) { quest ->
                 FavouriteQuestItem(
-                    quest = quest,
+                    eventQuest = quest,
                     onQuestClick = onQuestClick
                 )
             }
@@ -168,13 +168,13 @@ fun FavouritesQuestsScreen(
 }
 
 @Composable
-fun FavouriteQuestItem(quest: Quest, onQuestClick: (Quest) -> Unit) {
+fun FavouriteQuestItem(eventQuest: EventQuest, onQuestClick: (EventQuest) -> Unit) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.clickable { onQuestClick(quest) }
+        modifier = Modifier.clickable { onQuestClick(eventQuest) }
     ) {
         // If the quest has an image, display it; otherwise, show a placeholder
-        quest.image?.let { imageId ->
+        eventQuest.image?.let { imageId ->
             Image(
                 modifier = Modifier
                     .clip(RoundedCornerShape(18.dp))
@@ -192,7 +192,7 @@ fun FavouriteQuestItem(quest: Quest, onQuestClick: (Quest) -> Unit) {
 
         // Display the title of the quest
         Text(
-            text = stringResource(id = quest.title),
+            text = stringResource(id = eventQuest.title),
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold
         )
@@ -202,7 +202,7 @@ fun FavouriteQuestItem(quest: Quest, onQuestClick: (Quest) -> Unit) {
         // Display the description or a default text if it's null
         Text(
             modifier = Modifier.width(200.dp),
-            text = stringResource(id = quest.description ?: R.string.default_description),
+            text = stringResource(id = eventQuest.description ?: R.string.default_description),
             fontSize = 14.sp,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
@@ -212,8 +212,8 @@ fun FavouriteQuestItem(quest: Quest, onQuestClick: (Quest) -> Unit) {
 
 @Composable
 fun AllQuestsScreen(
-    quests: List<Quest>, // List of all quests
-    onQuestClick: (Quest) -> Unit // Callback for quest selection
+    eventQuests: List<EventQuest>, // List of all quests
+    onQuestClick: (EventQuest) -> Unit // Callback for quest selection
 ) {
     Column (
         modifier = Modifier
@@ -229,7 +229,7 @@ fun AllQuestsScreen(
         )
         Spacer(modifier = Modifier.height(10.dp))
         QuestsLazyRow(
-            quests = quests,
+            eventQuests = eventQuests,
             onQuestClick = onQuestClick
         )
 
@@ -243,7 +243,7 @@ fun AllQuestsScreen(
         )
         Spacer(modifier = Modifier.height(10.dp))
         QuestsLazyRow(
-            quests = quests,
+            eventQuests = eventQuests,
             onQuestClick = onQuestClick
         )
     }
@@ -252,15 +252,15 @@ fun AllQuestsScreen(
 
 @Composable
 fun QuestsLazyRow(
-    quests: List<Quest>, // List of quests to display horizontally
-    onQuestClick: (Quest) -> Unit // Callback when a quest is clicked
+    eventQuests: List<EventQuest>, // List of quests to display horizontally
+    onQuestClick: (EventQuest) -> Unit // Callback when a quest is clicked
 ) {
     Column {
         LazyRow {
             // Display each quest as a QuestItem
-            items(quests) { quest ->
+            items(eventQuests) { quest ->
                 QuestItem(
-                    quest = quest,
+                    eventQuest = quest,
                     onClick = { onQuestClick(quest) }
                 )
                 Spacer(modifier = Modifier.width(20.dp))
@@ -271,13 +271,13 @@ fun QuestsLazyRow(
 
 @Composable
 fun QuestItem(
-    quest: Quest, onClick: () -> Unit, // Quest item with click handler
+    eventQuest: EventQuest, onClick: () -> Unit, // Quest item with click handler
 ) {
     Column(
         modifier = Modifier.clickable { onClick() } // Handle quest click
     ) {
         // If the quest has an image, display it; otherwise, show a placeholder
-        quest.image?.let { imageId ->
+        eventQuest.image?.let { imageId ->
             Image(
                 modifier = Modifier
                     .clip(RoundedCornerShape(18.dp))
@@ -295,7 +295,7 @@ fun QuestItem(
 
         // Display the title of the quest
         Text(
-            text = stringResource(id = quest.title),
+            text = stringResource(id = eventQuest.title),
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold
         )
@@ -305,7 +305,7 @@ fun QuestItem(
         // Display the description or a default if null
         Text(
             modifier = Modifier.width(200.dp),
-            text = stringResource(id = quest.description ?: R.string.default_description),
+            text = stringResource(id = eventQuest.description ?: R.string.default_description),
             fontSize = 14.sp,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis

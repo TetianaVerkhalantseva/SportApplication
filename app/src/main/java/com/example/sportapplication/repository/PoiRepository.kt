@@ -2,21 +2,21 @@ package com.example.sportapplication.repository
 
 import com.example.sportapplication.database.data.PoiStorage
 import com.example.sportapplication.database.model.EventResponseBody
-import com.example.sportapplication.database.model.Quest
-import com.example.sportapplication.database.model.Reward
 import com.example.sportapplication.database.model.Task
 import javax.inject.Inject
 
 class PoiRepository @Inject constructor(
     private val poiStorage: PoiStorage
 ) {
+    fun getEventsQuests() = poiStorage.eventQuests
+
     fun getQuests() = poiStorage.quests
 
     fun getEvents() = poiStorage.eventResponseBodies
 
     fun getLocations() = poiStorage.interestingLocations
 
-    fun findQuestById(id: Long) = poiStorage.quests.find { it.id == id }
+    fun findQuestById(id: Long) = poiStorage.eventQuests.find { it.id == id }
 
     fun findEventById(id: Long) = poiStorage.eventResponseBodies.find { it.id == id }
 
@@ -45,7 +45,7 @@ class PoiRepository @Inject constructor(
     }
 
     // Find quests by interestingLocation ID
-    fun findQuestsByLocation(locationId: Long) = poiStorage.quests.filter { quest ->
+    fun findQuestsByLocation(locationId: Long) = poiStorage.eventQuests.filter { quest ->
         quest.locationWithTasks.any { it.interestingLocation.id == locationId }
     }
 
@@ -53,7 +53,7 @@ class PoiRepository @Inject constructor(
 
     // Find all tasks for a specific interestingLocation
     fun getTasksForLocation(locationId: Long): List<Task> {
-        return poiStorage.quests.flatMap { quest ->
+        return poiStorage.eventQuests.flatMap { quest ->
             quest.locationWithTasks.filter { it.interestingLocation.id == locationId }.flatMap { it.tasks }
         }
     }
@@ -69,16 +69,5 @@ class PoiRepository @Inject constructor(
     fun areAllTasksCompletedAtLocation(locationId: Long): Boolean {
         val tasks = getTasksForLocation(locationId)
         return tasks.all { isTaskCompleted(it) }
-    }
-
-    // Check if the quest is completed
-    fun isQuestCompleted(quest: Quest): Boolean {
-        return quest.checkCompletion()
-    }
-
-    // Get the reward for completing a quest
-    fun getRewardForQuest(questId: Long): Reward? {
-        val quest = findQuestById(questId)
-        return if (isQuestCompleted(quest!!)) quest.reward else null
     }
 }

@@ -5,7 +5,6 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import com.example.sportapplication.ui.inventory.InventoryScreen
 import com.example.sportapplication.ui.inventory.InventoryScreenRoute
 
 const val INVENTORY_ROUTE = "inventory_route"
@@ -19,6 +18,6 @@ fun NavGraphBuilder.inventoryScreen(
     composable(
         route = INVENTORY_ROUTE
     ) {
-        InventoryScreen()
+        InventoryScreenRoute()
     }
 }

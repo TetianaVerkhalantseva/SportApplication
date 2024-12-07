@@ -1,6 +1,7 @@
 package com.example.sportapplication.database.data
 
 import com.example.sportapplication.R
+import com.example.sportapplication.database.model.EventQuest
 import com.example.sportapplication.database.model.EventResponseBody
 import com.example.sportapplication.database.model.InterestingLocation
 import com.example.sportapplication.database.model.LocationWithTasks
@@ -21,17 +22,17 @@ class PoiStorage @Inject constructor() {
             name = R.string.event_morning_run,
             icon = R.drawable.ic_shoes,
             description = R.string.event_morning_run_description,
-            locationId = 13,
-            startTime = 1732932115167,
+            locationId = 7,
+            startTime = 1733572543831,
             duration = 3600000,
-            questsIds = listOf(3)),
+            questsIds = listOf(4, 5)),
         EventResponseBody(
             id = 2,
             name = R.string.event_soccer_game,
             icon = R.drawable.ic_fitness_tracker,
             description = R.string.event_soccer_game_description,
             locationId = 3,
-            startTime = 1732932115167,
+            startTime = 1733572543831,
             duration = 5400000,
             questsIds = listOf(1, 2, 3))
     )
@@ -114,14 +115,20 @@ class PoiStorage @Inject constructor() {
             name = R.string.location_folkeparken, // Folkeparken
             icon = R.drawable.ic_park,
             latitude = 69.63556417110154,
-            longitude = 18.904906281545866)
+            longitude = 18.904906281545866),
+        InterestingLocation(
+            id = 14,
+            name = R.string.location_skansen_festningsverk, //Skansen Festningsverk
+            icon = R.drawable.ic_park,
+            latitude = 69.653379,
+            longitude = 18.964080)
     )
 
     // List of quests
-    val quests = listOf(
-        Quest(
+    val eventQuests = listOf(
+        EventQuest(
             id = 1,
-            icon = R.drawable.ic_quest_1,
+            icon = R.drawable.eventsquests,
             image = R.drawable.ic_quest_1_image,
             name = R.string.quest_1_name,
             title = R.string.quest_1_title,
@@ -137,11 +144,12 @@ class PoiStorage @Inject constructor() {
                 )
             ),
             isCompleted = false,
-            reward = Reward(experience = 1000)
+            reward = Reward(experience = 1000),
+            eventId = 2
         ),
-        Quest(
+        EventQuest(
             id = 2,
-            icon = R.drawable.ic_quest_2,
+            icon = R.drawable.eventsquests,
             image = R.drawable.ic_quest_2_image,
             name = R.string.quest_2_name,
             title = R.string.quest_2_title,
@@ -157,11 +165,12 @@ class PoiStorage @Inject constructor() {
                 )
             ),
             isCompleted = false,
-            reward = Reward(experience = 800)
+            reward = Reward(experience = 800),
+            eventId = 2
         ),
-        Quest(
+        EventQuest(
             id = 3,
-            icon = R.drawable.ic_quest_1,
+            icon = R.drawable.eventsquests,
             image = R.drawable.ic_quest_2_image,
             name = R.string.quest_3_name,
             title = R.string.quest_3_title,
@@ -176,8 +185,90 @@ class PoiStorage @Inject constructor() {
                 )
             ),
             isCompleted = false,
-            reward = Reward(experience = 800)
+            reward = Reward(experience = 800),
+            eventId = 2
+        ),
+        EventQuest(
+            id = 4,
+            icon = R.drawable.eventsquests,
+            image = R.drawable.ic_quest_2_image,
+            name = R.string.quest_3_name,
+            title = R.string.quest_3_title,
+            description = R.string.quest_3_description,
+            locationWithTasks = listOf(
+                LocationWithTasks(
+                    interestingLocation = interestingLocations[6],
+                    tasks = listOf(
+                        Task(id = 2, description = R.string.task_bike_10k_photo, isCompleted = false, requiresPhoto = true),
+                        Task(id = 2, description = R.string.task_bike_action, isCompleted = false, requiresPhoto = true)
+                    )
+                )
+            ),
+            isCompleted = false,
+            reward = Reward(experience = 800),
+            eventId = 1
+        ),
+        EventQuest(
+            id = 5,
+            icon = R.drawable.eventsquests,
+            image = R.drawable.ic_quest_2_image,
+            name = R.string.quest_3_name,
+            title = R.string.quest_3_title,
+            description = R.string.quest_3_description,
+            locationWithTasks = listOf(
+                LocationWithTasks(
+                    interestingLocation = interestingLocations[0],
+                    tasks = listOf(
+                        Task(id = 2, description = R.string.task_bike_10k_photo, isCompleted = false, requiresPhoto = true),
+                        Task(id = 2, description = R.string.task_bike_action, isCompleted = false, requiresPhoto = true)
+                    )
+                )
+            ),
+            isCompleted = false,
+            reward = Reward(experience = 800),
+            eventId = 1
         )
+
+    )
+
+    val quests = listOf(
+        Quest(
+            id = 1,
+            icon = R.drawable.ic_quest_1,
+            image = R.drawable.ic_quest_2_image,
+            name = R.string.quest_3_name,
+            title = R.string.quest_3_title,
+            description = R.string.quest_3_description,
+            locationWithTasks =
+            LocationWithTasks(
+                interestingLocation = interestingLocations[8],
+                tasks = listOf(
+                    Task(id = 2, description = R.string.task_bike_10k_photo, isCompleted = false, requiresPhoto = true),
+                    Task(id = 2, description = R.string.task_bike_action, isCompleted = false, requiresPhoto = true)
+                )
+
+            ),
+            isCompleted = false,
+            reward = Reward(experience = 800)
+        ),
+        Quest(
+            id = 2,
+            icon = R.drawable.ic_quest_2,
+            image = R.drawable.ic_quest_2_image,
+            name = R.string.quest_3_name,
+            title = R.string.quest_3_title,
+            description = R.string.quest_3_description,
+            locationWithTasks =
+            LocationWithTasks(
+                interestingLocation = interestingLocations[7],
+                tasks = listOf(
+                    Task(id = 2, description = R.string.task_bike_10k_photo, isCompleted = false, requiresPhoto = true),
+                    Task(id = 2, description = R.string.task_bike_action, isCompleted = false, requiresPhoto = true)
+                )
+            ),
+            isCompleted = false,
+            reward = Reward(experience = 800)
+        ),
     )
 }
 

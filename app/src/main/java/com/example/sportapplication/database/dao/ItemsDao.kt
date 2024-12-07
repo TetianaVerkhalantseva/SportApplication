@@ -4,29 +4,23 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.sportapplication.database.entity.SensorData
+import com.example.sportapplication.database.entity.ItemsData
 
 @Dao
 interface ItemsDao {
-    @Query("SELECT * FROM sensorData")
-    suspend fun getAll(): List<SensorData>
+    @Query("SELECT * FROM itemsData")
+    suspend fun getAll(): List<ItemsData>
 
-    @Query("SELECT :sensorType FROM sensorData")
-    suspend fun getSensorData(sensorType: String): List<Float>
-
-    @Query("SELECT * FROM sensorData WHERE timestamp LIKE :timestamp")
-    suspend fun getSensorDataAtTime(timestamp: Long): List<SensorData>
+    @Query("SELECT * FROM itemsData WHERE item_id = :id")
+    suspend fun getItemById(id: Int): ItemsData
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertRow(sensorData: SensorData)
+    suspend fun insertItem(itemsData: ItemsData)
 
-    @Query("SELECT COUNT(*) FROM sensorData")
+    @Query("SELECT COUNT(*) FROM itemsData")
     suspend fun rowCount(): Int
 
-    @Query("DELETE FROM sensorData WHERE timestamp IN (SELECT timestamp FROM sensorData LIMIT :rowCount)")
-    suspend fun deleteTop(rowCount: Int)
-
-    @Query("Delete From sensorData")
+    @Query("Delete FROM itemsData")
     suspend fun deleteAll()
 
 }

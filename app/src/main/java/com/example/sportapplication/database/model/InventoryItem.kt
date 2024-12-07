@@ -1,16 +1,28 @@
 package com.example.sportapplication.database.model
 
-import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
+import com.example.sportapplication.R
+import com.example.sportapplication.database.entity.ItemCategory
+import com.example.sportapplication.database.entity.ItemType
 
 data class InventoryItem(
-    val id: Long,
-    @DrawableRes val image: Int,
-    @StringRes val name: Int,
-    var isSelected: Boolean = false,
-    val type: InventoryType
+    val inventoryId: Long,
+    val itemId: Long,
+    val itemName: String,
+    val itemType: ItemType,
+    val itemCategory: ItemCategory
 )
 
-enum class InventoryType {
-    RACKS_AND_BENCHES, RESISTANCE_BANDS
+
+fun itemCategoryToDrawable(itemCategory: ItemCategory): Int {
+    if(itemCategory == ItemCategory.SNEAKER){
+        return R.drawable.item_icon_sneaker
+    }
+    if(itemCategory == ItemCategory.DRINK){
+        return R.drawable.item_icon_energy_drink
+    }
+    if(itemCategory == ItemCategory.CHOCOLATEBAR){
+        return R.drawable.item_icon_energy_bar
+    }
+
+    return R.drawable.ic_launcher_background
 }
