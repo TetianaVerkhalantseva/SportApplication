@@ -5,6 +5,8 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.NavHost
+import com.example.sportapplication.ui.about.AboutUsScreen
+import com.example.sportapplication.ui.about.navigation.aboutUsScreen
 import com.example.sportapplication.ui.achievements.navigation.achievementsScreen
 import com.example.sportapplication.ui.event.navigation.eventScreen
 import com.example.sportapplication.ui.event.selectedEvent.navigation.navigateToSelectedEvent
@@ -66,6 +68,9 @@ fun AppNavHost(navHostController: NavHostController) {
             navigateToSelectedEventScreen = { navHostController.navigateToSelectedEvent(eventId = it) }
         )
         selectedEventScreen(
+            navHostController = navHostController
+        )
+        aboutUsScreen(
             navHostController = navHostController
         )
 

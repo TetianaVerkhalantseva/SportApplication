@@ -55,9 +55,22 @@
     <string name="enter_new_nickname">Entrez un nouveau pseudo</string>
     <string name="player_statistics">Statistiques du Joueur</string>
     <string name="completed_quests">Quêtes Complétées</string>
+    <string name="total_achievements">Réalisations totales</string>
     <string name="distance_traveled">Distance Parcourue</string>
     <string name="inventory_items">Articles d’inventaire</string>
     <string name="completed_tasks">Tâches terminées</string>
     <string name="pois_visited">POIs visités</string>
+    <string name="choose_avatar">Choisissez un avatar</string>
+
+    <!-- About us  -->
+    <string name="about_us">À propos de nous</string>
+    <string name="developer_name_1">Lill-Kristin Karlsen</string>
+    <string name="developer_name_2">Tetiana Verkhalantseva</string>
+    <string name="developer_name_3">Oliver Stanislaw Sokol</string>
+    <string name="product_idea">Idée du produit</string>
+    <string name="this_app_was_created_to_help_users_achieve_their_fitness_and_outdoor_goals_through_gamification_the_app_tracks_user_activity_and_provides_fun_challenges">This app was created to help users achieve their fitness and outdoor goals through gamification. The app tracks user activity and provides fun challenges.</string>
+    <string name="meet_the_team_behind_this_app">Meet the team behind this app:</string>
+    <string name="developer">Developer</string>
+
 
 </resources>
