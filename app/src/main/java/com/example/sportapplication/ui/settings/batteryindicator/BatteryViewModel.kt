@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.BatteryManager
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.setValue
@@ -41,7 +40,6 @@ class BatteryViewModel @Inject constructor(
 
     private fun addBatteryAtLevel() {
         if (batterySamples.size > 6) {
-            Log.i("BATTERYSAMPLES", batterySamples.size.toString())
             batterySamples.removeAt(0)
         }
         if (batteryLevel.value is Int) {

@@ -15,7 +15,7 @@ import com.example.sportapplication.database.entity.AchievedQuest
 import com.example.sportapplication.database.entity.SensorData
 import com.example.sportapplication.database.entity.User
 
-@Database(entities = [User::class, SensorData::class, AchievedEvent::class, ItemsData::class, InventoryData::class, AchievedQuest::class], version = 2)
+@Database(entities = [User::class, SensorData::class, AchievedEvent::class, ItemsData::class, InventoryData::class, AchievedQuest::class], version = 1)
 abstract class AppDatabase: RoomDatabase() {
     abstract fun inventoryDao(): InventoryDao
     abstract fun itemsDao(): ItemsDao
