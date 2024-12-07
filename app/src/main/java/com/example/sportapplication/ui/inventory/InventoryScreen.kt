@@ -1,6 +1,7 @@
 package com.example.sportapplication.ui.inventory
 
 
+import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -36,6 +37,7 @@ import com.example.sportapplication.database.model.InventoryItem
 import com.example.sportapplication.database.model.Item
 import com.example.sportapplication.database.model.itemCategoryToDrawable
 import java.util.Date
+import java.util.concurrent.TimeUnit
 import kotlin.random.Random
 
 @Composable
@@ -209,8 +211,8 @@ fun InventoryItemUI(
             Column{
                 Text("Activated: ${Date(item.itemActivated)}\nDuration: ${item.itemDuration?.div(
                     60_000L
-                )}")
-                Text("${item.itemDuration?.plus(item.itemActivated)?.minus(currentTime)}")
+                )} minutes")
+                Text("Remaining: ${millisToHours(item.itemDuration?.plus(item.itemActivated)?.minus(currentTime)?: 0L)}")
             }
 
         }
@@ -263,4 +265,11 @@ fun ItemUI(
                 .background(Color.Gray)
         )
     }
+}
+
+@SuppressLint("DefaultLocale")
+fun millisToHours(millis: Long): String{
+    return String.format("%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(millis),
+        TimeUnit.MILLISECONDS.toMinutes(millis) % TimeUnit.HOURS.toMinutes(1),
+        TimeUnit.MILLISECONDS.toSeconds(millis) % TimeUnit.MINUTES.toSeconds(1))
 }

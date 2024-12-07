@@ -9,10 +9,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.sportapplication.repository.ItemRepository
 import com.example.sportapplication.database.entity.ItemCategory
 import com.example.sportapplication.database.entity.ItemType
-import com.example.sportapplication.database.model.ActiveInventoryItem
 import com.example.sportapplication.database.model.InventoryItem
 import com.example.sportapplication.database.model.Item
-import com.example.sportapplication.database.model.convertInventoryItemToActiveInventoryItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -60,7 +58,7 @@ class InventoryViewModel @Inject constructor(
             emptyItemsItem
         )
 
-    val activeInventoryItems: MutableList<ActiveInventoryItem> = mutableListOf()
+    val activeInventoryItems: MutableList<InventoryItem> = mutableListOf()
 
     init {
         viewModelScope.launch(){
@@ -78,6 +76,14 @@ class InventoryViewModel @Inject constructor(
                 inventoryInDao.forEach{ item ->
                     inventoryItems.add(item)
                 }
+            }
+
+            val activeInDao = itemRepository.getAllActiveInventoryItems()
+            if(activeInDao.isNotEmpty()){
+                activeInventoryItems.clear()
+                activeInDao.forEach { activeInventoryItems.add(it) }
+                activeTimer = setFixedRateTimerActiveInventory()
+                isTimerActive = true
             }
 
         }
@@ -113,7 +119,7 @@ class InventoryViewModel @Inject constructor(
                 activeInventoryItems.clear()
                 val activeUpdate = itemRepository.getAllActiveInventoryItems()
                 if (activeUpdate.isNotEmpty()) activeUpdate.forEach { activeInventoryItems.add(
-                    convertInventoryItemToActiveInventoryItem(it)
+                    it
                 ) }
             }
 
@@ -127,14 +133,13 @@ class InventoryViewModel @Inject constructor(
 
             activeInventoryItems.clear()
             activeInventoryItemsFromRepository.forEach { activeInventoryItems.add(
-                convertInventoryItemToActiveInventoryItem(it)
+                it
             ) }
 
             if(!isTimerActive){
                 isTimerActive = true
-                activeTimer = fixedRateTimer("activeInventoryItemsTimer", true, 1000L, 1000L){
-                    updateActiveInventoryItems()
-                }
+                activeTimer = setFixedRateTimerActiveInventory()
+
             }
 
             inventoryItems.clear()
@@ -144,9 +149,17 @@ class InventoryViewModel @Inject constructor(
         }
     }
 
-    fun updateActiveInventoryItems(){
+    private fun setFixedRateTimerActiveInventory(): Timer {
+        return fixedRateTimer("activeInventoryItemsTimer", true, 1000L, 1000L){
+            updateActiveInventoryItems()}
+    }
+
+    private fun updateActiveInventoryItems(){
         if(activeInventoryItems.isNotEmpty()){
             currentTime = System.currentTimeMillis()
+            activeInventoryItems.forEach{ if(it.itemActivated!! + it.itemDuration!! - currentTime < 0){
+                removeItemFromInventoryById(it.inventoryId)
+            } }
         } else {
             isTimerActive = false
             activeTimer.cancel()
