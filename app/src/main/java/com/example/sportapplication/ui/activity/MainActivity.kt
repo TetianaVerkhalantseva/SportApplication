@@ -73,6 +73,8 @@ class MainActivity : ComponentActivity() {
                     val viewModel : MainActivityViewModel = hiltViewModel()
                     val navHostController = rememberNavController()
 
+                    val sensors = viewModel.sensors
+
                     navHostController.addOnDestinationChangedListener { _, destination, _ ->
                         isBottomBarVisible.value =
                             destination.route != INTRODUCTION_ROUTE &&
@@ -82,7 +84,8 @@ class MainActivity : ComponentActivity() {
                     MainScreen(
                         navController = navHostController,
                         showBottomBar = isBottomBarVisible.value,
-                        sharedPreferences = sharedPreferences // Pass SharedPreferences to MainScreen
+                        sharedPreferences = sharedPreferences, // Pass SharedPreferences to MainScreen
+                        sensors = sensors
                     )
                 }
             }

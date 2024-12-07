@@ -2,7 +2,7 @@ package com.example.sportapplication.ui.event
 
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.sportapplication.database.model.Event
+import com.example.sportapplication.database.model.EventResponseBody
 
 @Composable
 fun EventsScreenRoute(
@@ -13,15 +13,15 @@ fun EventsScreenRoute(
 
     // Send event data to the screen
     EventsScreen(
-        events = viewModel.getEvents(),
+        eventResponseBodies = viewModel.getEvents(),
         onEventClick = { navigateToSelectedEventScreen(it.id) }
     )
 }
 
 @Composable
 fun EventsScreen(
-    events: List<Event>,
-    onEventClick: (Event) -> Unit
+    eventResponseBodies: List<EventResponseBody>,
+    onEventClick: (EventResponseBody) -> Unit
 ) {
     // Here will be the logic for displaying the list of events
 }

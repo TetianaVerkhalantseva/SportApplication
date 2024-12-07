@@ -22,7 +22,8 @@ fun NavGraphBuilder.mapRoute(
     ) {
         MapScreenRoute(
             navigateToSelectedMarkerQuestScreen = { navHostController.navigateToSelectedQuest() },
-            navigateToSelectedMarkerEventScreen = { navHostController.navigateToSelectedEvent() },
+            navigateToSelectedMarkerEventScreen = { navHostController.navigateToSelectedEvent() }
+
             //navigateToMainScreen = { navHostController.navigateToMain() }
         )
     }

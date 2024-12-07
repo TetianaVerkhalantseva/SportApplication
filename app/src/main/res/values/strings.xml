@@ -6,6 +6,22 @@
     <string name="achievements_screen">Achieve</string>
     <string name="sensor_screen">Sensor</string>
 
+    <!-- Map Screen -->
+    <string name="achieved_achievement_reward_placeholder">You got new achievement and %1$d experience!</string>
+    <string name="start_event_quests">Start event with quests</string>
+    <string name="event">Event</string>
+    <string name="task_completed">Completed</string>
+    <string name="go_to_quest_location_placeholder">To continue the event, you need to come to %1$s</string>
+    <string name="distance_to_next_quest_location">Distance to next quest location: %1$d meters</string>
+    <string name="continue_events_quest">Continue events quest</string>
+    <string name="event_is_completed">Event is completed!</string>
+    <string name="event_is_expired">Event is expired!</string>
+    <string name="completed_event_reward_placeholder">You earned %1$d points!</string>
+    <string name="ok">Ok</string>
+    <string name="quest">Guest</string>
+    <string name="quest_is_completed">Quest is completed!</string>
+    <string name="start_completing_quest">Start completing quest</string>
+
     <!-- Achievements Screen -->
     <string name="achievements">Achievements</string>
     <string name="total_workouts">Total Workouts</string>
@@ -80,6 +96,7 @@
     <string name="location_valhallhallen">Valhallhallen</string>
     <string name="location_crossfit_nordaforr">CrossFit Nordaførr</string>
     <string name="location_folkeparken">Folkeparken</string>
+    <string name="location_skansen_festningsverk">Skansen Festningsverk</string>
 
 
     <!-- Quests -->
@@ -92,6 +109,11 @@
     <string name="quest_2_title">Squats Challenge</string>
     <string name="quest_2_description">Complete 30 squats at the stadium.</string>
     <string name="quest_2_reward">Reward: Sports Shorts</string>
+
+    <string name="quest_3_name">Quest 3</string>
+    <string name="quest_3_title">Test Challenge</string>
+    <string name="quest_3_description">Test Challenge description.</string>
+    <string name="quest_3_reward">Reward: Sports Shorts</string>
 
     <!-- General Tasks for Quests and Events -->
     <string name="task_complete_challenge_action">Complete the challenge</string>

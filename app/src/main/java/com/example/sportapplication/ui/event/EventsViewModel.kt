@@ -2,7 +2,7 @@ package com.example.sportapplication.ui.event
 
 import androidx.lifecycle.ViewModel
 import com.example.sportapplication.database.data.PoiStorage
-import com.example.sportapplication.database.model.Event
+import com.example.sportapplication.database.model.EventResponseBody
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -12,7 +12,7 @@ class EventViewModel @Inject constructor(
 ) : ViewModel() {
 
     // Function to get all events from PoiStorage
-    fun getEvents(): List<Event> {
-        return poiStorage.events
+    fun getEvents(): List<EventResponseBody> {
+        return poiStorage.eventResponseBodies
     }
 }
