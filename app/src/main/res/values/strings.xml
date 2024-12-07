@@ -18,6 +18,9 @@
     <string name="event_is_expired">Event is expired!</string>
     <string name="completed_event_reward_placeholder">You earned %1$d points!</string>
     <string name="ok">Ok</string>
+    <string name="quest">Guest</string>
+    <string name="quest_is_completed">Quest is completed!</string>
+    <string name="start_completing_quest">Start completing quest</string>
 
     <!-- Achievements Screen -->
     <string name="achievements">Achievements</string>
@@ -93,6 +96,7 @@
     <string name="location_valhallhallen">Valhallhallen</string>
     <string name="location_crossfit_nordaforr">CrossFit Nordaførr</string>
     <string name="location_folkeparken">Folkeparken</string>
+    <string name="location_skansen_festningsverk">Skansen Festningsverk</string>
 
 
     <!-- Quests -->

@@ -5,12 +5,13 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.example.sportapplication.database.AppDatabase
 import com.example.sportapplication.database.dao.AchievedEventsDao
+import com.example.sportapplication.database.dao.AchievedQuestsDao
 import com.example.sportapplication.database.dao.SensorDao
 import com.example.sportapplication.database.dao.UserDao
 import com.example.sportapplication.database.data.PoiStorage
 import com.example.sportapplication.ui.profile.ProfileViewModel
-import com.example.sportapplication.ui.settings.batteryindicator.BatteryViewModel
 import com.example.sportapplication.ui.settings.UnitViewModel
+import com.example.sportapplication.ui.settings.batteryindicator.BatteryViewModel
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -34,6 +35,11 @@ object AppModule {
     @Provides
     @Singleton
     fun provideAchievedEventsDao(appDatabase: AppDatabase): AchievedEventsDao = appDatabase.achievedEventsDao()
+
+
+    @Provides
+    @Singleton
+    fun provideAchievedQuestsDao(appDatabase: AppDatabase): AchievedQuestsDao = appDatabase.achievedQuestsDao()
 
     @Provides
     @Singleton

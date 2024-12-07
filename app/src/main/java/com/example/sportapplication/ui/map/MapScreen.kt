@@ -3,6 +3,7 @@ package com.example.sportapplication.ui.map
 import android.content.Context
 import android.content.res.Resources
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.location.Location
@@ -28,12 +29,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.sportapplication.R
+import com.example.sportapplication.database.model.EventQuest
 import com.example.sportapplication.database.model.EventResponseBody
 import com.example.sportapplication.database.model.InterestingLocation
 import com.example.sportapplication.database.model.Quest
 import com.example.sportapplication.repository.model.Event
+import com.example.sportapplication.repository.model.QuestInProgress
 import com.example.sportapplication.utils.isLocationPermissionGranted
 import com.example.sportapplication.utils.locationPermissions
+import com.google.android.gms.maps.model.LatLng
 import org.osmdroid.events.MapListener
 import org.osmdroid.events.ScrollEvent
 import org.osmdroid.events.ZoomEvent
@@ -43,6 +47,9 @@ import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
+
+private const val DEFAULT_MAP_POSITION_LAT = 69.653379
+private const val DEFAULT_MAP_POSITION_LON = 18.964080
 
 @Composable
 fun MapScreenRoute(
@@ -54,13 +61,18 @@ fun MapScreenRoute(
     val userLocation by viewModel.locationState.collectAsState(initial = null)
     val followUserState by viewModel.followUserState.collectAsState()
     val interestingLocations by viewModel.interestingLocations.collectAsState()
-    val quests by viewModel.quests.collectAsState()
+    val eventsQuests by viewModel.eventQuests.collectAsState()
     val events by viewModel.events.collectAsState()
     val achievedEvent by viewModel.achievedEvent.collectAsState()
     val eventsQuestLine by viewModel.eventsQuestline.collectAsState()
     val currentUnavailableQuestLineInLocation by viewModel.achievedEventQuestLineInAnotherLocation.collectAsState()
     val continueCompletingEventQuestDialog by viewModel.continueCompletingEventQuestDialog.collectAsState()
     val completedEventDialogState by viewModel.completedEventDialogState.collectAsState()
+    val quests by viewModel.quests.collectAsState()
+    val startCompletingQuestDialog by viewModel.startCompletingQuestDialog.collectAsState()
+    val questInProgressDialog by viewModel.questInProgressDialog.collectAsState()
+    val completedQuestDialog by viewModel.completedQuestDialog.collectAsState()
+    val currentEventTimeOutMillis by viewModel.currentEventTimeOutMillis.collectAsState()
 
 
     MapScreen(
@@ -69,7 +81,7 @@ fun MapScreenRoute(
         startObservingUserLocation = { viewModel.startObservingUserLocation() },
         followUserState = followUserState,
         interestingLocations = interestingLocations,
-        quests = quests,
+        eventQuests = eventsQuests,
         eventResponseBodies = events,
         achievedEventResponseBody = achievedEvent,
         eventsQuestline = eventsQuestLine,
@@ -77,6 +89,16 @@ fun MapScreenRoute(
         navigateToSelectedMarkerEventScreen = navigateToSelectedMarkerEventScreen,
         currentUnavailableQuestLineInLocation = currentUnavailableQuestLineInLocation,
         continueCompletingEventQuestDialogResponseBody = continueCompletingEventQuestDialog,
+        currentEventTimeOutMillis = currentEventTimeOutMillis,
+        quests = quests,
+        startCompletingQuestDialog = startCompletingQuestDialog,
+        questInProgressDialog = questInProgressDialog,
+        completedQuestDialog = completedQuestDialog,
+        onConfirmCompletedQuestDialog = { viewModel.onConfirmCompletedQuestDialog() },
+        onStartQuestClick = { viewModel.onStartQuestClick() },
+        onDismissStartQuest = { viewModel.onDismissStartQuestDialog() },
+        onQuestTaskCompleted = { viewModel.onQuestTaskComplete() },
+        onDismissQuestInProgress = { viewModel.onDismissQuestInProgress() },
         onStartEventClick = { viewModel.onStartEventClick() },
         onDismissEventDialog = { viewModel.onDismissEventDialog() },
         onEventClick = {
@@ -89,7 +111,11 @@ fun MapScreenRoute(
         onContinueCompletingEvent = { viewModel.onContinueCompletingEvent() },
         onDismissContinueCompletingEvent = { viewModel.onDismissContinueCompletingEvent() },
         completedEventDialogState = completedEventDialogState,
-        onConfirmCompletedEventClick = { viewModel.onConfirmCompletedEventClick() }
+        onConfirmCompletedEventClick = { viewModel.onConfirmCompletedEventClick() },
+        onQuestClick = {
+            if (!viewModel.onQuestClick(it))
+                navigateToSelectedMarkerQuestScreen()
+        }
     )
 }
 
@@ -100,18 +126,29 @@ fun MapScreen(
     startObservingUserLocation: () -> Unit,
     followUserState: Boolean,
     interestingLocations: List<InterestingLocation>,
-    quests: List<Quest>,
+    eventQuests: List<EventQuest>,
     eventResponseBodies: List<EventResponseBody>,
     achievedEventResponseBody: Event?,
     eventsQuestline: List<EventsQuestline>?,
     currentUnavailableQuestLineInLocation: NotAvailableQuestLine?,
     continueCompletingEventQuestDialogResponseBody: EventResponseBody?,
     completedEventDialogState: CompletedEvent?,
+    quests: List<Quest>,
+    startCompletingQuestDialog: Quest?,
+    questInProgressDialog: QuestInProgress?,
+    completedQuestDialog: Quest?,
+    currentEventTimeOutMillis: Long?,
+    onStartQuestClick: () -> Unit,
+    onDismissStartQuest: () -> Unit,
+    onQuestTaskCompleted: () -> Unit,
+    onDismissQuestInProgress: () -> Unit,
+    onConfirmCompletedQuestDialog: () -> Unit,
     navigateToSelectedMarkerQuestScreen: () -> Unit,
     navigateToSelectedMarkerEventScreen: () -> Unit,
     onStartEventClick: () -> Unit,
     onDismissEventDialog: () -> Unit,
     onEventClick: (EventResponseBody) -> Unit,
+    onQuestClick: (Quest) -> Unit,
     onEventQuestComplete: (EventsQuestline) -> Unit,
     onDismissEventQuestlines: () -> Unit,
     onConfirmNotAvailableQuestLine: () -> Unit,
@@ -134,6 +171,13 @@ fun MapScreen(
     }
 
 
+    completedQuestDialog?.let {
+        CompletedQuestDialog(
+            quest = it,
+            onConfirmClick = onConfirmCompletedQuestDialog
+        )
+    }
+
     completedEventDialogState?.let {
         CompletedEventDialog(
             completedEvent = it,
@@ -141,7 +185,21 @@ fun MapScreen(
 
         )
     }
+    questInProgressDialog?.let {
+        QuestDialog(
+            quest = it,
+            onTaskCompleted = onQuestTaskCompleted,
+            onDismiss = onDismissQuestInProgress
+        )
+    }
 
+    startCompletingQuestDialog?.let {
+        StartQuestDialog(
+            quest = it,
+            onStartClick = { onStartQuestClick() },
+            onDismiss = { onDismissStartQuest() }
+        )
+    }
     continueCompletingEventQuestDialogResponseBody?.let {
         ContinueCompletingEventDialog(
             eventResponseBody = it,
@@ -159,11 +217,12 @@ fun MapScreen(
     else if (eventsQuestline != null) {
         // Processing of quests and tasks
         eventsQuestline.find { it.isSelected }?.let { questLine ->
-            questLine.quest.
+            questLine.eventQuest.
                 locationWithTasks.getOrNull(questLine.locationWithTaskIndex ?: -1)
                 ?.tasks?.getOrNull(questLine.taskIndex ?: -1)?.let { currentTask ->
-                    QuestDialog(
-                        quest = questLine.quest,
+                    EventQuestDialog(
+                        eventQuest = questLine.eventQuest,
+                        currentEventTimeOutMillis = currentEventTimeOutMillis,
                         currentTask = currentTask,
                         onTaskCompleted = { onEventQuestComplete(questLine) },
                         onDismiss = { onDismissEventQuestlines() }
@@ -185,11 +244,13 @@ fun MapScreen(
     OSMMapView(
         userLocation = userLocation,
         interestingLocations = interestingLocations,
-        quests = quests,
+        eventQuests = eventQuests,
         eventResponseBodies = eventResponseBodies,
+        quests = quests,
         navigateToSelectedMarkerQuestScreen = navigateToSelectedMarkerQuestScreen,
         navigateToSelectedMarkerEventScreen = navigateToSelectedMarkerEventScreen,
-        onEventClick = onEventClick
+        onEventClick = onEventClick,
+        onQuestClick = onQuestClick
     )
 }
 
@@ -197,15 +258,21 @@ fun MapScreen(
 fun OSMMapView(
     userLocation: Location?,
     interestingLocations: List<InterestingLocation>,
-    quests: List<Quest>,
+    eventQuests: List<EventQuest>,
     eventResponseBodies: List<EventResponseBody>,
+    quests: List<Quest>,
     navigateToSelectedMarkerQuestScreen: () -> Unit,
     navigateToSelectedMarkerEventScreen: () -> Unit,
-    onEventClick: (EventResponseBody) -> Unit
+    onEventClick: (EventResponseBody) -> Unit,
+    onQuestClick: (Quest) -> Unit
 ) {
     val context = LocalContext.current
     var globalMapView by remember {
         mutableStateOf<MapView?>(null)
+    }
+
+    val defaultLocation by remember {
+        mutableStateOf(LatLng(DEFAULT_MAP_POSITION_LAT, DEFAULT_MAP_POSITION_LON))
     }
 
     var shouldCenterMap by remember { mutableStateOf(true) }  // To control centering on the user's interestingLocation
@@ -214,19 +281,22 @@ fun OSMMapView(
     var onZoomInterestingLocations by remember {
         mutableStateOf<List<InterestingLocation>>(emptyList())
     }
-    var onZoomQuests by remember {
-        mutableStateOf<List<Quest>>(emptyList())
+    var onZoomEventQuests by remember {
+        mutableStateOf<List<EventQuest>>(emptyList())
     }
     var onZoomEvents by remember {
         mutableStateOf<List<EventResponseBody>>(emptyList())
+    }
+    var onZoomQuests by remember {
+        mutableStateOf<List<Quest>>(emptyList())
     }
 
     LaunchedEffect(key1 = interestingLocations) {
         onZoomInterestingLocations = interestingLocations
     }
 
-    LaunchedEffect(key1 = quests) {
-        onZoomQuests = quests
+    LaunchedEffect(key1 = eventQuests) {
+        onZoomEventQuests = eventQuests
     }
 
     LaunchedEffect(key1 = eventResponseBodies) {
@@ -234,9 +304,16 @@ fun OSMMapView(
     }
 
 
-    LaunchedEffect(key1 = interestingLocations, key2 = quests, key3 = eventResponseBodies) {
+    LaunchedEffect(key1 = interestingLocations, key2 = eventQuests, key3 = eventResponseBodies) {
         globalMapView?.let {
-            updateMarkerIcons(it, context, interestingLocations, quests, eventResponseBodies, navigateToSelectedMarkerQuestScreen, navigateToSelectedMarkerEventScreen, onEventClick)
+            updateMarkerIcons(it, context, interestingLocations, eventQuests, quests, eventResponseBodies, navigateToSelectedMarkerQuestScreen, navigateToSelectedMarkerEventScreen, onEventClick, onQuestClick)
+        }
+    }
+
+    LaunchedEffect(key1 = quests) {
+        onZoomQuests = quests
+        globalMapView?.let {
+            updateMarkerIcons(it, context, interestingLocations, eventQuests, quests, eventResponseBodies, navigateToSelectedMarkerQuestScreen, navigateToSelectedMarkerEventScreen, onEventClick, onQuestClick)
         }
     }
 
@@ -265,12 +342,12 @@ fun OSMMapView(
 
 
                 // Call updateMarkerIcons to place markers on the map for interesting locations, quests, and events
-                updateMarkerIcons(mapView, context, interestingLocations, quests, eventResponseBodies, navigateToSelectedMarkerQuestScreen, navigateToSelectedMarkerEventScreen, onEventClick)
+                updateMarkerIcons(mapView, context, interestingLocations, eventQuests, quests, eventResponseBodies, navigateToSelectedMarkerQuestScreen, navigateToSelectedMarkerEventScreen, onEventClick, onQuestClick)
 
                 mapView.addMapListener(object : MapListener {
                     override fun onZoom(event: ZoomEvent): Boolean {
                         // Update markers whenever the zoom level changes
-                        updateMarkerIcons(mapView, context, onZoomInterestingLocations, onZoomQuests, onZoomEvents, navigateToSelectedMarkerQuestScreen, navigateToSelectedMarkerEventScreen, onEventClick)
+                        updateMarkerIcons(mapView, context, onZoomInterestingLocations, onZoomEventQuests, onZoomQuests, onZoomEvents, navigateToSelectedMarkerQuestScreen, navigateToSelectedMarkerEventScreen, onEventClick, onQuestClick)
                         return true // Return true to indicate the event was handled
                     }
 
@@ -283,7 +360,8 @@ fun OSMMapView(
                 // Adding an overlay for the user's location
                 val myLocationOverlay = MyLocationNewOverlay(GpsMyLocationProvider(context), mapView)
                 myLocationOverlay.enableMyLocation()
-                myLocationOverlay.enableFollowLocation()
+                val bitmap = BitmapFactory.decodeResource(context.resources, R.drawable.location)
+                myLocationOverlay.setDirectionIcon(bitmap)
                 mapView.overlays.add(myLocationOverlay)
 
                 mapViewInitialized = true // The map is initialized
@@ -338,24 +416,24 @@ fun updateMarkerIcons(
     mapView: MapView,
     context: Context,
     interestingLocations: List<InterestingLocation>,
+    eventQuests: List<EventQuest>,
     quests: List<Quest>,
     eventResponseBodies: List<EventResponseBody>,
     navigateToSelectedMarkerQuestScreen: () -> Unit,
     navigateToSelectedMarkerEventScreen: () -> Unit,
-    onEventClick: (EventResponseBody) -> Unit
+    onEventClick: (EventResponseBody) -> Unit,
+    onQuestClick: (Quest) -> Unit
 ) {
     mapView.overlays.forEach {
         if (it is Marker) mapView.overlays.remove(it)
     }
-
-
 
     if (mapView.zoomLevelDouble < 13) {
         // Remove markers if zoom level is less than 11
         mapView.overlays.removeAll { overlay ->
             overlay is Marker && (interestingLocations.any {
                 it.latitude == overlay.position.latitude && it.longitude == overlay.position.longitude
-            } || quests.any { quest ->
+            } || eventQuests.any { quest ->
                 quest.locationWithTasks.any { locationWithTasks ->
                     locationWithTasks.interestingLocation.latitude == overlay.position.latitude &&
                             locationWithTasks.interestingLocation.longitude == overlay.position.longitude
@@ -392,8 +470,8 @@ fun updateMarkerIcons(
         }
     }
 
-    // Next, process the quests
-    quests.forEach { quest ->
+    // Next, process the events quests
+    eventQuests.forEach { quest ->
         if (questsIdsToHide.contains(quest.id)) return@forEach
         quest.locationWithTasks.forEach { locationWithTasks ->
             val marker = Marker(mapView).apply {
@@ -402,7 +480,25 @@ fun updateMarkerIcons(
                 setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
 
                 setOnMarkerClickListener { marker, mapView ->
-                    navigateToSelectedMarkerQuestScreen()
+                    eventResponseBodies.find {
+                        it.questsIds.contains(quest.id)
+                    }?.let(onEventClick)
+                    return@setOnMarkerClickListener true
+                }
+            }
+            mapView.overlays.add(marker)
+        }
+    }
+
+    quests.forEach { quest ->
+        quest.locationWithTasks.let { locationWithTasks ->
+            val marker = Marker(mapView).apply {
+                position = GeoPoint(locationWithTasks.interestingLocation.latitude, locationWithTasks.interestingLocation.longitude)
+                icon = resizeBitmapDrawable(context.getDrawable(quest.icon), 64, 64) // size in pixels
+                setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
+
+                setOnMarkerClickListener { marker, mapView ->
+                    onQuestClick(quest)
                     return@setOnMarkerClickListener true
                 }
             }
@@ -414,24 +510,21 @@ fun updateMarkerIcons(
     interestingLocations.forEach { location ->
 
         // Check if there is a quest or event at this location
-        val hasQuestOrEvent = quests.any { quest ->
+        val hasQuestOrEvent = eventQuests.any { quest ->
             quest.locationWithTasks.any { it.interestingLocation.id == location.id }
         } || eventResponseBodies.any { event ->
             event.locationId == location.id
+        } || quests.any {  quest ->
+            quest.locationWithTasks.interestingLocation.id == location.id
         }
 
         if (!hasQuestOrEvent) {
-
             // If there is no quest or event at the location, add a marker for an interesting location
             val marker = Marker(mapView).apply {
                 position = GeoPoint(location.latitude, location.longitude)
                 icon = resizeBitmapDrawable(context.getDrawable(location.icon), 64, 64)
                 setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
-
-                setOnMarkerClickListener { marker, mapView ->
-                    //TODO
-                    return@setOnMarkerClickListener true
-                }
+                title = context.getString(location.name)
             }
             mapView.overlays.add(marker)
         }
