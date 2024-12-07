@@ -1,6 +1,9 @@
 package com.example.sportapplication.ui.profile
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -8,9 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -33,8 +34,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
@@ -75,7 +76,7 @@ fun ProfileScreen(navController: NavHostController, viewModel: ProfileViewModel 
         stringResource(R.string.completed_quests) to completedQuests.toString(),
         stringResource(R.string.distance_traveled) to distanceTraveled,
         stringResource(R.string.total_achievements) to totalAchievements.toString(),
-        stringResource(R.string.inventory_items) to inventoryItems,
+        stringResource(R.string.inventory_items) to inventoryItems.toString(),
         stringResource(R.string.completed_events) to completedEvents.toString(),
         stringResource(R.string.pois_visited) to poisVisited.toString(),
         stringResource(R.string.experience) to userExperience.toString(),
