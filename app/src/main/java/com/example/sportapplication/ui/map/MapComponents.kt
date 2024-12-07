@@ -27,10 +27,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.example.sportapplication.R
+import com.example.sportapplication.database.model.EventQuest
 import com.example.sportapplication.database.model.EventResponseBody
 import com.example.sportapplication.database.model.Quest
 import com.example.sportapplication.database.model.Task
 import com.example.sportapplication.repository.model.Event
+import com.example.sportapplication.repository.model.QuestInProgress
 import kotlinx.coroutines.delay
 import java.util.Calendar
 
@@ -147,9 +149,10 @@ fun CountdownTimer(
 }
 
 @Composable
-fun QuestDialog(
-    quest: Quest,
+fun EventQuestDialog(
+    eventQuest: EventQuest,
     currentTask: Task,
+    currentEventTimeOutMillis: Long?,
     onTaskCompleted: () -> Unit,
     onDismiss: () -> Unit
 ) {
@@ -174,12 +177,12 @@ fun QuestDialog(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(
-                        painter = painterResource(id = quest.icon),
+                        painter = painterResource(id = eventQuest.icon),
                         contentDescription = null,
                         tint = Color.Unspecified
                     )
                     Text(
-                        text = stringResource(id = quest.title),
+                        text = stringResource(id = eventQuest.title),
                         style = MaterialTheme.typography.titleMedium
                     )
                     Icon(
@@ -194,6 +197,10 @@ fun QuestDialog(
                         text = stringResource(id = task.description),
                         style = MaterialTheme.typography.bodyMedium,
                         modifier = Modifier.padding(vertical = 8.dp)
+                    )
+                    CountdownTimer(
+                        modifier = Modifier.align(Alignment.CenterHorizontally),
+                        tillTimeInMilliseconds = currentEventTimeOutMillis ?: 0
                     )
                 }
 
@@ -387,6 +394,196 @@ fun CompletedEventDialog(
 
                 Text(
                     text = stringResource(id = R.string.completed_event_reward_placeholder, completedEvent.reward),
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                )
+
+                Button(
+                    onClick = {
+                        onConfirmClick()
+                    },
+                ) {
+                    Text(text = stringResource(id = R.string.ok))
+                }
+            }
+        }
+    }
+}
+
+
+@Composable
+fun StartQuestDialog(
+    quest: Quest,
+    onStartClick: () -> Unit,
+    onDismiss: () -> Unit
+) {
+
+    Dialog(onDismissRequest = onDismiss) {
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            shape = RoundedCornerShape(16.dp),
+        ) {
+            Column(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .wrapContentSize(),
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+                horizontalAlignment = Alignment.Start
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        painter = painterResource(id = quest.icon),
+                        contentDescription = null,
+                        tint = Color.Unspecified
+                    )
+                    Text(
+                        text = stringResource(id = quest.title),
+                        style = MaterialTheme.typography.titleMedium
+                    )
+                    Icon(
+                        modifier = Modifier.clickable { onDismiss() },
+                        imageVector = Icons.Default.Close,
+                        contentDescription = null
+                    )
+                }
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 16.dp),
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    Button(
+                        onClick = {
+                            onStartClick()
+                        }
+                    ) {
+                        Text(text = stringResource(id = R.string.start_completing_quest))
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+@Composable
+fun QuestDialog(
+    quest: QuestInProgress,
+    onTaskCompleted: () -> Unit,
+    onDismiss: () -> Unit
+) {
+
+    val currentTask = quest.locationWithTasks.tasks.find { it.isInProgress }?.task
+
+    Dialog(onDismissRequest = onDismiss) {
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            shape = RoundedCornerShape(16.dp),
+        ) {
+            Column(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .wrapContentSize(),
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+                horizontalAlignment = Alignment.Start
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        painter = painterResource(id = quest.icon),
+                        contentDescription = null,
+                        tint = Color.Unspecified
+                    )
+                    Text(
+                        text = stringResource(id = quest.title),
+                        style = MaterialTheme.typography.titleMedium
+                    )
+                    Icon(
+                        modifier = Modifier.clickable { onDismiss() },
+                        imageVector = Icons.Default.Close,
+                        contentDescription = null
+                    )
+                }
+
+                currentTask?.let { task ->
+                    Text(
+                        text = stringResource(id = task.description ),
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.padding(vertical = 8.dp)
+                    )
+                }
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 16.dp),
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    Button(
+                        onClick = {
+                            onTaskCompleted()
+                        }
+                    ) {
+                        Text(text = stringResource(id = R.string.task_completed))
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+@Composable
+fun CompletedQuestDialog(
+    quest: Quest,
+    onConfirmClick: () -> Unit
+) {
+    Dialog(onDismissRequest = onConfirmClick) {
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            shape = RoundedCornerShape(16.dp),
+        ) {
+
+            Column(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .wrapContentSize(),
+                verticalArrangement = Arrangement.spacedBy(20.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.quest)
+                    )
+                    Icon(
+                        modifier = Modifier.clickable {
+                            onConfirmClick()
+                        },
+                        imageVector = Icons.Default.Close,
+                        contentDescription = null
+                    )
+                }
+
+                Text(
+                    text = stringResource(id = R.string.completed_event_reward_placeholder, quest.reward.experience),
                     modifier = Modifier.align(Alignment.CenterHorizontally)
                 )
 

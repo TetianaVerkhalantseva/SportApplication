@@ -37,9 +37,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.sportapplication.R
+import com.example.sportapplication.database.model.EventQuest
 import com.example.sportapplication.database.model.InterestingLocation
 import com.example.sportapplication.database.model.LocationWithTasks
-import com.example.sportapplication.database.model.Quest
 import com.example.sportapplication.database.model.Reward
 import com.example.sportapplication.database.model.Task
 
@@ -82,7 +82,7 @@ fun SelectedQuestScreen(
             )
         }
 
-        selectedQuest?.let { quest ->
+        selectedEventQuest?.let { quest ->
             Column {
                 // Display the quest image
                 Image(
@@ -205,8 +205,8 @@ fun SelectedQuestScreen(
 }
 
 
-val selectedQuest =
-    Quest(
+val selectedEventQuest =
+    EventQuest(
         id = 2,
         icon = R.drawable.ic_quest_2,
         image = R.drawable.ic_quest_2_image,
@@ -228,5 +228,6 @@ val selectedQuest =
             )
         ),
         isCompleted = false,
-        reward = Reward(experience = 800)
+        reward = Reward(experience = 800),
+        eventId = 2
     )
