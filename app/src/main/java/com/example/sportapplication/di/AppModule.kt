@@ -97,4 +97,5 @@ object AppModule {
         return BatteryViewModel(context.applicationContext as Application)
     }
 
+
 }

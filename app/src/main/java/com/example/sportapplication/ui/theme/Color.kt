@@ -111,7 +111,7 @@ val surfaceContainerLightHighContrast = Color(0xFFF1EDEB)
 val surfaceContainerHighLightHighContrast = Color(0xFFECE7E6)
 val surfaceContainerHighestLightHighContrast = Color(0xFFE6E2E0)
 
-// Updated Primary Dark Theme
+// Dark Theme
 val primaryDark = Color(0xFFb03900)  // Vibrant orange for dark mode FFfbbc04
 val onPrimaryDark = Color(0xFF3E2723)  // Deep brown for text on primary
 val primaryContainerDark = Color(0xFFca4200)  // Rich orange for container elements
