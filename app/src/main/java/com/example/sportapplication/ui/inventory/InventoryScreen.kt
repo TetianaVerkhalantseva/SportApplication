@@ -9,8 +9,10 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -33,6 +35,7 @@ import com.example.sportapplication.database.entity.ItemType
 import com.example.sportapplication.database.model.InventoryItem
 import com.example.sportapplication.database.model.Item
 import com.example.sportapplication.database.model.itemCategoryToDrawable
+import java.util.Date
 import kotlin.random.Random
 
 @Composable
@@ -54,7 +57,7 @@ fun InventoryScreen(
     val items = itemList.toMutableList()
 
 
-    Column {
+    Column(Modifier.fillMaxSize()) {
 
         CategoryItem(
             text = "Inventory",
@@ -62,7 +65,9 @@ fun InventoryScreen(
 
         InventoryLazyColumn(
             items = inventory,
-            removeItemFunction = viewModel::removeItemFromInventoryById
+            currentTime = viewModel.currentTime,
+            removeItemFunction = viewModel::removeItemFromInventoryById,
+            activateItemFunction = viewModel::activateItemInInventoryById
         )
         Button(onClick = { viewModel.addItemToInventoryById(Random.nextInt(1,4)) }) {
             Text("Add Item")
@@ -120,15 +125,20 @@ fun CategoryItem(
 @Composable
 fun InventoryLazyColumn(
     items: List<InventoryItem>,
-    removeItemFunction: (inventoryId: Long) -> Unit
+    currentTime: Long,
+    removeItemFunction: (inventoryId: Long) -> Unit,
+    activateItemFunction: (inventoryId: Long) -> Unit
+
 ) {
     LazyColumn(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth().heightIn(0.dp, 400.dp)
     ) {
         items(items) { item ->
             InventoryItemUI(
                 item = item,
-                removeItemFunction
+                currentTime,
+                removeItemFunction,
+                activateItemFunction,
             )
         }
     }
@@ -152,7 +162,9 @@ fun ItemLazyColumn(
 @Composable
 fun InventoryItemUI(
     item: InventoryItem,
-    removeItemFunction: (inventoryId: Long) -> Unit
+    currentTime: Long,
+    removeItemFunction: (inventoryId: Long) -> Unit,
+    activateItemFunction: (inventoryId: Long) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -179,8 +191,8 @@ fun InventoryItemUI(
             if (item.itemId != -1L) {
                 Box(Modifier.padding(start = 4.dp, end = 4.dp)){
                     if(item.itemType == ItemType.ACTIVE) {
-                        Button(onClick = { removeItemFunction(item.inventoryId) }) {
-                            Text("TODO: Use")
+                        Button(onClick = { activateItemFunction(item.inventoryId) }, enabled = item.itemActivated == null) {
+                            Text("Use")
                         }
                     } else if(item.itemType == ItemType.PASSIVE){
                         Text("Effect", color = Color(102, 255, 102), modifier = Modifier.clickable { Log.i("test effect item", "clicked effect item") })
@@ -190,6 +202,15 @@ fun InventoryItemUI(
                 Button(onClick={removeItemFunction(item.inventoryId)}){
                     Text("Drop")
                 }
+            }
+
+        }
+        if(item.itemActivated != null){
+            Column{
+                Text("Activated: ${Date(item.itemActivated)}\nDuration: ${item.itemDuration?.div(
+                    60_000L
+                )}")
+                Text("${item.itemDuration?.plus(item.itemActivated)?.minus(currentTime)}")
             }
 
         }

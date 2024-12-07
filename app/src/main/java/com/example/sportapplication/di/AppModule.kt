@@ -11,7 +11,7 @@ import com.example.sportapplication.database.dao.AchievedEventsDao
 import com.example.sportapplication.database.dao.AchievedQuestsDao
 import com.example.sportapplication.database.dao.SensorDao
 import com.example.sportapplication.database.dao.UserDao
-import com.example.sportapplication.database.data.ItemRepository
+import com.example.sportapplication.repository.ItemRepository
 import com.example.sportapplication.database.data.PoiStorage
 import com.example.sportapplication.ui.profile.ProfileViewModel
 import com.example.sportapplication.ui.settings.UnitViewModel

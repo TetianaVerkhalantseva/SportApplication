@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import com.example.sportapplication.database.entity.InventoryData
 
 @Dao
@@ -20,6 +21,9 @@ interface InventoryDao {
 
     @Query("SELECT COUNT(*) FROM inventoryData")
     suspend fun rowCount(): Int
+
+    @Update
+    suspend fun updateItem(inventoryData: InventoryData)
 
     @Query("Delete From inventoryData")
     suspend fun deleteAll()

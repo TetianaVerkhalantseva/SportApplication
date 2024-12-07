@@ -23,4 +23,7 @@ interface ItemsDao {
     @Query("Delete FROM itemsData")
     suspend fun deleteAll()
 
+    @Query("DELETE FROM sqlite_sequence WHERE NAME='itemsData'")
+    suspend fun resetPrimaryKey()
+
 }
