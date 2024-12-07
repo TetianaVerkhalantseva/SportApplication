@@ -4,6 +4,8 @@ package com.example.sportapplication.ui.inventory
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -27,9 +29,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.sportapplication.database.entity.ItemCategory
+import com.example.sportapplication.database.entity.ItemType
 import com.example.sportapplication.database.model.InventoryItem
 import com.example.sportapplication.database.model.Item
 import com.example.sportapplication.database.model.itemCategoryToDrawable
+import kotlin.random.Random
 
 @Composable
 fun InventoryScreenRoute() {
@@ -49,6 +53,7 @@ fun InventoryScreen(
     val inventory = inventoryItems.toMutableList()
     val items = itemList.toMutableList()
 
+
     Column {
 
         CategoryItem(
@@ -56,14 +61,15 @@ fun InventoryScreen(
         )
 
         InventoryLazyColumn(
-            items = inventory
+            items = inventory,
+            removeItemFunction = viewModel::removeItemFromInventoryById
         )
-        Button(onClick = { viewModel.addItemToInventoryById(1) }) {
+        Button(onClick = { viewModel.addItemToInventoryById(Random.nextInt(1,4)) }) {
             Text("Add Item")
         }
 
         CategoryItem(
-            text = "Item",
+            text = "Item Catalogue",
 
         )
 
@@ -113,14 +119,16 @@ fun CategoryItem(
 
 @Composable
 fun InventoryLazyColumn(
-    items: List<InventoryItem>
+    items: List<InventoryItem>,
+    removeItemFunction: (inventoryId: Long) -> Unit
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxWidth()
     ) {
         items(items) { item ->
             InventoryItemUI(
-                item = item
+                item = item,
+                removeItemFunction
             )
         }
     }
@@ -143,14 +151,15 @@ fun ItemLazyColumn(
 
 @Composable
 fun InventoryItemUI(
-    item: InventoryItem
+    item: InventoryItem,
+    removeItemFunction: (inventoryId: Long) -> Unit
 ) {
     Column(
         modifier = Modifier
             .padding(vertical = 8.dp)
     ) {
 
-        Row {
+        Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(4.dp)) {
             if (item.itemCategory != ItemCategory.PLACEHOLDER) Image(
                 modifier = Modifier
                     .weight(1F)
@@ -163,13 +172,23 @@ fun InventoryItemUI(
                 modifier = Modifier
                     .weight(2F)
                     .align(Alignment.CenterVertically),
-                text = item.itemName,
+                text = item.itemName, softWrap = true,
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
             )
             if (item.itemId != -1L) {
-                Button(onClick={Log.i("click test item", "clicked")}){
-                    Text("TODO: Delete")
+                Box(Modifier.padding(start = 4.dp, end = 4.dp)){
+                    if(item.itemType == ItemType.ACTIVE) {
+                        Button(onClick = { removeItemFunction(item.inventoryId) }) {
+                            Text("TODO: Use")
+                        }
+                    } else if(item.itemType == ItemType.PASSIVE){
+                        Text("Effect", color = Color(102, 255, 102), modifier = Modifier.clickable { Log.i("test effect item", "clicked effect item") })
+                    }
+                }
+
+                Button(onClick={removeItemFunction(item.inventoryId)}){
+                    Text("Drop")
                 }
             }
 
@@ -193,7 +212,7 @@ fun ItemUI(
             .padding(vertical = 8.dp)
     ) {
 
-        Row {
+        Row(verticalAlignment = Alignment.CenterVertically) {
             Spacer(modifier = Modifier.width(10.dp))
             Text(
                 modifier = Modifier
@@ -207,6 +226,13 @@ fun ItemUI(
 
                 Log.i("test item", "item")
             }
+            if (item.itemCategory != ItemCategory.PLACEHOLDER) Image(
+                modifier = Modifier
+                    .weight(1F)
+                    .size(50.dp),
+                painter = painterResource(itemCategoryToDrawable(item.itemCategory)),
+                contentDescription = null
+            )
 
         }
         Spacer(
@@ -217,30 +243,3 @@ fun ItemUI(
         )
     }
 }
-/*
-val inventoryItems = listOf<InventoryItem>(
-    InventoryItem(
-        id = 1,
-        image = R.drawable.ic_launcher_background,
-        name = R.string.no_equipment_quests,
-        type = InventoryType.RACKS_AND_BENCHES
-    ),
-    InventoryItem(
-        id = 2,
-        image = R.drawable.ic_launcher_foreground,
-        name = R.string.no_equipment_quests,
-        type = InventoryType.RESISTANCE_BANDS
-    ),
-    InventoryItem(
-        id = 3,
-        image = R.drawable.ic_launcher_background,
-        name = R.string.no_equipment_quests,
-        type = InventoryType.RACKS_AND_BENCHES
-    ),
-    InventoryItem(
-        id = 4,
-        image = R.drawable.ic_launcher_background,
-        name = R.string.no_equipment_quests,
-        type = InventoryType.RESISTANCE_BANDS
-    ),
-)*/

@@ -27,6 +27,13 @@ class InventoryViewModel @Inject constructor(
         itemType = ItemType.INAPPLICABLE
     )
 
+    private val emptyItemsItem = Item(
+        itemId = -1,
+        itemName = "No Items",
+        itemType = ItemType.INAPPLICABLE,
+        itemCategory = ItemCategory.PLACEHOLDER
+    )
+
     var inventoryItems =
         mutableStateListOf(
             emptyInventoryItem
@@ -34,12 +41,7 @@ class InventoryViewModel @Inject constructor(
 
     var items =
         mutableStateListOf(
-            Item(
-                itemId = -1,
-                itemName = "No Items",
-                itemType = ItemType.INAPPLICABLE,
-                itemCategory = ItemCategory.PLACEHOLDER
-            )
+            emptyItemsItem
         )
 
     init {
@@ -92,115 +94,4 @@ class InventoryViewModel @Inject constructor(
         }
     }
 
-
-
-    //val allItems = itemRepository.getAllItems()
-
-
-
-/*
-
-    init {
-        prepopulateItems()
-        getAllItems()
-        getAllInventoryItems()
-        Log.i("Items Population", items.size.toString())
-    }
-
-    private fun getAllItems() {
-        CoroutineScope(Dispatchers.IO).launch {
-            val tempItems: ArrayList<Item> = ArrayList()
-
-            val itemsFromDao = itemsDao.getAll()
-
-            itemsFromDao.forEach { item ->
-                tempItems.add(
-                    Item(
-                        itemName = item.itemName,
-                        itemId = item.itemId
-                    )
-                )
-            }
-
-            items = tempItems
-
-        }
-    }
-
-
-    fun addToInventory(item: Item) {
-        CoroutineScope(Dispatchers.IO).launch {
-            inventoryDao.insertItem(
-                InventoryData(
-                    inventoryItemId = 0,
-                    itemId = item.itemId,
-                    itemName = item.itemName
-                )
-            )
-
-            val inventoryFromDao = inventoryDao.getAll()
-            val tempInventory: ArrayList<InventoryItem> = ArrayList()
-            inventoryFromDao.forEach { item ->
-                tempInventory.add(
-                    InventoryItem(
-                        inventoryId = item.inventoryItemId,
-                        itemName = item.itemName,
-                        itemId = item.itemId,
-                        image = null
-                    )
-                )
-            }
-
-            inventoryItems = tempInventory
-        }
-    }
-
-
-    private fun getAllInventoryItems() {
-        CoroutineScope(Dispatchers.IO).launch {
-            val tempInventoryItems: ArrayList<InventoryItem> = ArrayList()
-            val inventory = inventoryDao.getAll()
-
-            if (inventory.isNotEmpty()) {
-                inventory.forEach { item ->
-                    tempInventoryItems.add(
-                        InventoryItem(
-                            inventoryId = item.inventoryItemId,
-                            itemName = item.itemName,
-                            itemId = item.itemId,
-                            image = null
-                        )
-                    )
-                }
-
-                inventoryItems = tempInventoryItems
-            }
-
-        }
-    }
-
-    private fun prepopulateItems() {
-        CoroutineScope(Dispatchers.IO).launch {
-            val itemsInDao = itemsDao.getAll()
-
-            if (itemsInDao.isEmpty()) {
-                val prepopItems = arrayOf(
-                    Item(itemId = 0, itemName = "TemporaryItem1"),
-                    Item(itemId = 0, itemName = "TemporaryItem2"),
-                    Item(itemId = 0, itemName = "TemporaryItem3"),
-                )
-                prepopItems.forEach { item ->
-                    itemsDao.insertItem(
-                        ItemsData(
-                            itemId = item.itemId,
-                            itemName = item.itemName
-                        )
-                    )
-                }
-
-            }
-
-        }
-    }
-*/
 }
