@@ -6,16 +6,20 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.sportapplication.database.data.EVENT_REWARD_MULTIPLIER
 import com.example.sportapplication.database.entity.AchievedEvent
+import com.example.sportapplication.database.model.EventQuest
 import com.example.sportapplication.database.model.EventResponseBody
 import com.example.sportapplication.database.model.LocationWithTasks
 import com.example.sportapplication.database.model.Quest
 import com.example.sportapplication.database.sharedPreferences.AppSharedPreferences
 import com.example.sportapplication.mapper.toEvent
+import com.example.sportapplication.mapper.toQuest
+import com.example.sportapplication.mapper.toQuestInProgress
 import com.example.sportapplication.mapper.toResponseBody
 import com.example.sportapplication.repository.LocationRepository
 import com.example.sportapplication.repository.PoiRepository
 import com.example.sportapplication.repository.UserRepository
 import com.example.sportapplication.repository.model.Event
+import com.example.sportapplication.repository.model.QuestInProgress
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.SphericalUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -44,8 +48,11 @@ class MapViewModel @Inject constructor(
     private val _interestingLocations = MutableStateFlow(poiRepository.getLocations())
     val interestingLocations = _interestingLocations.asStateFlow()
 
-    private val _quests = MutableStateFlow(poiRepository.getQuests())
+    private val _quests = MutableStateFlow<List<Quest>>(emptyList())
     val quests = _quests.asStateFlow()
+
+    private val _eventsQuests = MutableStateFlow(poiRepository.getEventsQuests())
+    val eventQuests = _eventsQuests.asStateFlow()
 
     private val _events = MutableStateFlow<List<EventResponseBody>>(emptyList())
     val events = _events.asStateFlow()
@@ -54,6 +61,8 @@ class MapViewModel @Inject constructor(
 
     private var _currentEventInProgress : EventResponseBody? = null
     private var _currentSavedAchievedEvent : EventResponseBody? = null
+    private val _currentEventTimeOutMillis = MutableStateFlow<Long?>(null)
+    val currentEventTimeOutMillis = _currentEventTimeOutMillis.asStateFlow()
     private val _achievedEvent = MutableStateFlow<Event?>(null)
     val achievedEvent = _achievedEvent.asStateFlow()
 
@@ -72,6 +81,16 @@ class MapViewModel @Inject constructor(
     val completedEventDialogState = _completedEventDialogState.asStateFlow()
 
     private var lastKnownLocation: Location? = null
+
+    private var _previousDismissedQuestDialog : Quest? = null
+    private val _startCompletingQuestDialog = MutableStateFlow<Quest?>(null)
+    val startCompletingQuestDialog = _startCompletingQuestDialog.asStateFlow()
+    private val _questInProgressDialog = MutableStateFlow<QuestInProgress?>(null)
+    val questInProgressDialog = _questInProgressDialog.asStateFlow()
+
+    private val _completedQuestDialog = MutableStateFlow<Quest?>(null)
+    val completedQuestDialog = _completedQuestDialog.asStateFlow()
+
     val locationState = locationRepository.userLocationState.map {
         lastKnownLocation = it
         onUserLocationUpdate(it)
@@ -81,6 +100,7 @@ class MapViewModel @Inject constructor(
     private fun onUserLocationUpdate(location: Location) {
         viewModelScope.launch {
             handleIfUserIsNearEvent(location)
+            handleIfUserIsNearEventQuest(location)
             handleIfUserIsNearQuest(location)
         }
     }
@@ -90,7 +110,7 @@ class MapViewModel @Inject constructor(
             val quests = _quests.value
             if (quests.isEmpty()) return@launch
             quests.forEach { quest ->
-                quest.locationWithTasks.forEach {
+                quest.locationWithTasks.let {
                     val distance =
                         SphericalUtil.computeDistanceBetween(
                             LatLng(it.interestingLocation.latitude, it.interestingLocation.longitude),
@@ -105,18 +125,45 @@ class MapViewModel @Inject constructor(
         }
     }
 
-    private fun doOnQuestReached(quest: Quest) {
+    private fun handleIfUserIsNearEventQuest(location: Location) {
+        viewModelScope.launch {
+            val quests = _eventsQuests.value
+            if (quests.isEmpty()) return@launch
+            quests.forEach { quest ->
+                quest.locationWithTasks.forEach {
+                    val distance =
+                        SphericalUtil.computeDistanceBetween(
+                            LatLng(it.interestingLocation.latitude, it.interestingLocation.longitude),
+                            LatLng(location.latitude, location.longitude)
+                        )
+                    if (distance <= MINIMUM_DISTANCE_TO_EVENT) {
+                        doOnEventQuestReached(quest)
+                    }
+                }
+            }
+
+        }
+    }
+
+    private fun doOnEventQuestReached(eventQuest: EventQuest) {
         viewModelScope.launch {
             val nextLocationWithTaskToContinueComplete =_currentSavedEventsQuestLine?.find { it.isSelected }?.getCurrentLocationWithTask()
 
             if (nextLocationWithTaskToContinueComplete != null
-                && quest.locationWithTasks.contains(nextLocationWithTaskToContinueComplete)
+                && eventQuest.locationWithTasks.contains(nextLocationWithTaskToContinueComplete)
                 &&  _eventsQuestline.value == null
                 ) {
                 _currentSavedAchievedEvent?.let {
                     _continueCompletingEventQuestDialog.emit(it)
                 }
             }
+        }
+    }
+
+    private fun doOnQuestReached(quest: Quest) {
+        viewModelScope.launch {
+            if (_previousDismissedQuestDialog == quest) return@launch
+            _startCompletingQuestDialog.emit(quest)
         }
     }
 
@@ -148,9 +195,6 @@ class MapViewModel @Inject constructor(
                 || (_lastDismissedDialogEvent.value != null && eventResponseBody.id == _lastDismissedDialogEvent.value?.id)
             )
                 return@launch
-
-            //userRepository.insertAchievedEvent(event.id.toString())
-            //prefs.userExperience = event.reward.experience
             val isCompleted = completedEventsIds.find { it.id == eventResponseBody.id.toString() } != null
             _achievedEvent.emit(eventResponseBody.toEvent(isCompleted))
         }
@@ -172,6 +216,7 @@ class MapViewModel @Inject constructor(
 
     init {
         observeCompletedEvents()
+        observeCompletedQuests()
         viewModelScope.launch {
             val events = userRepository.getAllNotAchievedEvents()
             val currentAvailableEventResponseBodies = mutableListOf<EventResponseBody>()
@@ -184,7 +229,16 @@ class MapViewModel @Inject constructor(
                 if (isEventAvailableRightNow)
                     currentAvailableEventResponseBodies.add(event)
             }
+            filterAvailableEventsQuests(currentAvailableEventResponseBodies.map { it.id })
             _events.emit(currentAvailableEventResponseBodies)
+        }
+        getAndSetQuests()
+    }
+
+    private fun getAndSetQuests() {
+        viewModelScope.launch {
+            val quests = userRepository.getAllNotAchievedQuests()
+            _quests.emit(quests)
         }
     }
 
@@ -195,11 +249,36 @@ class MapViewModel @Inject constructor(
 
                 val achievedEventsIds = achievedEvents.map { it.id }
                 completedEventsIds = achievedEvents
-
                 viewModelScope.launch {
-                    _events.emit(_events.value.filter { !achievedEventsIds.contains(it.id.toString()) })
+                    val newEvents = _events.value.filter { !achievedEventsIds.contains(it.id.toString()) }
+                    filterAvailableEventsQuests(newEvents.map { it.id })
+                    _events.emit(newEvents)
                 }
             }
+        }
+    }
+
+    private fun observeCompletedQuests() {
+        viewModelScope.launch {
+            userRepository.getAllAchievedQuestsLiveData().observeForever { achievedQuests ->
+                if (_quests.value.isEmpty()) return@observeForever
+                val achievedQuestsIds = achievedQuests.map { it.id }
+
+                //completedEventsIds = achievedEvents
+                viewModelScope.launch {
+                    val newQuests = _quests.value.filter { !achievedQuestsIds.contains(it.id) }
+                    _quests.emit(newQuests)
+                }
+            }
+        }
+    }
+
+    private fun filterAvailableEventsQuests(availableEventsIds: List<Long>) {
+        viewModelScope.launch {
+            val newEventsQuests = _eventsQuests.value.filter {
+                availableEventsIds.contains(it.eventId)
+            }
+            _eventsQuests.emit(newEventsQuests)
         }
     }
 
@@ -212,9 +291,10 @@ class MapViewModel @Inject constructor(
         viewModelScope.launch {
             val event = _achievedEvent.value
             _currentEventInProgress = event?.toResponseBody()
+            _currentEventTimeOutMillis.emit(event?.startTime?.plus(event.duration))
             _achievedEvent.emit(null)
             event?.let {
-                val eventsQuests = _quests.value.filter {
+                val eventsQuests = _eventsQuests.value.filter {
                     event.questsIds.contains(it.id)
                 }
                 _eventsQuestline.emit(
@@ -222,7 +302,7 @@ class MapViewModel @Inject constructor(
                         val isSelected = index == 0
 
                         EventsQuestline(
-                            quest = quest,
+                            eventQuest = quest,
                             isSelected = isSelected,
                             locationWithTaskIndex = if (isSelected) 0 else null,
                             taskIndex = if (isSelected) 0 else null,
@@ -230,6 +310,25 @@ class MapViewModel @Inject constructor(
                         )
                     }
                 )
+            }
+        }
+    }
+
+    fun onStartQuestClick() {
+        viewModelScope.launch {
+            _startCompletingQuestDialog.value?.let { quest ->
+                _previousDismissedQuestDialog = quest
+                _startCompletingQuestDialog.emit(null)
+                _questInProgressDialog.emit(quest.toQuestInProgress())
+            }
+        }
+    }
+
+    fun onDismissStartQuestDialog() {
+        viewModelScope.launch {
+            _startCompletingQuestDialog.value?.let { quest ->
+                _previousDismissedQuestDialog = quest
+                _startCompletingQuestDialog.emit(null)
             }
         }
     }
@@ -257,6 +356,19 @@ class MapViewModel @Inject constructor(
         return false
     }
 
+    fun onQuestClick(quest: Quest): Boolean {
+        quest.locationWithTasks.interestingLocation.let { location ->
+            if (isUserNearLocation(LatLng(location.latitude, location.longitude), MINIMUM_DISTANCE_TO_EVENT)) {
+                viewModelScope.launch {
+                    _startCompletingQuestDialog.emit(quest)
+                }
+                return true
+            }
+        }
+        return false
+    }
+
+
     fun isUserNearLocation(coordinates: LatLng, requiredDistance: Double): Boolean {
         lastKnownLocation?.let { location ->
             coordinates.let {
@@ -282,6 +394,44 @@ class MapViewModel @Inject constructor(
         return null
     }
 
+    fun onQuestTaskComplete() {
+        viewModelScope.launch {
+            _questInProgressDialog.value?.let {  quest ->
+                val indexOfCurrentCompletedTask = quest.locationWithTasks.tasks.indexOfFirst { it.isInProgress }
+                if (indexOfCurrentCompletedTask > -1) {
+                    if (indexOfCurrentCompletedTask == quest.locationWithTasks.tasks.lastIndex) {
+                        val quest = quest.toQuest()
+                        _questInProgressDialog.emit(null)
+                        _completedQuestDialog.emit(quest)
+
+                        userRepository.insertAchievedQuest(quest.id)
+                        prefs.userExperience = quest.reward.experience
+                    }
+                    else {
+                        _questInProgressDialog.emit(
+                            quest.copy(
+                                locationWithTasks = quest.locationWithTasks.copy(
+                                    tasks = quest.locationWithTasks.tasks.mapIndexed { index, taskInProgress ->
+                                        taskInProgress.copy(
+                                            isInProgress = index == indexOfCurrentCompletedTask + 1
+                                        )
+                                    }
+                                )
+                            )
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    fun onDismissQuestInProgress() {
+        viewModelScope.launch {
+            _questInProgressDialog.emit(null)
+        }
+    }
+
+
     fun onEventQuestComplete(questline: EventsQuestline) {
         viewModelScope.launch {
             val currentQuestLines = _eventsQuestline.value
@@ -289,8 +439,8 @@ class MapViewModel @Inject constructor(
             val previousQuestLine = currentQuestLines?.getOrNull(currentSelectedQuestLineIndex ?: -1)
             previousQuestLine?.let {
                 if (currentSelectedQuestLineIndex == currentQuestLines?.lastIndex
-                    && it.quest.locationWithTasks.lastIndex == it.locationWithTaskIndex
-                    && it.quest.locationWithTasks.getOrNull(it.locationWithTaskIndex)?.tasks?.lastIndex == it.taskIndex) {
+                    && it.eventQuest.locationWithTasks.lastIndex == it.locationWithTaskIndex
+                    && it.eventQuest.locationWithTasks.getOrNull(it.locationWithTaskIndex)?.tasks?.lastIndex == it.taskIndex) {
                     _eventsQuestline.emit(null)
                     _currentSavedAchievedEvent = null
                     _currentSavedEventsQuestLine = null
@@ -298,7 +448,7 @@ class MapViewModel @Inject constructor(
 
                     var totalReward = 0L
                     currentQuestLines.forEach {
-                        totalReward += it.quest.reward.experience
+                        totalReward += it.eventQuest.reward.experience
                     }
                     totalReward *= EVENT_REWARD_MULTIPLIER
 
@@ -319,11 +469,11 @@ class MapViewModel @Inject constructor(
 
 
             var newTaskIndex : Int?  =
-                if (questline.quest.locationWithTasks[questline.locationWithTaskIndex ?: 0].tasks.lastIndex == questline.taskIndex) 0
+                if (questline.eventQuest.locationWithTasks[questline.locationWithTaskIndex ?: 0].tasks.lastIndex == questline.taskIndex) 0
                 else (questline.taskIndex ?: 0) + 1
             var locationWithTaskIndex =
                 if (newTaskIndex == 0)
-                    if (questline.quest.locationWithTasks.lastIndex == questline.locationWithTaskIndex) null
+                    if (questline.eventQuest.locationWithTasks.lastIndex == questline.locationWithTaskIndex) null
                     else (questline.locationWithTaskIndex ?: 0) + 1
                 else questline.locationWithTaskIndex
             var isInCurrentLocation = false
@@ -341,7 +491,7 @@ class MapViewModel @Inject constructor(
 
             if (locationWithTaskIndex != questline.locationWithTaskIndex || currentSelectedQuestLineIndex != questLineIndex) {
                 currentQuestLine?.let {
-                    it.quest.locationWithTasks.get(locationWithTaskIndex).let {
+                    it.eventQuest.locationWithTasks.get(locationWithTaskIndex).let {
                         isInCurrentLocation = isUserNearLocation(
                             LatLng(
                                 it.interestingLocation.latitude,
@@ -377,7 +527,7 @@ class MapViewModel @Inject constructor(
                 _achievedEvent.emit(null)
                 _currentSavedEventsQuestLine = valueToEmit
 
-                val distance = currentQuestLine?.quest?.locationWithTasks?.get(locationWithTaskIndex)?.let {
+                val distance = currentQuestLine?.eventQuest?.locationWithTasks?.get(locationWithTaskIndex)?.let {
                      distanceFromUserToCoordinates(
                         LatLng(
                             it.interestingLocation.latitude,
@@ -391,8 +541,8 @@ class MapViewModel @Inject constructor(
                 val currentInterestingLocation = valueToEmit?.find {
                     it.isSelected
                 }?.let { questline ->
-                    questId = questline.quest.id
-                    questline.quest.locationWithTasks[questline.locationWithTaskIndex ?: -1]
+                    questId = questline.eventQuest.id
+                    questline.eventQuest.locationWithTasks[questline.locationWithTaskIndex ?: -1]
                 }
 
                 distance?.let {
@@ -442,6 +592,12 @@ class MapViewModel @Inject constructor(
         }
     }
 
+    fun onConfirmCompletedQuestDialog() {
+        viewModelScope.launch {
+            _completedQuestDialog.emit(null)
+        }
+    }
+
     fun onConfirmCompletedEventClick() {
         viewModelScope.launch {
             _completedEventDialogState.emit(null)
@@ -451,14 +607,14 @@ class MapViewModel @Inject constructor(
 }
 
 data class EventsQuestline(
-    val quest: Quest,
+    val eventQuest: EventQuest,
     val isSelected: Boolean,
     val locationWithTaskIndex: Int?,
     val taskIndex: Int?,
     val isInCurrentLocation: Boolean
 ) {
     fun getCurrentLocationWithTask() : LocationWithTasks? {
-        return quest.locationWithTasks.getOrNull(locationWithTaskIndex ?: -1)
+        return eventQuest.locationWithTasks.getOrNull(locationWithTaskIndex ?: -1)
     }
 }
 
