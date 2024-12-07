@@ -2,14 +2,39 @@ package com.example.sportapplication.ui.profile
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TopAppBar
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
@@ -20,6 +45,7 @@ import androidx.navigation.NavHostController
 import com.example.sportapplication.R
 import com.example.sportapplication.ui.settings.AvatarHelper
 import com.example.sportapplication.ui.theme.PrimaryButton
+import com.example.sportapplication.utils.getUserStatus
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -34,15 +60,28 @@ fun ProfileScreen(navController: NavHostController, viewModel: ProfileViewModel 
     var isEdited by remember { mutableStateOf(false) }
     var statusMessage by remember { mutableStateOf<Int?>(null) }
 
+    val userExperience by viewModel.userExperience.collectAsState()
+    val completedQuests by viewModel.completedQuestsAmount.collectAsState()
+    val completedEvents by viewModel.completedEventsAmount.collectAsState()
+    val distanceTraveled = "120 km"
+    val totalAchievements by viewModel.completedAchievementsAmount.collectAsState()
+    var inventoryItems by remember {
+        mutableIntStateOf(0)
+    }
+
+    val poisVisited by viewModel.poiVisitedAmount.collectAsState()
+
     // Dummy statistics
     val statistics = listOf(
-        stringResource(R.string.completed_quests) to "12",
-        stringResource(R.string.distance_traveled) to "120 km",
-        stringResource(R.string.total_achievements) to "5",
-        stringResource(R.string.inventory_items) to "30",
-        stringResource(R.string.completed_tasks) to "50",
-        stringResource(R.string.pois_visited) to "15"
+        stringResource(R.string.completed_quests) to completedQuests.toString(),
+        stringResource(R.string.distance_traveled) to distanceTraveled,
+        stringResource(R.string.total_achievements) to totalAchievements.toString(),
+        stringResource(R.string.inventory_items) to inventoryItems.toString(),
+        stringResource(R.string.completed_events) to completedEvents.toString(),
+        stringResource(R.string.pois_visited) to poisVisited.toString(),
+        stringResource(R.string.experience) to userExperience.toString(),
     )
+
 
     LaunchedEffect(nickname) {
         if (isEdited && !nickname.isNullOrBlank()) {
@@ -54,10 +93,18 @@ fun ProfileScreen(navController: NavHostController, viewModel: ProfileViewModel 
         topBar = {
             TopAppBar(
                 title = {
-                    Text(
-                        text = stringResource(R.string.profile),
-                        style = MaterialTheme.typography.titleLarge
-                    )
+                    Row {
+                        Text(
+                            modifier = Modifier.weight(1F),
+                            text = stringResource(R.string.profile),
+                            style = MaterialTheme.typography.titleLarge
+                        )
+                        Spacer(modifier = Modifier.weight(1F))
+                        UserStatus(
+                            modifier = Modifier,
+                            userExperience = userExperience
+                        )
+                    }
                 },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
@@ -161,6 +208,33 @@ fun ProfileScreen(navController: NavHostController, viewModel: ProfileViewModel 
     )
 }
 
+@Composable
+fun UserStatus(
+    modifier: Modifier,
+    userExperience: Long
+) {
+    Text(
+        modifier = modifier,
+        text = getUserStatus(userExperience),
+        style = MaterialTheme.typography.titleLarge,
+        color = getUserStatusColor(userExperience)
+    )
+}
+
+
+
+@Composable
+fun getUserStatusColor(userExperience: Long): Color =
+    when {
+        userExperience in 0..500 -> MaterialTheme.colorScheme.onSecondaryContainer
+        userExperience in 501..3000 -> MaterialTheme.colorScheme.tertiary
+        userExperience in 3001..5000 -> MaterialTheme.colorScheme.error
+        userExperience > 5000 -> MaterialTheme.colorScheme.primary
+        else -> MaterialTheme.colorScheme.onSecondaryContainer
+    }
+
+
+// Display individual statistic items with a label and value
 @Composable
 fun StatisticItem(label: String, value: String) {
     Row(

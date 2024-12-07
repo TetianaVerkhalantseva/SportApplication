@@ -8,8 +8,6 @@ import androidx.navigation.compose.NavHost
 import com.example.sportapplication.ui.about.AboutUsScreen
 import com.example.sportapplication.ui.about.navigation.aboutUsScreen
 import com.example.sportapplication.ui.achievements.navigation.achievementsScreen
-import com.example.sportapplication.ui.achievements.selectedAchievement.navigation.navigateToSelectedAchievement
-import com.example.sportapplication.ui.achievements.selectedAchievement.navigation.selectedAchievementScreen
 import com.example.sportapplication.ui.event.navigation.eventScreen
 import com.example.sportapplication.ui.event.selectedEvent.navigation.navigateToSelectedEvent
 import com.example.sportapplication.ui.event.selectedEvent.navigation.selectedEventScreen
@@ -18,7 +16,7 @@ import com.example.sportapplication.ui.introduction.navigation.introductionScree
 import com.example.sportapplication.ui.inventory.navigation.inventoryScreen
 import com.example.sportapplication.ui.map.navigation.mapRoute
 import com.example.sportapplication.ui.map.navigation.navigateToMap
-import com.example.sportapplication.ui.profile.navigation.profileRoute // Import profileRoute
+import com.example.sportapplication.ui.profile.navigation.profileRoute
 import com.example.sportapplication.ui.quest.navigation.questScreen
 import com.example.sportapplication.ui.quest.selectedQuest.navigation.navigateToSelectedQuest
 import com.example.sportapplication.ui.quest.selectedQuest.navigation.selectedQuestScreen
@@ -47,22 +45,15 @@ fun AppNavHost(navHostController: NavHostController) {
         )
         questScreen(
             navHostController = navHostController,
-            navigateToSelectedQuestScreen = { navHostController.navigateToSelectedQuest() }
+            navigateToSelectedQuestScreen = { navHostController.navigateToSelectedQuest(it) }
         )
         mapRoute(
             navHostController = navHostController
         )
         achievementsScreen(
-            navHostController = navHostController,
-            navigateToSelectedAchievementScreen = {
-                navHostController.navigateToSelectedAchievement(it.uid)
-            }
-
-        )
-        inventoryScreen(
             navHostController = navHostController
         )
-        selectedAchievementScreen(
+        inventoryScreen(
             navHostController = navHostController
         )
         selectedQuestScreen(
@@ -74,7 +65,7 @@ fun AppNavHost(navHostController: NavHostController) {
 
         eventScreen(
             navHostController = navHostController,
-            navigateToSelectedEventScreen = { navHostController.navigateToSelectedEvent() }
+            navigateToSelectedEventScreen = { navHostController.navigateToSelectedEvent(eventId = it) }
         )
         selectedEventScreen(
             navHostController = navHostController
