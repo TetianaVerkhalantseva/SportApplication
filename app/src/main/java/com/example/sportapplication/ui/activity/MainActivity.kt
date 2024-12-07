@@ -17,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
 import com.example.sportapplication.ui.activity.main.MainScreen
-import com.example.sportapplication.ui.introduction.navigation.INTRODUCTION_ROUTE
 import com.example.sportapplication.ui.profile.ProfileViewModel
 import com.example.sportapplication.ui.settings.LanguageViewModel
 import com.example.sportapplication.ui.settings.LocaleHelper
@@ -77,17 +76,15 @@ class MainActivity : ComponentActivity() {
 
                     val sensors = viewModel.sensors
 
-                    navHostController.addOnDestinationChangedListener { _, destination, _ ->
-                        isBottomBarVisible.value =
-                            destination.route != INTRODUCTION_ROUTE
-                    }
-
                     MainScreen(
                         navController = navHostController,
                         showBottomBar = isBottomBarVisible.value,
                         sharedPreferences = sharedPreferences,
                         sensors = sensors,
-                        viewModel = profileViewModel
+                        viewModel = profileViewModel,
+                        setBottomBarVisibility = {
+                            isBottomBarVisible.value = it
+                        }
                     )
                 }
             }
