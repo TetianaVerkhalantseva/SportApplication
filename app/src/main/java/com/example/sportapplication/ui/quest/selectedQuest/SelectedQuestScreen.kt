@@ -27,13 +27,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -83,23 +81,22 @@ fun SelectedQuestScreen(
             Icon(
                 imageVector = Icons.Default.Close,
                 contentDescription = null,
-                tint = Color.Gray
+                tint = Color.Red
             )
         }
 
         quest?.let { quest ->
             Column {
-                // Display the quest image
+                // Display the quest icon
                 Image(
                     modifier = Modifier
-                        .clip(RoundedCornerShape(18.dp))
-                        .width(200.dp)
-                        .height(150.dp),
+                        .width(100.dp)
+                        .height(100.dp),
                     painter = painterResource(id = quest.icon),
                     contentDescription = null,
                     contentScale = ContentScale.Fit
                 )
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(12.dp))
 
                 // Display the name and description of the quest
                 Text(
@@ -119,14 +116,20 @@ fun SelectedQuestScreen(
                 Spacer(modifier = Modifier.height(8.dp))
 
                 Text(
-                    modifier = Modifier.width(200.dp),
+                    modifier = Modifier.width(280.dp),
                     text = stringResource(id = quest.description ?: R.string.default_description),
-                    fontSize = 14.sp,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                    fontSize = 14.sp
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+
+                // Display the reward
+                Text(
+                    text = "Reward: ${quest.reward.experience} XP",
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold
                 )
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(10.dp))
 
                 // Display locations and tasks
                 quest.locationWithTasks.let { locationWithTasks ->
@@ -145,14 +148,14 @@ fun SelectedQuestScreen(
                         )
                     }
 
-                    Spacer(modifier = Modifier.height(4.dp))
+                    Spacer(modifier = Modifier.height(8.dp))
 
                     Text(
                         text = "Tasks:",
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Bold
                     )
-                    Spacer(modifier = Modifier.height(4.dp))
+                    Spacer(modifier = Modifier.height(8.dp))
 
                     locationWithTasks.tasks.forEachIndexed { index, task ->
                         Row {
@@ -171,9 +174,11 @@ fun SelectedQuestScreen(
                 }
             }
 
-            Spacer(modifier = Modifier.weight(1F))
+            Spacer(modifier = Modifier
+                .height(8.dp)
+                .weight(1F))
 
-            // Quest start button
+            // Button go to map
             OutlinedButton(
                 border = BorderStroke(1.dp, color = Color.Red),
                 shape = RoundedCornerShape(20.dp),
@@ -190,14 +195,7 @@ fun SelectedQuestScreen(
                 )
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // Display the reward
-            Text(
-                text = "Reward: ${quest.reward.experience} XP",
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Bold
-            )
+            Spacer(modifier = Modifier.height(6.dp))
         }
     }
 }
