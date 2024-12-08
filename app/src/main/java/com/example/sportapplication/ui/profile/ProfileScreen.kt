@@ -279,7 +279,7 @@ fun AvatarSelectionSection(
                             Text(
                                 text = nickname,
                                 style = MaterialTheme.typography.bodyMedium.copy(
-                                    color = MaterialTheme.colorScheme.primary,
+                                    color = MaterialTheme.colorScheme.onBackground,
                                     textAlign = TextAlign.Center
                                 ),
                                 modifier = Modifier.padding(bottom = 8.dp)
