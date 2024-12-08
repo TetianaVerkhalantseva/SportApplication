@@ -27,7 +27,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -82,7 +81,7 @@ fun SelectedEventScreen(
             Icon(
                 imageVector = Icons.Default.Close,
                 contentDescription = null,
-                tint = Color.Red
+                tint = MaterialTheme.colorScheme.onSurface
             )
         }
 
@@ -104,7 +103,7 @@ fun SelectedEventScreen(
                     text = stringResource(id = event.name),
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.tertiary
+                    color = MaterialTheme.colorScheme.onSurface
                 )
                 Spacer(modifier = Modifier.height(8.dp))
 
@@ -127,7 +126,7 @@ fun SelectedEventScreen(
                     modifier = Modifier.width(280.dp),
                     text = stringResource(id = quest.description ?: R.string.default_description),
                     fontSize = 14.sp,
-                    color = MaterialTheme.colorScheme.tertiary
+                    color = MaterialTheme.colorScheme.onSurface,
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -136,7 +135,7 @@ fun SelectedEventScreen(
                     text = "Reward: ${event.getTotalReward()} XP",
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.tertiary
+                    color = MaterialTheme.colorScheme.onSurface
                 )
 
                 Spacer(modifier = Modifier.height(10.dp))
@@ -156,7 +155,7 @@ fun SelectedEventScreen(
                                 text = stringResource(id = locationWithTasks.interestingLocation.name),
                                 fontSize = 16.sp,
                                 fontWeight = FontWeight.Medium,
-                                color = MaterialTheme.colorScheme.tertiary
+                                color = MaterialTheme.colorScheme.onSurface
                             )
                         }
                         Spacer(modifier = Modifier.height(6.dp))
@@ -173,13 +172,13 @@ fun SelectedEventScreen(
                                 Text(
                                     text = index.plus(1).toString().plus("."),
                                     fontSize = 15.sp,
-                                    color = MaterialTheme.colorScheme.tertiary
+                                    color = MaterialTheme.colorScheme.onSurface
                                 )
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Text(
                                     text = stringResource(id = task.description),
                                     fontSize = 14.sp,
-                                    color = MaterialTheme.colorScheme.tertiary
+                                    color = MaterialTheme.colorScheme.onSurface
                                 )
                                 Spacer(modifier = Modifier.height(4.dp))
                             }

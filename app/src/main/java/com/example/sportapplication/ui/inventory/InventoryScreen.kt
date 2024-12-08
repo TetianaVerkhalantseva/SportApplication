@@ -25,9 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.sportapplication.database.entity.ItemCategory
 import com.example.sportapplication.database.entity.ItemType
@@ -38,7 +36,6 @@ import kotlin.random.Random
 
 @Composable
 fun InventoryScreenRoute() {
-
     val viewModel: InventoryViewModel = hiltViewModel()
     val inventoryItems = viewModel.inventoryItems
     val itemList = viewModel.items
@@ -55,10 +52,7 @@ fun InventoryScreen(
     val items = itemList.toMutableList()
 
     Column {
-
-        CategoryItem(
-            text = "Inventory",
-        )
+        CategoryItem(text = "Inventory")
 
         InventoryLazyColumn(
             items = inventory,
@@ -70,34 +64,27 @@ fun InventoryScreen(
                 containerColor = MaterialTheme.colorScheme.tertiaryContainer
             )
         ) {
-            Text("Add Item", color = MaterialTheme.colorScheme.tertiary)
+            Text("Add Item", color = MaterialTheme.colorScheme.onTertiaryContainer)
         }
 
-        CategoryItem(
-            text = "Item Catalogue",
+        CategoryItem(text = "Item Catalogue")
 
-            )
-
-        ItemLazyColumn(
-            items = items
-        )
+        ItemLazyColumn(items = items)
     }
 }
 
 @Composable
-fun CategoryItem(
-    text: String,
-) {
+fun CategoryItem(text: String) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color.Gray)
+            .background(MaterialTheme.colorScheme.surfaceVariant)
     ) {
         Spacer(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(1.dp)
-                .background(Color.DarkGray)
+                .background(MaterialTheme.colorScheme.outline)
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -105,19 +92,18 @@ fun CategoryItem(
         Row {
             Text(
                 text = text,
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold,
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.align(Alignment.CenterVertically)
             )
             Spacer(modifier = Modifier.weight(1F))
-
         }
         Spacer(modifier = Modifier.height(8.dp))
         Spacer(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(1.dp)
-                .background(Color.DarkGray)
+                .background(MaterialTheme.colorScheme.outline)
         )
     }
 }
@@ -127,29 +113,18 @@ fun InventoryLazyColumn(
     items: List<InventoryItem>,
     removeItemFunction: (inventoryId: Long) -> Unit
 ) {
-    LazyColumn(
-        modifier = Modifier.fillMaxWidth()
-    ) {
+    LazyColumn(modifier = Modifier.fillMaxWidth()) {
         items(items) { item ->
-            InventoryItemUI(
-                item = item,
-                removeItemFunction
-            )
+            InventoryItemUI(item = item, removeItemFunction)
         }
     }
 }
 
 @Composable
-fun ItemLazyColumn(
-    items: List<Item>,
-) {
-    LazyColumn(
-        modifier = Modifier.fillMaxWidth()
-    ) {
+fun ItemLazyColumn(items: List<Item>) {
+    LazyColumn(modifier = Modifier.fillMaxWidth()) {
         items(items) { item ->
-            ItemUI(
-                item = item
-            )
+            ItemUI(item = item)
         }
     }
 }
@@ -163,24 +138,27 @@ fun InventoryItemUI(
         modifier = Modifier
             .padding(vertical = 8.dp)
     ) {
-
-        Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(4.dp)) {
-            if (item.itemCategory != ItemCategory.PLACEHOLDER) Image(
-                modifier = Modifier
-                    .weight(1F)
-                    .size(50.dp),
-                painter = painterResource(itemCategoryToDrawable(item.itemCategory)),
-                contentDescription = null
-            )
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(4.dp)
+        ) {
+            if (item.itemCategory != ItemCategory.PLACEHOLDER) {
+                Image(
+                    modifier = Modifier
+                        .weight(1F)
+                        .size(50.dp),
+                    painter = painterResource(itemCategoryToDrawable(item.itemCategory)),
+                    contentDescription = null
+                )
+            }
             Spacer(modifier = Modifier.width(10.dp))
             Text(
                 modifier = Modifier
                     .weight(2F)
                     .align(Alignment.CenterVertically),
-                text = item.itemName, softWrap = true,
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.tertiary
+                text = item.itemName,
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onBackground
             )
             if (item.itemId != -1L) {
                 Box(Modifier.padding(start = 4.dp, end = 4.dp)) {
@@ -191,13 +169,15 @@ fun InventoryItemUI(
                                 containerColor = MaterialTheme.colorScheme.tertiaryContainer
                             )
                         ) {
-                            Text("TODO: Use", color = MaterialTheme.colorScheme.tertiary)
+                            Text("TODO: Use", color = MaterialTheme.colorScheme.onTertiaryContainer)
                         }
                     } else if (item.itemType == ItemType.PASSIVE) {
                         Text(
                             "Effect",
-                            color = Color(102, 255, 102),
-                            modifier = Modifier.clickable { Log.i("test effect item", "clicked effect item") }
+                            color = Color(102, 255, 102), // Grønn farge for "Effect" beholdes
+                            modifier = Modifier.clickable {
+                                Log.i("test effect item", "clicked effect item")
+                            }
                         )
                     }
                 }
@@ -208,29 +188,25 @@ fun InventoryItemUI(
                         containerColor = MaterialTheme.colorScheme.tertiaryContainer
                     )
                 ) {
-                    Text("Drop", color = MaterialTheme.colorScheme.tertiary)
+                    Text("Drop", color = MaterialTheme.colorScheme.onTertiaryContainer)
                 }
             }
-
         }
         Spacer(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(1.dp)
-                .background(Color.Gray)
+                .background(MaterialTheme.colorScheme.surfaceVariant)
         )
     }
 }
 
 @Composable
-fun ItemUI(
-    item: Item
-) {
+fun ItemUI(item: Item) {
     Column(
         modifier = Modifier
             .padding(vertical = 8.dp)
     ) {
-
         Row(verticalAlignment = Alignment.CenterVertically) {
             Spacer(modifier = Modifier.width(10.dp))
             Text(
@@ -238,28 +214,27 @@ fun ItemUI(
                     .weight(2F)
                     .align(Alignment.CenterVertically),
                 text = item.itemName,
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.tertiary
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onBackground
             )
             if (item.itemId != -1L) {
-
                 Log.i("test item", "item")
             }
-            if (item.itemCategory != ItemCategory.PLACEHOLDER) Image(
-                modifier = Modifier
-                    .weight(1F)
-                    .size(50.dp),
-                painter = painterResource(itemCategoryToDrawable(item.itemCategory)),
-                contentDescription = null
-            )
-
+            if (item.itemCategory != ItemCategory.PLACEHOLDER) {
+                Image(
+                    modifier = Modifier
+                        .weight(1F)
+                        .size(50.dp),
+                    painter = painterResource(itemCategoryToDrawable(item.itemCategory)),
+                    contentDescription = null
+                )
+            }
         }
         Spacer(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(1.dp)
-                .background(Color.Gray)
+                .background(MaterialTheme.colorScheme.surfaceVariant)
         )
     }
 }

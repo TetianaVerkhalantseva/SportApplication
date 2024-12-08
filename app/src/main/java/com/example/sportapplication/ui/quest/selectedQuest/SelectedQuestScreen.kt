@@ -27,7 +27,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -41,17 +40,17 @@ import com.example.sportapplication.database.model.Quest
 @Composable
 fun SelectedQuestRoute(
     questId: Long?,
-    onBackClick : () -> Unit,
+    onBackClick: () -> Unit,
     navigateToMapScreen: () -> Unit
 ) {
-    val viewModel : SelectedQuestViewModel = hiltViewModel()
+    val viewModel: SelectedQuestViewModel = hiltViewModel()
     val quest by viewModel.quest.collectAsState()
 
     LaunchedEffect(key1 = questId) {
         viewModel.setQuestId(questId)
     }
 
-    SelectedQuestScreen (
+    SelectedQuestScreen(
         quest = quest,
         onBackClick = onBackClick,
         navigateToMapScreen = navigateToMapScreen
@@ -81,7 +80,7 @@ fun SelectedQuestScreen(
             Icon(
                 imageVector = Icons.Default.Close,
                 contentDescription = null,
-                tint = Color.Red
+                tint = MaterialTheme.colorScheme.onSurface
             )
         }
 
@@ -102,7 +101,8 @@ fun SelectedQuestScreen(
                 Text(
                     text = stringResource(id = quest.title),
                     fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSurface
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -118,7 +118,8 @@ fun SelectedQuestScreen(
                 Text(
                     modifier = Modifier.width(280.dp),
                     text = stringResource(id = quest.description ?: R.string.default_description),
-                    fontSize = 14.sp
+                    fontSize = 14.sp,
+                    color = MaterialTheme.colorScheme.onSurface,
                 )
                 Spacer(modifier = Modifier.height(10.dp))
 
@@ -126,9 +127,9 @@ fun SelectedQuestScreen(
                 Text(
                     text = "Reward: ${quest.reward.experience} XP",
                     fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSurface
                 )
-
                 Spacer(modifier = Modifier.height(10.dp))
 
                 // Display locations and tasks
@@ -144,7 +145,8 @@ fun SelectedQuestScreen(
                             modifier = Modifier.align(Alignment.CenterVertically),
                             text = stringResource(id = locationWithTasks.interestingLocation.name),
                             fontSize = 16.sp,
-                            fontWeight = FontWeight.Medium
+                            fontWeight = FontWeight.Medium,
+                            color = MaterialTheme.colorScheme.onSurface
                         )
                     }
 
@@ -153,7 +155,8 @@ fun SelectedQuestScreen(
                     Text(
                         text = "Tasks:",
                         fontSize = 14.sp,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.tertiary
                     )
                     Spacer(modifier = Modifier.height(8.dp))
 
@@ -161,12 +164,14 @@ fun SelectedQuestScreen(
                         Row {
                             Text(
                                 text = index.plus(1).toString().plus("."),
-                                fontSize = 15.sp
+                                fontSize = 15.sp,
+                                color = MaterialTheme.colorScheme.onSurface
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
                                 text = stringResource(id = task.description),
-                                fontSize = 14.sp
+                                fontSize = 14.sp,
+                                color = MaterialTheme.colorScheme.onSurface
                             )
                             Spacer(modifier = Modifier.height(4.dp))
                         }
@@ -180,18 +185,18 @@ fun SelectedQuestScreen(
 
             // Button go to map
             OutlinedButton(
-                border = BorderStroke(1.dp, color = Color.Red),
+                border = BorderStroke(1.dp, color = MaterialTheme.colorScheme.tertiary),
                 shape = RoundedCornerShape(20.dp),
                 onClick = { navigateToMapScreen() },
                 colors = ButtonDefaults.outlinedButtonColors(
-                    containerColor = Color.Red,
-                    contentColor = Color.Unspecified
+                    containerColor = MaterialTheme.colorScheme.tertiary,
+                    contentColor = MaterialTheme.colorScheme.onTertiary
                 ),
             ) {
                 Text(
                     text = stringResource(id = R.string.go_to_map),
                     fontSize = 16.sp,
-                    color = Color.White
+                    color = MaterialTheme.colorScheme.onTertiary
                 )
             }
 

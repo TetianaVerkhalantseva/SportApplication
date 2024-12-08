@@ -34,7 +34,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
@@ -70,7 +69,6 @@ fun ProfileScreen(navController: NavHostController, viewModel: ProfileViewModel 
 
     val poisVisited by viewModel.poiVisitedAmount.collectAsState()
 
-    // Dummy statistics
     val statistics = listOf(
         stringResource(R.string.completed_quests) to completedQuests.toString(),
         stringResource(R.string.total_achievements) to totalAchievements.toString(),
@@ -79,7 +77,6 @@ fun ProfileScreen(navController: NavHostController, viewModel: ProfileViewModel 
         stringResource(R.string.pois_visited) to poisVisited.toString(),
         stringResource(R.string.experience) to userExperience.toString(),
     )
-
 
     LaunchedEffect(nickname) {
         if (isEdited && !nickname.isNullOrBlank()) {
@@ -95,7 +92,8 @@ fun ProfileScreen(navController: NavHostController, viewModel: ProfileViewModel 
                         Text(
                             modifier = Modifier.weight(1F),
                             text = stringResource(R.string.profile),
-                            style = MaterialTheme.typography.titleLarge
+                            style = MaterialTheme.typography.titleLarge,
+                            color = MaterialTheme.colorScheme.onSurface
                         )
                         Spacer(modifier = Modifier.weight(1F))
                         UserStatus(
@@ -108,7 +106,8 @@ fun ProfileScreen(navController: NavHostController, viewModel: ProfileViewModel 
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
-                            contentDescription = null
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.onSurface
                         )
                     }
                 }
@@ -123,10 +122,10 @@ fun ProfileScreen(navController: NavHostController, viewModel: ProfileViewModel 
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 item {
-                    // Nickname Section
                     Text(
                         text = "${stringResource(R.string.current_nickname)}: $nickname",
-                        style = MaterialTheme.typography.titleMedium
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.onSurface
                     )
 
                     TextField(
@@ -136,7 +135,11 @@ fun ProfileScreen(navController: NavHostController, viewModel: ProfileViewModel 
                             isEdited = true
                         },
                         placeholder = {
-                            Text(text = stringResource(R.string.enter_new_nickname))
+                            Text(
+                                text = stringResource(R.string.enter_new_nickname),
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
                         },
                         modifier = Modifier.fillMaxWidth()
                     )
@@ -159,8 +162,7 @@ fun ProfileScreen(navController: NavHostController, viewModel: ProfileViewModel 
                                 }
                                 isEdited = false
                             }
-                        },
-
+                        }
                     )
 
                     if (statusMessage != null) {
@@ -174,26 +176,25 @@ fun ProfileScreen(navController: NavHostController, viewModel: ProfileViewModel 
 
                     Spacer(modifier = Modifier.height(24.dp))
 
-                    // Avatar Selection Section
                     nickname?.let {
                         AvatarSelectionSection(
                             selectedAvatar = avatarId,
                             onAvatarSelected = { newAvatarId ->
                                 coroutineScope.launch {
-                                    viewModel.updateAvatar(newAvatarId) // Oppdater i databasen
-                                    AvatarHelper.updateAvatar(newAvatarId) // Dynamisk oppdatering via AvatarHelper
+                                    viewModel.updateAvatar(newAvatarId)
+                                    AvatarHelper.updateAvatar(newAvatarId)
                                 }
                             },
-                            nickname = it // Brukernavn over avataren
+                            nickname = it
                         )
                     }
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    // Statistics Section
                     Text(
                         text = stringResource(R.string.player_statistics),
                         style = MaterialTheme.typography.titleLarge,
+                        color = MaterialTheme.colorScheme.onSurface,
                         modifier = Modifier.padding(vertical = 8.dp)
                     )
 
@@ -215,24 +216,10 @@ fun UserStatus(
         modifier = modifier,
         text = getUserStatus(userExperience),
         style = MaterialTheme.typography.titleLarge,
-        color = getUserStatusColor(userExperience)
+        color = MaterialTheme.colorScheme.primary
     )
 }
 
-
-
-@Composable
-fun getUserStatusColor(userExperience: Long): Color =
-    when {
-        userExperience in 0..500 -> MaterialTheme.colorScheme.onSecondaryContainer
-        userExperience in 501..3000 -> MaterialTheme.colorScheme.tertiary
-        userExperience in 3001..5000 -> MaterialTheme.colorScheme.error
-        userExperience > 5000 -> MaterialTheme.colorScheme.primary
-        else -> MaterialTheme.colorScheme.onSecondaryContainer
-    }
-
-
-// Display individual statistic items with a label and value
 @Composable
 fun StatisticItem(label: String, value: String) {
     Row(
@@ -244,12 +231,12 @@ fun StatisticItem(label: String, value: String) {
         Text(
             text = label,
             style = MaterialTheme.typography.bodyLarge,
-            modifier = Modifier.weight(1f)
+            color = MaterialTheme.colorScheme.onSurface
         )
         Text(
             text = value,
             style = MaterialTheme.typography.bodyLarge,
-            modifier = Modifier.weight(1f),
+            color = MaterialTheme.colorScheme.onSurface,
             textAlign = TextAlign.End
         )
     }
@@ -272,7 +259,8 @@ fun AvatarSelectionSection(
     ) {
         Text(
             text = stringResource(R.string.choose_avatar),
-            style = MaterialTheme.typography.titleMedium
+            style = MaterialTheme.typography.titleMedium,
+            color = MaterialTheme.colorScheme.onSurface
         )
 
         Row(
@@ -286,7 +274,6 @@ fun AvatarSelectionSection(
                         .size(90.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    // Plasser brukernavnet over avataren
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         if (selectedAvatar == index) {
                             Text(
@@ -300,9 +287,7 @@ fun AvatarSelectionSection(
                         }
 
                         IconButton(
-                            onClick = {
-                                onAvatarSelected(index) // Oppdater avatar umiddelbart
-                            },
+                            onClick = { onAvatarSelected(index) },
                             modifier = Modifier.size(64.dp)
                         ) {
                             Image(

@@ -17,8 +17,7 @@ import com.example.sportapplication.ui.quest.navigation.questScreen
 import com.example.sportapplication.ui.quest.selectedQuest.navigation.navigateToSelectedQuest
 import com.example.sportapplication.ui.quest.selectedQuest.navigation.selectedQuestScreen
 
-
-private const val GENERAL_ROUTE = "GENERAL_ROUTE"
+private const val GENERAL_ROUTE = "general_route"
 
 @Composable
 fun AppNavHost(
@@ -32,38 +31,15 @@ fun AppNavHost(
         startDestination = MAP_ROUTE,
         route = GENERAL_ROUTE
     ) {
-        questScreen(
-            navHostController = navHostController,
-            navigateToSelectedQuestScreen = { navHostController.navigateToSelectedQuest(it) }
-        )
-        mapRoute(
-            navHostController = navHostController,
-            setBottomBarVisibility = setBottomBarVisibility,
-            setSettingsVisibility = setSettingsVisibility
-        )
-        achievementsScreen(
-            navHostController = navHostController
-        )
-        inventoryScreen(
-            navHostController = navHostController
-        )
-        selectedQuestScreen(
-            navHostController = navHostController
-        )
-
-
-        profileRoute(navHostController = navHostController)
-
-        eventScreen(
-            navHostController = navHostController,
-            navigateToSelectedEventScreen = { navHostController.navigateToSelectedEvent(eventId = it) }
-        )
-        selectedEventScreen(
-            navHostController = navHostController
-        )
-        aboutUsScreen(
-            navHostController = navHostController
-        )
-
+        // Definer alle rutene
+        mapRoute(navHostController, setBottomBarVisibility, setSettingsVisibility)
+        questScreen(navHostController) { navHostController.navigateToSelectedQuest(it) }
+        achievementsScreen(navHostController)
+        inventoryScreen(navHostController)
+        profileRoute(navHostController)
+        aboutUsScreen(navHostController)
+        eventScreen(navHostController) { navHostController.navigateToSelectedEvent(it) }
+        selectedQuestScreen(navHostController)
+        selectedEventScreen(navHostController)
     }
 }
