@@ -24,13 +24,13 @@ private const val ACHIEVEMENTS_IN_A_ROW = 3.0
 fun AchievementPanel(
     achievements: List<AchievementUI>
 ) {
-    WorkoutsGrid(
+    AchievementsGrid(
         achievements = achievements
     )
 }
 
 @Composable
-fun WorkoutsGrid(
+fun AchievementsGrid(
     achievements: List<AchievementUI>
 ) {
     run breaking@{
@@ -41,7 +41,7 @@ fun WorkoutsGrid(
                     if (index < achievements.size) {
                         val achievement = achievements.getOrNull(index)
                         achievement?.let { item ->
-                            WorkoutItem(
+                            AchievementItem(
                                 modifier = Modifier
                                     .weight(1F),
                                 image =
@@ -59,7 +59,7 @@ fun WorkoutsGrid(
 }
 
 @Composable
-fun WorkoutItem(
+fun AchievementItem(
     modifier: Modifier,
     image: Int,
     title: String
