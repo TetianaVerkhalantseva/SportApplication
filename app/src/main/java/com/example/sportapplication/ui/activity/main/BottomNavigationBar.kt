@@ -44,7 +44,7 @@ fun BottomNavBar(
             ),
             BottomNavItem(
                 name = R.string.events,
-                icon = R.drawable.ic_launcher_foreground,
+                icon = R.drawable.event_icon,
                 route = EVENT_ROUTE
             ),
             BottomNavItem(

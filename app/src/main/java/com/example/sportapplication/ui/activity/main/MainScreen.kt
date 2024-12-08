@@ -51,7 +51,6 @@ import com.example.sportapplication.ui.activity.navigation.AppNavHost
 import com.example.sportapplication.ui.profile.ProfileViewModel
 import com.example.sportapplication.ui.profile.navigation.navigateToProfile
 import com.example.sportapplication.ui.settings.LanguageViewModel
-import com.example.sportapplication.ui.settings.UnitViewModel
 import com.example.sportapplication.ui.settings.batteryindicator.BatteryIndicator
 import com.example.sportapplication.ui.settings.batteryindicator.BatteryViewModel
 import com.example.sportapplication.ui.settings.updateLocale
@@ -72,10 +71,9 @@ fun MainScreen(
     var showMenu by remember { mutableStateOf(false) }
     var showLanguageMenu by remember { mutableStateOf(false) }
     var showSettingsMenu by remember { mutableStateOf(false) }
-    var showUnitMenu by remember { mutableStateOf(false) }
 
     val languageViewModel: LanguageViewModel = hiltViewModel()
-    val unitViewModel: UnitViewModel = hiltViewModel()
+
     val batteryViewModel: BatteryViewModel = hiltViewModel()
 
     val scope = rememberCoroutineScope()
@@ -93,6 +91,7 @@ fun MainScreen(
                             .height(160.dp)
                     ) {
                         // Background Image
+                        if (!isDarkTheme)
                         Image(
                             painter = painterResource(id = R.drawable.questabout_dynamic),
                             contentDescription = null,
@@ -103,6 +102,18 @@ fun MainScreen(
                                     clip = true
                                 }
                         )
+                        else
+                            Image(
+                                painter = painterResource(id = R.drawable.questabout_night),
+                                contentDescription = null,
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .graphicsLayer {
+                                        clip = true
+                                    }
+                            )
+
                         // Content in TopAppBar
                         Row(
                             modifier = Modifier
@@ -209,7 +220,6 @@ fun MainScreen(
                                         }
                                     )
 
-
                                     if (showSettingsMenu) {
                                         DropdownMenu(
                                             expanded = showSettingsMenu,
@@ -236,54 +246,6 @@ fun MainScreen(
                                                     )
                                                 }
                                             )
-
-                                            DropdownMenuItem(
-                                                text = {
-                                                    Text(
-                                                        stringResource(R.string.change_unit),
-                                                        style = MaterialTheme.typography.bodyLarge
-                                                    )
-                                                },
-                                                onClick = {
-                                                    showUnitMenu = !showUnitMenu
-                                                },
-                                                leadingIcon = {
-                                                    Icon(
-                                                        painter = painterResource(id = R.drawable.theme_light_dark),
-                                                        contentDescription = null,
-                                                        tint = MaterialTheme.colorScheme.onPrimaryContainer
-                                                    )
-                                                }
-                                            )
-
-                                            if (showUnitMenu) {
-                                                DropdownMenu(
-                                                    expanded = showUnitMenu,
-                                                    onDismissRequest = { showUnitMenu = false },
-                                                    modifier = Modifier.background(MaterialTheme.colorScheme.primaryContainer),
-                                                    offset = DpOffset( x=0.dp, y = 90.dp)
-
-                                                ) {
-                                                    listOf("Metric", "Imperial").forEach { unit ->
-                                                        DropdownMenuItem(
-                                                            text = {
-                                                                Text(
-                                                                    text = unit,
-                                                                    style = MaterialTheme.typography.bodyLarge
-                                                                )
-                                                            },
-                                                            onClick = {
-                                                                scope.launch {
-                                                                    unitViewModel.setUnitSystem(unit)
-                                                                    showUnitMenu = false
-                                                                }
-                                                            }
-                                                        )
-                                                    }
-                                                }
-                                            }
-
-                                            // Move Change Language into the Settings menu
                                             DropdownMenuItem(
                                                 text = {
                                                     Text(
