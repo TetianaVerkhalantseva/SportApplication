@@ -9,6 +9,7 @@ import com.example.sportapplication.database.model.Quest
 import com.example.sportapplication.database.model.Reward
 import com.example.sportapplication.database.model.Task
 import javax.inject.Inject
+import kotlin.random.Random
 
 const val EVENT_REWARD_MULTIPLIER = 3
 
@@ -23,18 +24,21 @@ class PoiStorage @Inject constructor() {
             icon = R.drawable.ic_shoes,
             description = R.string.event_morning_run_description,
             locationId = 7,
-            startTime = 1733572543831,
+            startTime = System.currentTimeMillis(),
             duration = 3600000,
-            questsIds = listOf(4, 5)),
+            questsIds = listOf(4, 5),
+            rewardItemId = Random.nextInt(1, 4).toLong()
+        ),
         EventResponseBody(
             id = 2,
             name = R.string.event_soccer_game,
             icon = R.drawable.ic_fitness_tracker,
             description = R.string.event_soccer_game_description,
             locationId = 3,
-            startTime = 1733572543831,
+            startTime = 1733596261788,
             duration = 5400000,
-            questsIds = listOf(1, 2, 3))
+            questsIds = listOf(1, 2, 3),
+            rewardItemId = null)
     )
 
     // List of interestingLocations
@@ -128,7 +132,7 @@ class PoiStorage @Inject constructor() {
     val eventQuests = listOf(
         EventQuest(
             id = 1,
-            icon = R.drawable.eventsquests,
+            icon = R.drawable.event_guest,
             image = R.drawable.ic_quest_1_image,
             name = R.string.quest_1_name,
             title = R.string.quest_1_title,
@@ -149,7 +153,7 @@ class PoiStorage @Inject constructor() {
         ),
         EventQuest(
             id = 2,
-            icon = R.drawable.eventsquests,
+            icon = R.drawable.event_guest,
             image = R.drawable.ic_quest_2_image,
             name = R.string.quest_2_name,
             title = R.string.quest_2_title,
@@ -170,7 +174,7 @@ class PoiStorage @Inject constructor() {
         ),
         EventQuest(
             id = 3,
-            icon = R.drawable.eventsquests,
+            icon = R.drawable.event_guest,
             image = R.drawable.ic_quest_2_image,
             name = R.string.quest_3_name,
             title = R.string.quest_3_title,
@@ -190,7 +194,7 @@ class PoiStorage @Inject constructor() {
         ),
         EventQuest(
             id = 4,
-            icon = R.drawable.eventsquests,
+            icon = R.drawable.event_guest,
             image = R.drawable.ic_quest_2_image,
             name = R.string.quest_3_name,
             title = R.string.quest_3_title,
@@ -210,7 +214,7 @@ class PoiStorage @Inject constructor() {
         ),
         EventQuest(
             id = 5,
-            icon = R.drawable.eventsquests,
+            icon = R.drawable.event_guest,
             image = R.drawable.ic_quest_2_image,
             name = R.string.quest_3_name,
             title = R.string.quest_3_title,
@@ -234,9 +238,9 @@ class PoiStorage @Inject constructor() {
     val quests = listOf(
         Quest(
             id = 1,
-            icon = R.drawable.ic_quest_1,
+            icon = R.drawable.quest_icon,
             image = R.drawable.ic_quest_2_image,
-            name = R.string.quest_3_name,
+            name = R.string.quest_1_name,
             title = R.string.quest_3_title,
             description = R.string.quest_3_description,
             locationWithTasks =
@@ -253,9 +257,9 @@ class PoiStorage @Inject constructor() {
         ),
         Quest(
             id = 2,
-            icon = R.drawable.ic_quest_2,
+            icon = R.drawable.quest_icon,
             image = R.drawable.ic_quest_2_image,
-            name = R.string.quest_3_name,
+            name = R.string.quest_2_name,
             title = R.string.quest_3_title,
             description = R.string.quest_3_description,
             locationWithTasks =

@@ -12,8 +12,8 @@ data class EventResponseBody(
     val locationId: Long,    // InterestingLocation associated with the event
     val startTime: Long,     // Start time of the event (in milliseconds)
     val duration: Long,      // Duration of the event (in milliseconds)
-    val task: Task? = null,   // Optional task for the event
     val questsIds: List<Long>,
+    val rewardItemId: Long?
 ) {
 
     var coordinate: LatLng? = null

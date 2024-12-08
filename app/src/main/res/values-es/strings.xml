@@ -1,51 +1,97 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">AplicaciónDeporte</string>
+    <string name="app_name">Questabout</string>
     <string name="map_screen">Mapa</string>
     <string name="quest_screen">Misión</string>
     <string name="inventory_screen">Inventario</string>
     <string name="achievements_screen">Logros</string>
     <string name="sensor_screen">Sensor</string>
 
+    <!-- Map Screen -->
+    <string name="achieved_achievement_reward_placeholder">¡Has conseguido un nuevo logro y %1$d de experiencia!</string>
+    <string name="start_event_quests">Comenzar evento con misiones</string>
+    <string name="event">Evento</string>
+    <string name="task_completed">Completado</string>
+    <string name="go_to_quest_location_placeholder">Para continuar el evento, necesitas ir a %1$s</string>
+    <string name="distance_to_next_quest_location">Distancia a la próxima ubicación de misión: %1$d metros</string>
+    <string name="continue_events_quest">Continuar misión del evento</string>
+    <string name="event_is_completed">¡Evento completado!</string>
+    <string name="event_is_expired">¡El evento ha expirado!</string>
+    <string name="completed_event_reward_placeholder">¡Has ganado %1$d puntos!</string>
+    <string name="ok">Ok</string>
+    <string name="quest">Misión</string>
+    <string name="quest_is_completed">¡Misión completada!</string>
+    <string name="start_completing_quest">Comenzar misión</string>
+    <string name="completed">Completado</string>
+    <string name="active">Activo</string>
+
+    <!-- User Statuses -->
+    <string name="status_v1">Nuevo</string>
+    <string name="status_v2">Hábil</string>
+    <string name="status_v3">Experto</string>
+    <string name="status_v4">Pro +</string>
+
     <!-- Achievements Screen -->
     <string name="achievements">Logros</string>
-    <string name="total_workouts">Entrenamientos Totales</string>
-    <string name="workouts_in_a_week">Entrenamientos en una Semana</string>
-    <string name="share_badge">Compartir Insignia</string>
+    <string name="total_workouts">Total de entrenamientos</string>
+    <string name="workouts_in_a_week">Entrenamientos en una semana</string>
+    <string name="icon_1_quest">1 Misión</string>
+    <string name="icon_3_quest">3 Misiones</string>
+    <string name="icon_10_quest">10 Misiones</string>
+    <string name="icon_1_event">1 Evento</string>
+    <string name="icon_3_event">3 Eventos</string>
+    <string name="icon_10_event">10 Eventos</string>
+    <string name="icon_100xp">100 XP</string>
+    <string name="icon_1000xp">1000 XP</string>
+    <string name="icon_3000xp">3000 XP</string>
+    <string name="icon_new">Novato</string>
+    <string name="icon_skilled">Hábil</string>
+    <string name="icon_pro">Pro</string>
 
     <!-- Quests Screen -->
     <string name="all_quests">Todas las misiones</string>
-    <string name="favourites">Favoritos</string>
-    <string name="daily_quests">Misiones Diarias</string>
-    <string name="no_equipment_quests">Misiones sin Equipamiento</string>
+    <string name="favourites">Favoritas</string>
+    <string name="daily_quests">Misiones diarias</string>
+    <string name="no_equipment_quests">Misiones sin equipo</string>
     <string name="quest_description1">Haz esto 4 veces, luego haz aquello 123123 veces y sé feliz</string>
 
+    <!-- Selected Event Screen -->
+    <string name="go_to_map">Ir al mapa</string>
+
     <!-- Selected Quest Screen -->
-    <string name="start_quiz">Iniciar Quiz</string>
+    <string name="start_quiz">Comenzar cuestionario</string>
 
     <!-- Introduction Screen and menu -->
-    <string name="welcome_to_sport_application">Bienvenido a AplicaciónDeporte</string>
+    <string name="welcome_to_sport_application">Bienvenido a Sport Application</string>
     <string name="welcome_to_questabout">Bienvenido a Questabout</string>
     <string name="questabout">Questabout</string>
-    <string name="change_language">Cambiar Idioma</string>
-    <string name="change_theme">Cambiar Tema</string>
-    <string name="settings">Configuración</string>
+    <string name="change_language">Cambiar idioma</string>
+    <string name="change_theme">Cambiar tema</string>
+    <string name="settings">Configuraciones</string>
     <string name="welcome_to_questabout_2">Bienvenido a Questabout</string>
     <string name="about_questabout">Acerca de Questabout</string>
-    <string name="questabout_is_an_app_designed_to_bring_together_gamification_outdoor_activities_and_social_interaction_explore_nature_while_earning_achievements_and_meeting_like_minded_people_the_app_includes_features_like_a_customizable_map_navigation_tools_event_tracking_and_options_to_set_up_personal_quests_users_can_customize_preferences_creating_a_tailored_experience_through_camera_input_the_gameplay_becomes_more_interactive_adding_an_ar_like_experience_to_your_outdoor_adventures_complete_challenges_alone_or_collaborate_with_others_for_group_based_achievements_the_app_tracks_weather_conditions_suggests_hotspots_and_visualizes_your_activity_through_heatmaps_customize_your_avatar_earn_badges_and_keep_up_with_others_through_real_time_communication_keep_the_adventure_alive_with_questabout_s_dynamic_and_social_features_this_application_has_been_carefully_crafted_to_ensure_a_fun_and_engaging_experience_for_users_who_want_to_combine_exercise_with_exploration_and_social_connection_it_s_all_about_getting_outside_moving_and_making_new_connections_track_your_progress_manage_your_quests_and_customize_your_experience_every_step_of_the_way_questabout_makes_sure_every_journey_is_an_adventure_and_every_adventure_brings_new_opportunities_whether_you_are_looking_for_a_peaceful_hike_a_challenging_mountain_climb_or_just_a_walk_in_the_park_questabout_is_your_perfect_companion_stay_motivated_with_rewards_meet_new_friends_and_keep_discovering_new_places_let_the_journey_begin">Questabout es una aplicación diseñada para unir la gamificación, las actividades al aire libre y la interacción social. Explora la naturaleza mientras ganas logros y conoces a personas con intereses similares. La aplicación incluye características como un mapa personalizable, herramientas de navegación, seguimiento de eventos y opciones para configurar misiones personales. Los usuarios pueden personalizar sus preferencias para crear una experiencia a medida. A través de la entrada de la cámara, el juego se vuelve más interactivo, ofreciendo una experiencia similar a la realidad aumentada para tus aventuras al aire libre. Completa desafíos solo o colabora con otros para logros en grupo. La aplicación rastrea las condiciones climáticas, sugiere puntos de interés y visualiza tu actividad a través de mapas de calor. Personaliza tu avatar, gana insignias y mantente al día con otros en tiempo real. Mantén viva la aventura con las características dinámicas y sociales de Questabout. Esta aplicación ha sido cuidadosamente diseñada para garantizar una experiencia divertida y atractiva para los usuarios que desean combinar ejercicio con exploración y conexión social. Se trata de salir, moverse y crear nuevas conexiones. Rastrea tu progreso, administra tus misiones y personaliza tu experiencia en cada paso del camino. Questabout se asegura de que cada viaje sea una aventura y que cada aventura brinde nuevas oportunidades. Ya sea que busques una caminata tranquila, una escalada desafiante o simplemente un paseo por el parque, Questabout es tu compañero perfecto. Mantén la motivación con recompensas, conoce nuevos amigos y sigue descubriendo nuevos lugares. ¡Que comience la aventura!</string>
-    <string name="change_your_settings_here">Cambia tus ajustes aquí</string>
-    <string name="got_it">¡Entendido</string>
+    <string name="questabout_is_an_app_designed_to_bring_together_gamification_outdoor_activities_and_social_interaction_explore_nature_while_earning_achievements_and_meeting_like_minded_people_the_app_includes_features_like_a_customizable_map_navigation_tools_event_tracking_and_options_to_set_up_personal_quests_users_can_customize_preferences_creating_a_tailored_experience">
+<![CDATA[
+Questabout es una aplicación diseñada para combinar la gamificación con actividades al aire libre, motivando a los usuarios a participar en desafíos físicos y explorar su entorno. La aplicación ofrece una manera estructurada y divertida de mantenerse activo a través de misiones y eventos.
+
+Entre las características principales se incluye un mapa personalizable que ayuda a los usuarios a navegar y realizar un seguimiento de su progreso, un sistema de misiones con desafíos diversos y un rastreador de eventos para participar en actividades organizadas. Los usuarios pueden completar misiones que van desde correr y hacer senderismo hasta realizar tareas específicas en ubicaciones designadas. La aplicación registra los logros y otorga recompensas por actividades completadas, asegurando una motivación constante.
+
+Con un enfoque en el juego individual, Questabout enfatiza la superación personal y la exploración personal. Ya sea que tu objetivo sea recorrer un sendero escénico, completar un desafío de entrenamiento o descubrir nuevos lugares en tu área, Questabout es tu compañero ideal para mantenerte activo e inspirado.
+
+¡Comienza tu aventura hoy, enfrenta nuevos desafíos y sigue descubriendo con Questabout!
+]]>
+</string>
+    <string name="change_your_settings_here">Cambia tus configuraciones aquí</string>
+    <string name="got_it">¡Entendido!</string>
 
     <!-- Strings for unit system selection -->
     <string name="change_unit">Cambiar sistema de unidades</string>
     <string name="metric_system">Sistema métrico</string>
     <string name="imperial_system">Sistema imperial</string>
 
-    <!-- Strings for Profile Screen  -->
+    <!-- Strings for Profile Screen -->
     <string name="profile">Perfil</string>
     <string name="nickname">Apodo</string>
     <string name="save">Guardar</string>
-    <string name="current_nickname">Apodo Actual</string>
     <string name="nickname_saved_successfully">Apodo guardado con éxito</string>
     <string name="nickname_save_failed">No se pudo guardar el apodo. Por favor, inténtelo de nuevo.</string>
     <string name="enter_new_nickname">Introduzca un nuevo apodo</string>
@@ -53,52 +99,67 @@
     <string name="completed_quests">Misiones Completadas</string>
     <string name="distance_traveled">Distancia Recorrida</string>
     <string name="total_achievements">Logros Totales</string>
-    <string name="inventory_items">Elementos de Inventario</string>
+    <string name="total_items_picked_up">Total de artículos recogidos</string>
     <string name="completed_tasks">Tareas Completadas</string>
     <string name="pois_visited">POIs Visitados</string>
+    <string name="choose_avatar">Elige un avatar</string>
 
-
+    <!-- Strings for Items -->
+    <string name="inventory_items">Elementos de Inventario</string>
+    <string name="current_nickname">Apodo actual</string>
+    <string name="completed_events">Eventos completados</string>
+    <string name="experience">Experiencia</string>
 
 
     <!-- Events -->
-    <string name="event_morning_run">Carrera Matutina</string>
+    <string name="events">Eventos</string>
+    <string name="event_morning_run">Carrera matutina</string>
     <string name="event_morning_run_description">Comienza tu día con una carrera de 5 km por el parque de la ciudad.</string>
-    <string name="event_soccer_game">Partido de Fútbol</string>
+    <string name="event_soccer_game">Partido de fútbol</string>
     <string name="event_soccer_game_description">Únete a un partido de fútbol local en el estadio.</string>
+    <string name="amount_of_locations_event_placeholder">Cantidad de ubicaciones: %1$d</string>
+    <string name="amount_of_tasks_event_placeholder">Cantidad de tareas: %1$d</string>
+    <string name="event_reward_placeholder">Recompensa: %1$d experiencia</string>
 
     <!-- Sports Locations in Tromsø -->
     <string name="location_city_park">Lago Prestvannet</string>
     <string name="location_stadium">Tromsøhallen</string>
-    <string name="location_romssa_arena">Arena Romssa</string>
+    <string name="location_romssa_arena">Romssa Arena</string>
     <string name="location_tromsobadet">Tromsøbadet</string>
-    <string name="location_tromso_alpinpark">Parque Alpino de Tromsø</string>
+    <string name="location_tromso_alpinpark">Parque Alpino Tromsø</string>
     <string name="location_tuil_arena">Arena TUIL</string>
-    <string name="location_kraft_sportssenter">Centro Deportivo Kraft</string>
+    <string name="location_kraft_sportssenter">Centro deportivo Kraft</string>
     <string name="location_fløyahallen">Fløyahallen</string>
     <string name="location_skarpmarka">Skarpmarka</string>
-    <string name="location_kroken_car_park">Estacionamiento de Kroken</string>
+    <string name="location_kroken_car_park">Aparcamiento Kroken</string>
     <string name="location_valhallhallen">Valhallhallen</string>
     <string name="location_crossfit_nordaforr">CrossFit Nordaførr</string>
     <string name="location_folkeparken">Folkeparken</string>
+    <string name="location_skansen_festningsverk">Fortaleza Skansen</string>
 
     <!-- Quests -->
     <string name="quest_1_name">Misión 1</string>
-    <string name="quest_1_title">Desafío de Correr</string>
-    <string name="quest_1_description">Corre dos vueltas alrededor del parque.</string>
+    <string name="quest_1_title">Desafío de correr</string>
+    <string name="quest_1_description">Completa dos vueltas en el parque.</string>
     <string name="quest_1_reward">Recompensa: Zapatillas</string>
+    <string name="amount_of_tasks_quest_placeholder">Cantidad de tareas: %1$d</string>
 
     <string name="quest_2_name">Misión 2</string>
-    <string name="quest_2_title">Desafío de Sentadillas</string>
+    <string name="quest_2_title">Desafío de sentadillas</string>
     <string name="quest_2_description">Haz 30 sentadillas en el estadio.</string>
     <string name="quest_2_reward">Recompensa: Pantalones cortos deportivos</string>
 
+    <string name="quest_3_name">Misión 3</string>
+    <string name="quest_3_title">Desafío de prueba</string>
+    <string name="quest_3_description">Descripción del desafío de prueba.</string>
+    <string name="quest_3_reward">Recompensa: Pantalones cortos deportivos</string>
 
     <!-- General Tasks for Quests and Events -->
     <string name="task_complete_challenge_action">Completa el desafío</string>
-    <string name="task_take_photo_photo">Toma una foto para confirmar la finalización</string>
+    <string name="task_take_photo_photo">Toma una foto para confirmar</string>
     <string name="task_go_action">Ve al lugar designado</string>
     <string name="task_run_action">Corre al lugar designado</string>
-    <string name="task_bike_action">Anda en bicicleta al lugar designado</string>
+    <string name="task_bike_action">Bicicletea al lugar designado</string>
     <string name="task_collect_item_action">Recoge el objeto en el lugar</string>
     <string name="task_check_in_action">Regístrate en el lugar</string>
     <string name="task_participate_event_action">Participa en el evento</string>
@@ -107,47 +168,36 @@
     <string name="task_wait_timer_action">Espera a que termine el temporizador</string>
 
     <!-- Sports Tasks -->
-
-    <!-- Task 1: Run 5 Kilometers -->
     <string name="task_run_5k_action">Corre 5 kilómetros en la ruta designada.</string>
-    <string name="task_run_5k_photo">Toma una foto en la línea de meta.</string>
-
-    <!-- Task 2: Swim 500 Meters -->
+    <string name="task_run_5k_photo">Toma una foto en la meta.</string>
     <string name="task_swim_500m_action">Nada 500 metros en la piscina.</string>
-    <string name="task_swim_500m_photo">Toma una foto después de nadar.</string>
-
-    <!-- Task 3: Climb 1000 Steps -->
+    <string name="task_swim_500m_photo">Toma una foto en la piscina después de terminar.</string>
     <string name="task_climb_1000_steps_action">Sube 1000 escalones en la escalera.</string>
     <string name="task_climb_1000_steps_photo">Toma una foto en la cima de las escaleras.</string>
-
-    <!-- Task 4: Bike 10 Kilometers -->
-    <string name="task_bike_10k_action">Anda en bicicleta 10 kilómetros hasta el lugar especificado.</string>
-    <string name="task_bike_10k_photo">Toma una foto en el punto de llegada.</string>
-
-    <!-- Task 5: Complete 50 Push-ups -->
+    <string name="task_bike_10k_action">Bicicletea 10 kilómetros al lugar indicado.</string>
+    <string name="task_bike_10k_photo">Toma una foto en el punto final.</string>
     <string name="task_pushups_50_action">Haz 50 flexiones lo más rápido posible.</string>
-    <string name="task_pushups_50_photo">Toma una foto después de terminar las flexiones.</string>
-
-    <!-- Task 6: Row 2 Kilometers -->
+    <string name="task_pushups_50_photo">Toma una foto después de completar las flexiones.</string>
     <string name="task_row_2k_action">Rema 2 kilómetros en la máquina de remo.</string>
-    <string name="task_row_2k_photo">Toma una foto de la máquina de remo después de terminar.</string>
-
-    <!-- Task 7: Hike to the Mountain Peak -->
-    <string name="task_hike_peak_action">Camina hasta el pico de la montaña, ubicado a 3 kilómetros.</string>
-    <string name="task_hike_peak_photo">Toma una foto en el pico de la montaña.</string>
-
-    <!-- Task 8: Perform 30 Burpees -->
+    <string name="task_row_2k_photo">Toma una foto de la máquina de remo al terminar.</string>
+    <string name="task_hike_peak_action">Camina hasta la cima de la montaña ubicada a 3 kilómetros.</string>
+    <string name="task_hike_peak_photo">Toma una foto en la cima de la montaña.</string>
     <string name="task_burpees_30_action">Haz 30 burpees sin detenerte.</string>
-    <string name="task_burpees_30_photo">Toma una foto después de terminar los burpees.</string>
-
-    <!-- Task 9: Run Two Laps -->
+    <string name="task_burpees_30_photo">Toma una foto después de completar los burpees.</string>
     <string name="task_run_two_laps_action">Corre dos vueltas</string>
-    <string name="task_run_two_laps_photo">Toma una foto después de terminar las dos vueltas.</string>
-
-    <!-- Task 10: Do 30 Squats -->
+    <string name="task_run_two_laps_photo">Toma una foto después de completar las dos vueltas.</string>
     <string name="task_do_squats_action">Haz 30 sentadillas</string>
-    <string name="task_do_squats_photo">Toma una foto después de terminar las sentadillas.</string>
+    <string name="task_do_squats_photo">Toma una foto después de completar las sentadillas.</string>
 
     <string name="default_description">Descripción no disponible</string>
 
+    <!-- About Us -->
+    <string name="about_us">Acerca de nosotros</string>
+    <string name="developer_name_1">Lill-Kristin Karlsen</string>
+    <string name="developer_name_2">Tetiana Verkhalantseva</string>
+    <string name="developer_name_3">Oliver Stanislaw Sokol</string>
+    <string name="product_idea">Idea del producto</string>
+    <string name="this_app_was_created_to_help_users_achieve_their_fitness_and_outdoor_goals_through_gamification_the_app_tracks_user_activity_and_provides_fun_challenges">Esta aplicación fue creada para ayudar a los usuarios a alcanzar sus objetivos de fitness y actividades al aire libre a través de la gamificación. La aplicación realiza un seguimiento de la actividad del usuario y proporciona desafíos divertidos.</string>
+    <string name="meet_the_team_behind_this_app">Conoce al equipo detrás de esta aplicación:</string>
+    <string name="developer">Desarrollador</string>
 </resources>

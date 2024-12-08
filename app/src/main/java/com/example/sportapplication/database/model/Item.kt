@@ -7,5 +7,9 @@ data class Item(
     val itemId: Long,
     val itemName: String,
     val itemType: ItemType,
-    val itemCategory: ItemCategory
+    val itemCategory: ItemCategory,
+    val itemActivated: Long?,
+    val itemDuration: Long?,
+    val itemEffectOnXp: Float?,
+    val itemEffectOnDuration: Float?
 )

@@ -2,6 +2,10 @@ package com.example.sportapplication.ui.map
 
 import android.location.Location
 import androidx.annotation.StringRes
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableLongStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.sportapplication.database.data.EVENT_REWARD_MULTIPLIER
@@ -26,7 +30,11 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
+import com.example.sportapplication.database.dao.UserDao
 import kotlinx.coroutines.launch
+import com.example.sportapplication.database.entity.User
+import com.example.sportapplication.database.model.Item
+import com.example.sportapplication.repository.ItemRepository
 import java.util.Calendar
 import javax.inject.Inject
 
@@ -37,10 +45,20 @@ class MapViewModel @Inject constructor(
     private val locationRepository: LocationRepository,
     private val poiRepository: PoiRepository,
     private val userRepository: UserRepository,
+    private val userDao: UserDao,
+    private val itemRepository: ItemRepository,
     private val prefs: AppSharedPreferences
 ): ViewModel() {
-
     private var completedEventsIds: List<AchievedEvent> = emptyList()
+
+    private val _displayIntroductionPage = MutableStateFlow(isMapScreenFirstLaunch)
+    val displayIntroductionPage =_displayIntroductionPage.asStateFlow()
+
+    private val _showSplash = MutableStateFlow(prefs.showSplash)
+    val showSplash = _showSplash.asStateFlow()
+
+    private val _user = MutableStateFlow<User?>(null)
+    val user = _user.asStateFlow()
 
     private val _followUserState = MutableStateFlow(true)
     val followUserState = _followUserState.asStateFlow()
@@ -96,6 +114,10 @@ class MapViewModel @Inject constructor(
         onUserLocationUpdate(it)
         it
     }
+
+    var itemEffectOnQuest by mutableLongStateOf(0L)
+    var eventItemReward by mutableStateOf<Item?>(null)
+
 
     private fun onUserLocationUpdate(location: Location) {
         viewModelScope.launch {
@@ -217,6 +239,7 @@ class MapViewModel @Inject constructor(
     init {
         observeCompletedEvents()
         observeCompletedQuests()
+        observeUser()
         viewModelScope.launch {
             val events = userRepository.getAllNotAchievedEvents()
             val currentAvailableEventResponseBodies = mutableListOf<EventResponseBody>()
@@ -233,6 +256,14 @@ class MapViewModel @Inject constructor(
             _events.emit(currentAvailableEventResponseBodies)
         }
         getAndSetQuests()
+    }
+
+    private fun observeUser() {
+        userDao.getUserLiveData().observeForever { user ->
+            viewModelScope.launch {
+                _user.emit(user)
+            }
+        }
     }
 
     private fun getAndSetQuests() {
@@ -290,6 +321,16 @@ class MapViewModel @Inject constructor(
     fun onStartEventClick() {
         viewModelScope.launch {
             val event = _achievedEvent.value
+            val passiveItems = itemRepository.getAllPassiveInventoryItems()
+
+            if(event?.duration != null  && passiveItems.isNotEmpty()){
+                var cumulativeDuration = 0L
+                passiveItems.forEach { passiveItem -> cumulativeDuration += ((passiveItem.itemEffectOnDuration?.times(event.duration.toDouble())
+                    ?.toLong() ?: event.duration) - event.duration) }
+
+                event.duration += cumulativeDuration
+            }
+
             _currentEventInProgress = event?.toResponseBody()
             _currentEventTimeOutMillis.emit(event?.startTime?.plus(event.duration))
             _achievedEvent.emit(null)
@@ -311,6 +352,7 @@ class MapViewModel @Inject constructor(
                     }
                 )
             }
+
         }
     }
 
@@ -320,7 +362,19 @@ class MapViewModel @Inject constructor(
                 _previousDismissedQuestDialog = quest
                 _startCompletingQuestDialog.emit(null)
                 _questInProgressDialog.emit(quest.toQuestInProgress())
+
+                val activeItems = itemRepository.getAllActiveInventoryItems()
+                if (activeItems.isNotEmpty()){
+
+                var cumulativeActiveItemReward = 0L
+
+                activeItems.forEach { cumulativeActiveItemReward += (quest.reward.experience.toDouble()*((it.itemEffectOnXp ?: 1f) - 1f).toDouble()).toLong() }
+
+                itemEffectOnQuest = cumulativeActiveItemReward
+                }
             }
+
+
         }
     }
 
@@ -405,8 +459,11 @@ class MapViewModel @Inject constructor(
                         _completedQuestDialog.emit(quest)
 
                         userRepository.insertAchievedQuest(quest.id)
-                        prefs.userExperience = quest.reward.experience
+
+                        prefs.userExperience = quest.reward.experience + itemEffectOnQuest
                     }
+
+
                     else {
                         _questInProgressDialog.emit(
                             quest.copy(
@@ -434,6 +491,7 @@ class MapViewModel @Inject constructor(
 
     fun onEventQuestComplete(questline: EventsQuestline) {
         viewModelScope.launch {
+
             val currentQuestLines = _eventsQuestline.value
             val currentSelectedQuestLineIndex = currentQuestLines?.indexOf(questline)
             val previousQuestLine = currentQuestLines?.getOrNull(currentSelectedQuestLineIndex ?: -1)
@@ -451,6 +509,32 @@ class MapViewModel @Inject constructor(
                         totalReward += it.eventQuest.reward.experience
                     }
                     totalReward *= EVENT_REWARD_MULTIPLIER
+
+                    val activeItems = itemRepository.getAllActiveInventoryItems()
+
+                    if(activeItems.isNotEmpty()){
+
+                        var cumulativeActiveItemReward = 0L
+
+                        activeItems.forEach { item -> cumulativeActiveItemReward += (totalReward.toDouble()*((item.itemEffectOnXp ?: 1f) - 1f).toDouble()).toLong() }
+
+                        totalReward += cumulativeActiveItemReward
+                    }
+
+                    if(currentQuestLines.isNotEmpty()) {
+                        val event =
+                            userRepository.getEventWithQuestsUIById(currentQuestLines[0].eventQuest.eventId)
+
+                        if (event != null) {
+                            val itemId = event.rewardItemId
+                            if (itemId != null) {
+                                itemRepository.insertItemToInventory(itemId)
+                                eventItemReward = itemRepository.getItemById(itemId)
+                            }
+
+                        }
+                    }
+
 
                     _lastDismissedDialogEvent.emit(null)
                     _currentEventInProgress?.let {
@@ -602,6 +686,24 @@ class MapViewModel @Inject constructor(
         viewModelScope.launch {
             _completedEventDialogState.emit(null)
         }
+    }
+
+    fun onDismissIntroductionPage() {
+        viewModelScope.launch {
+            _displayIntroductionPage.emit(false)
+            isMapScreenFirstLaunch = false
+        }
+    }
+
+    fun onDismissSplash() {
+        viewModelScope.launch {
+            _showSplash.emit(false)
+            prefs.showSplash = false
+        }
+    }
+
+    companion object {
+        var isMapScreenFirstLaunch = true
     }
 
 }

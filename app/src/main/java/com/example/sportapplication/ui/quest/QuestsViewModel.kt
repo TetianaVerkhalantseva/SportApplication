@@ -1,20 +1,30 @@
 package com.example.sportapplication.ui.quest
 
 import androidx.lifecycle.ViewModel
-import com.example.sportapplication.database.data.PoiStorage
-import com.example.sportapplication.database.model.EventQuest
+import androidx.lifecycle.viewModelScope
+import com.example.sportapplication.database.model.Quest
+import com.example.sportapplication.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 @HiltViewModel
 
 class QuestsViewModel @Inject constructor(
-    private val poiStorage: PoiStorage // Inject the PoiStorage to access quest data
+    private val userRepository: UserRepository
 ) : ViewModel() {
 
-    // Function to retrieve all quests from PoiStorage
-    fun getQuests(): List<EventQuest> {
-        return poiStorage.eventQuests
+    private val _quests = MutableStateFlow<List<Quest>>(emptyList())
+    val quests = _quests.asStateFlow()
+
+    init {
+        getQuests()
     }
 
-    // Optionally, you can add more functions to handle quest-related logic here
+    private fun getQuests() {
+        viewModelScope.launch {
+            _quests.emit(userRepository.getAllQuestsUI())
+        }
+    }
 }

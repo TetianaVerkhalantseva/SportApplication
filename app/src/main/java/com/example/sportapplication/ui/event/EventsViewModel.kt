@@ -1,18 +1,35 @@
 package com.example.sportapplication.ui.event
 
+import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
-import com.example.sportapplication.database.data.PoiStorage
-import com.example.sportapplication.database.model.EventResponseBody
+import androidx.lifecycle.viewModelScope
+import com.example.sportapplication.database.model.Item
+import com.example.sportapplication.repository.ItemRepository
+import com.example.sportapplication.repository.UserRepository
+import com.example.sportapplication.repository.model.EventWithQuestsUI
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class EventViewModel @Inject constructor(
-    private val poiStorage: PoiStorage // Inject the PoiStorage to access event data
+    private val userRepository: UserRepository,
+    private val itemRepository: ItemRepository
 ) : ViewModel() {
 
-    // Function to get all events from PoiStorage
-    fun getEvents(): List<EventResponseBody> {
-        return poiStorage.eventResponseBodies
+    private val _events = MutableStateFlow<List<EventWithQuestsUI>>(emptyList())
+    val events = _events.asStateFlow()
+
+    val items = mutableStateListOf<Item>()
+
+    init {
+        viewModelScope.launch {
+            _events.emit(userRepository.getAllEventsWithQuestsUI())
+
+            items.clear()
+            itemRepository.getAllItems().forEach { items.add(it) }
+        }
     }
 }

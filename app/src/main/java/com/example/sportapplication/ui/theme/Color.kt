@@ -11,10 +11,10 @@ val secondaryLight = Color(0xFF725C09)
 val onSecondaryLight = Color(0xFFFFFFFF)
 val secondaryContainerLight = Color(0xFFFFE392)
 val onSecondaryContainerLight = Color(0xFF5A4700)
-val tertiaryLight = Color(0xFF0033C8)
-val onTertiaryLight = Color(0xFFFFFFFF)
-val tertiaryContainerLight = Color(0xFF3259FF)
-val onTertiaryContainerLight = Color(0xFFFFFFFF)
+val tertiaryLight = Color(0xFF0033C8) // Beholder opprinnelig verdi
+val tertiaryContainerLight = Color(0xFF003CE6) // Matcher dark mode for knappebakgrunn
+val onTertiaryLight = Color(0xFFFFFFFF) // Forblir hvit
+val onTertiaryContainerLight = Color(0xFFFFFFFF) // Matcher dark mode for tekst
 val errorLight = Color(0xFFBA1A1A)
 val onErrorLight = Color(0xFFFFFFFF)
 val errorContainerLight = Color(0xFFFFDAD6)
@@ -111,11 +111,11 @@ val surfaceContainerLightHighContrast = Color(0xFFF1EDEB)
 val surfaceContainerHighLightHighContrast = Color(0xFFECE7E6)
 val surfaceContainerHighestLightHighContrast = Color(0xFFE6E2E0)
 
-// Updated Primary Dark Theme
-val primaryDark = Color(0xFFb03900)  // Vibrant orange for dark mode FFfbbc04
-val onPrimaryDark = Color(0xFF3E2723)  // Deep brown for text on primary
-val primaryContainerDark = Color(0xFFca4200)  // Rich orange for container elements
-val onPrimaryContainerDark = Color(0xFFFFFFFF)  // White for readability on primary container
+// Dark Theme
+val primaryDark = Color(0xFF181309)
+val onPrimaryDark = Color(0xFF3E2723)
+val primaryContainerDark = Color(0xFF181309)
+val onPrimaryContainerDark = Color(0xFFFFFFFF)
 
 val secondaryDark = Color(0xFFFFFFFF)
 val onSecondaryDark = Color(0xFF3C2F00)

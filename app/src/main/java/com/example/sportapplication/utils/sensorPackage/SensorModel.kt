@@ -27,13 +27,14 @@ class SensorModel (
     private val sensorDao: SensorDao
 ) : ViewModel() {
 
+    //TIMERS
+    private var averagingTimer = Timer()
     private var databaseUpdateTimer = Timer()
+
+    //DATA AND STATE
     var numberOfRecordings by mutableIntStateOf(0)
     var rowsOfData by mutableStateOf<List<SensorData>?>(null)
     private var initState = true
-    private val averageAcceleration = ArrayList<FloatArray>()
-    var currentAverageAcceleration by mutableStateOf(floatArrayOf(0f, 0f, 0f))
-    private var averagingTimer = Timer()
 
     //GYROSCOPE
     var rotation by mutableStateOf(floatArrayOf(0f, 0f, 0f))
@@ -48,6 +49,10 @@ class SensorModel (
 
     //ACCELEROMETER
     var acceleration by mutableStateOf(floatArrayOf(0f, 0f, 0f))
+    private val averageAcceleration = ArrayList<FloatArray>()
+    var currentAverageAccelerationX by mutableStateOf(0f)
+    var currentAverageAccelerationY by mutableStateOf(0f)
+    var currentAverageAccelerationZ by mutableStateOf(0f)
 
     //MAGNETIC_FIELD
     var orientation by mutableStateOf(floatArrayOf(0f, 0f, 0f))
@@ -66,6 +71,8 @@ class SensorModel (
 
     init {
 
+        databaseUpdateTimer.cancel()
+        averagingTimer.cancel()
         deleteAllPointsInDatabase()
         if (!multiSensor.gyroscopeSensor.sensorActive) {
 
@@ -86,21 +93,21 @@ class SensorModel (
                         }
                     averagingTimer = fixedRateTimer("averagingTimer", true, 5000L, 5000L) {
                         val numberOfEntries = averageAcceleration.size
+                        val localAveragingAcceleration = averageAcceleration.toList()
+
                         var summedX = 0f
                         var summedY = 0f
                         var summedZ = 0f
 
-                        averageAcceleration.forEach {
+                        localAveragingAcceleration.forEach {
                             summedX += abs(it[0])
                             summedY += abs(it[1])
                             summedZ += abs(it[2])
                         }
 
-                        currentAverageAcceleration = floatArrayOf(
-                            summedX / numberOfEntries,
-                            summedY / numberOfEntries,
-                            summedZ / numberOfEntries
-                        )
+                        currentAverageAccelerationX = summedX / numberOfEntries
+                        currentAverageAccelerationY = summedY / numberOfEntries
+                        currentAverageAccelerationZ = summedZ / numberOfEntries
 
                         averageAcceleration.clear()
 

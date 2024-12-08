@@ -1,69 +1,37 @@
 package com.example.sportapplication.ui.achievements
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.unit.sp
+import androidx.compose.ui.unit.dp
 import com.example.sportapplication.R
-import com.example.sportapplication.database.model.Achievement
+import com.example.sportapplication.repository.model.AchievementUI
 import kotlin.math.ceil
 
 private const val ACHIEVEMENTS_IN_A_ROW = 3.0
 
 @Composable
-fun TotalWorkoutsPanel(
-    achievements: List<Achievement>,
-    onAchievementClicked : (Achievement) -> Unit
+fun AchievementPanel(
+    achievements: List<AchievementUI>
 ) {
-    Column {
-        Text(
-            modifier = Modifier,
-            text = stringResource(id = R.string.total_workouts),
-            fontSize = 18.sp
-        )
-        WorkoutsGrid(
-            achievements = achievements,
-            onItemClick = {
-                onAchievementClicked(it)
-            }
-        )
-    }
-}
-
-
-@Composable
-fun WorkoutsInWeekPanel(
-    achievements: List<Achievement>,
-    onAchievementClicked : (Achievement) -> Unit
-) {
-    Column {
-        Text(
-            modifier = Modifier,
-            text = stringResource(id = R.string.workouts_in_a_week),
-            fontSize = 18.sp
-        )
-        WorkoutsGrid(
-            achievements = achievements,
-            onItemClick = {
-                onAchievementClicked(it)
-            }
-        )
-    }
+    AchievementsGrid(
+        achievements = achievements
+    )
 }
 
 @Composable
-fun WorkoutsGrid(
-    achievements: List<Achievement>,
-    onItemClick: (Achievement) -> Unit
+fun AchievementsGrid(
+    achievements: List<AchievementUI>
 ) {
     run breaking@{
         var index = 0
@@ -73,12 +41,13 @@ fun WorkoutsGrid(
                     if (index < achievements.size) {
                         val achievement = achievements.getOrNull(index)
                         achievement?.let { item ->
-                            WorkoutItem(
+                            AchievementItem(
                                 modifier = Modifier
                                     .weight(1F),
-                                image = item.icon,
-                                title = stringResource(id = item.title),
-                                onItemClick = { onItemClick(item) }
+                                image =
+                                if (item.isCompleted) item.icon
+                                else R.drawable.default_achive,
+                                title = stringResource(id = item.title)
                             )
                             index++
                         }
@@ -90,24 +59,26 @@ fun WorkoutsGrid(
 }
 
 @Composable
-fun WorkoutItem(
+fun AchievementItem(
     modifier: Modifier,
     image: Int,
-    title: String,
-    onItemClick: () -> Unit
+    title: String
 ) {
     Column(
-        modifier = modifier.clickable {
-            onItemClick()
-        }
+        modifier = modifier
     ) {
         Icon(
-            imageVector = ImageVector.vectorResource(id = image),
+            modifier = Modifier.align(Alignment.CenterHorizontally),
+            painter = painterResource(id = image),
             contentDescription = null,
             tint = Color.Unspecified
         )
+        Spacer(modifier = Modifier.height(6.dp))
         Text(
-            text = title
+            modifier = Modifier.align(Alignment.CenterHorizontally),
+            text = title,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onTertiaryContainer
         )
     }
 }
