@@ -353,5 +353,5 @@ fun MainScreen(
 }
 
 fun getcolor(sensors: SensorModel): Float {
-    return (((sensors.currentAverageAcceleration[0] + sensors.currentAverageAcceleration[1] + sensors.currentAverageAcceleration[2]) / 10)).coerceIn(0f, 255f)
+    return (((sensors.currentAverageAccelerationX + sensors.currentAverageAccelerationY + sensors.currentAverageAccelerationZ) / 10)).coerceIn(0f, 255f)
 }

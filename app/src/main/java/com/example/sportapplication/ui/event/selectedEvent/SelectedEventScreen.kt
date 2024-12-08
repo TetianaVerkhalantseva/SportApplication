@@ -35,7 +35,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.sportapplication.R
+import com.example.sportapplication.database.model.Item
 import com.example.sportapplication.repository.model.EventWithQuestsUI
+import com.example.sportapplication.ui.inventory.ItemUI
 import com.example.sportapplication.ui.map.CountdownTimer
 
 @Composable
@@ -46,6 +48,7 @@ fun SelectedEventRoute(
 ) {
     val viewModel: SelectedEventViewModel = hiltViewModel()
     val event by viewModel.event.collectAsState()
+    val item = viewModel.item
 
     LaunchedEffect(key1 = eventId) {
         viewModel.setEventId(eventId)
@@ -54,7 +57,8 @@ fun SelectedEventRoute(
     SelectedEventScreen(
         event = event,
         navigateToMapScreen = navigateToMapScreen,
-        onBackClick = onBackClick
+        onBackClick = onBackClick,
+        item = item
     )
 }
 
@@ -62,7 +66,8 @@ fun SelectedEventRoute(
 fun SelectedEventScreen(
     event: EventWithQuestsUI?,
     navigateToMapScreen: () -> Unit,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    item: Item?
 ) {
     Column(
         modifier = Modifier
@@ -137,6 +142,11 @@ fun SelectedEventScreen(
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onSurface
                 )
+                if(item != null){
+                    Text("Reward Item")
+                    ItemUI(item, Modifier.width(200.dp))
+
+                }
 
                 Spacer(modifier = Modifier.height(10.dp))
 

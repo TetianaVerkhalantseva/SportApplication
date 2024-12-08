@@ -9,6 +9,7 @@ import com.example.sportapplication.database.model.Quest
 import com.example.sportapplication.database.model.Reward
 import com.example.sportapplication.database.model.Task
 import javax.inject.Inject
+import kotlin.random.Random
 
 const val EVENT_REWARD_MULTIPLIER = 3
 
@@ -23,9 +24,11 @@ class PoiStorage @Inject constructor() {
             icon = R.drawable.ic_shoes,
             description = R.string.event_morning_run_description,
             locationId = 7,
-            startTime = 1733596261788,
+            startTime = System.currentTimeMillis(),
             duration = 3600000,
-            questsIds = listOf(4, 5)),
+            questsIds = listOf(4, 5),
+            rewardItemId = Random.nextInt(1, 4).toLong()
+        ),
         EventResponseBody(
             id = 2,
             name = R.string.event_soccer_game,
@@ -34,26 +37,8 @@ class PoiStorage @Inject constructor() {
             locationId = 3,
             startTime = 1733596261788,
             duration = 5400000,
-            questsIds = listOf(1, 2, 3)),
-        EventResponseBody(
-            id = 1,
-            name = R.string.event_morning_run,
-            icon = R.drawable.events,
-            description = R.string.event_morning_run_description,
-            locationId = 7,
-            startTime = 1733596261788,
-            duration = 3600000,
-            questsIds = listOf(4, 5)),
-        EventResponseBody(
-            id = 2,
-            name = R.string.event_soccer_game,
-            icon = R.drawable.events,
-            description = R.string.event_soccer_game_description,
-            locationId = 3,
-            startTime = 1733596261788,
-            duration = 5400000,
-            questsIds = listOf(1, 2, 3)),
-
+            questsIds = listOf(1, 2, 3),
+            rewardItemId = null)
     )
 
     // List of interestingLocations

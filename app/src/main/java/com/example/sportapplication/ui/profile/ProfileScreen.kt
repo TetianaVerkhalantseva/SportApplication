@@ -63,16 +63,14 @@ fun ProfileScreen(navController: NavHostController, viewModel: ProfileViewModel 
     val completedQuests by viewModel.completedQuestsAmount.collectAsState()
     val completedEvents by viewModel.completedEventsAmount.collectAsState()
     val totalAchievements by viewModel.completedAchievementsAmount.collectAsState()
-    var inventoryItems by remember {
-        mutableIntStateOf(0)
-    }
+    val inventoryItems = viewModel._totalNumberOfItemsPickedUp
 
     val poisVisited by viewModel.poiVisitedAmount.collectAsState()
 
     val statistics = listOf(
         stringResource(R.string.completed_quests) to completedQuests.toString(),
         stringResource(R.string.total_achievements) to totalAchievements.toString(),
-        stringResource(R.string.inventory_items) to inventoryItems.toString(),
+        stringResource(R.string.total_items_picked_up) to inventoryItems.toString(),
         stringResource(R.string.completed_events) to completedEvents.toString(),
         stringResource(R.string.pois_visited) to poisVisited.toString(),
         stringResource(R.string.experience) to userExperience.toString(),

@@ -28,10 +28,11 @@ fun Event.toResponseBody() =
         locationId = locationId,
         startTime = startTime,
         duration = duration,
-        questsIds = questsIds
+        questsIds = questsIds,
+        rewardItemId = null
     )
 
-fun EventResponseBody.toEventWithQuestsUI(quests: List<EventQuest>, isCompleted: Boolean) =
+fun EventResponseBody.toEventWithQuestsUI(quests: List<EventQuest>, isCompleted: Boolean, rewardItemId: Long?) =
     EventWithQuestsUI(
         id = id,
         name = name,
@@ -41,5 +42,6 @@ fun EventResponseBody.toEventWithQuestsUI(quests: List<EventQuest>, isCompleted:
         startTime = startTime,
         duration = duration,
         quests = quests,
-        isCompleted = isCompleted
+        isCompleted = isCompleted,
+        rewardItemId = rewardItemId
     )
