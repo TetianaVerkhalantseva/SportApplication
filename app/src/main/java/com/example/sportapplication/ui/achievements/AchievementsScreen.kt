@@ -44,7 +44,7 @@ fun AchievementsScreen(
                 Text(
                     text = achievementPair.first.name,
                     style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.primary
+                    color = MaterialTheme.colorScheme.onBackground
                 )
 
                 Spacer(modifier = Modifier.height(4.dp))
