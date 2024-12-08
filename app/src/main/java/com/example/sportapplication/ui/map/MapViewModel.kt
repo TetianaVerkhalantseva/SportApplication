@@ -4,6 +4,7 @@ import android.location.Location
 import androidx.annotation.StringRes
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -32,6 +33,7 @@ import kotlinx.coroutines.flow.map
 import com.example.sportapplication.database.dao.UserDao
 import kotlinx.coroutines.launch
 import com.example.sportapplication.database.entity.User
+import com.example.sportapplication.database.model.Item
 import com.example.sportapplication.repository.ItemRepository
 import java.util.Calendar
 import javax.inject.Inject
@@ -114,6 +116,7 @@ class MapViewModel @Inject constructor(
     }
 
     var itemEffectOnQuest by mutableLongStateOf(0L)
+    var eventItemReward by mutableStateOf<Item?>(null)
 
 
     private fun onUserLocationUpdate(location: Location) {
@@ -503,7 +506,7 @@ class MapViewModel @Inject constructor(
 
                     var totalReward = 0L
                     currentQuestLines.forEach {
-                        totalReward += it.eventQuest.reward.experience + itemEffectOnQuest
+                        totalReward += it.eventQuest.reward.experience
                     }
                     totalReward *= EVENT_REWARD_MULTIPLIER
 
@@ -517,6 +520,21 @@ class MapViewModel @Inject constructor(
 
                         totalReward += cumulativeActiveItemReward
                     }
+
+                    if(currentQuestLines.isNotEmpty()) {
+                        val event =
+                            userRepository.getEventWithQuestsUIById(currentQuestLines[0].eventQuest.eventId)
+
+                        if (event != null) {
+                            val itemId = event.rewardItemId
+                            if (itemId != null) {
+                                itemRepository.insertItemToInventory(itemId)
+                                eventItemReward = itemRepository.getItemById(itemId)
+                            }
+
+                        }
+                    }
+
 
                     _lastDismissedDialogEvent.emit(null)
                     _currentEventInProgress?.let {

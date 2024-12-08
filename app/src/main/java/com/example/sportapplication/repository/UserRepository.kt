@@ -6,7 +6,6 @@ import com.example.sportapplication.database.dao.AchievedQuestsDao
 import com.example.sportapplication.database.dao.UserDao
 import com.example.sportapplication.database.entity.AchievedEvent
 import com.example.sportapplication.database.entity.AchievedQuest
-import com.example.sportapplication.database.entity.User
 import com.example.sportapplication.database.model.EventResponseBody
 import com.example.sportapplication.database.model.Quest
 import com.example.sportapplication.database.sharedPreferences.AppSharedPreferences
@@ -84,7 +83,8 @@ class UserRepository @Inject constructor(
             }
             event.toEventWithQuestsUI(
                 quests = eventsQuests,
-                isCompleted = achievedEvents.find { it.id == event.id.toString() } != null
+                isCompleted = achievedEvents.find { it.id == event.id.toString() } != null,
+                rewardItemId = event.rewardItemId
             )
         }
     }

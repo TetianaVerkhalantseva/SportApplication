@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
@@ -29,10 +30,12 @@ import androidx.compose.ui.window.Dialog
 import com.example.sportapplication.R
 import com.example.sportapplication.database.model.EventQuest
 import com.example.sportapplication.database.model.EventResponseBody
+import com.example.sportapplication.database.model.Item
 import com.example.sportapplication.database.model.Quest
 import com.example.sportapplication.database.model.Task
 import com.example.sportapplication.repository.model.Event
 import com.example.sportapplication.repository.model.QuestInProgress
+import com.example.sportapplication.ui.inventory.ItemUI
 import kotlinx.coroutines.delay
 import java.util.Calendar
 
@@ -360,7 +363,8 @@ fun ContinueCompletingEventDialog(
 fun CompletedEventDialog(
     completedEvent: CompletedEvent,
     onConfirmClick: () -> Unit,
-    itemEffectOnExperience: Long
+    itemEffectOnExperience: Long,
+    eventItemReward: Item?
 ) {
     Dialog(onDismissRequest = onConfirmClick) {
         Card(
@@ -399,6 +403,11 @@ fun CompletedEventDialog(
                     text = stringResource(id = R.string.completed_event_reward_placeholder, (completedEvent.reward + itemEffectOnExperience)),
                     modifier = Modifier.align(Alignment.CenterHorizontally)
                 )
+
+                if(eventItemReward != null){
+                    Text("Heres your item:")
+                    ItemUI(eventItemReward, Modifier.width(200.dp))
+                }
 
                 Button(
                     onClick = {

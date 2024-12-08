@@ -48,6 +48,7 @@ import com.example.sportapplication.database.entity.User
 import com.example.sportapplication.database.model.EventQuest
 import com.example.sportapplication.database.model.EventResponseBody
 import com.example.sportapplication.database.model.InterestingLocation
+import com.example.sportapplication.database.model.Item
 import com.example.sportapplication.database.model.Quest
 import com.example.sportapplication.repository.model.Event
 import com.example.sportapplication.repository.model.QuestInProgress
@@ -95,6 +96,7 @@ fun MapScreenRoute(
     val showSplash by viewModel.showSplash.collectAsState()
 
     val itemEffectOnExperience  = viewModel.itemEffectOnQuest
+    val eventItemReward = viewModel.eventItemReward
 
     LaunchedEffect(key1 = displayIntroductionPage) {
         setBottomBarVisibility(displayIntroductionPage.not())
@@ -148,7 +150,8 @@ fun MapScreenRoute(
         navigateToProfileScreen = navigateToProfileScreen,
         onDismissSplash = { viewModel.onDismissSplash() },
         setSettingsVisibility = setSettingsVisibility,
-        itemEffectOnExperience = itemEffectOnExperience
+        itemEffectOnExperience = itemEffectOnExperience,
+        eventItemReward = eventItemReward
     )
 }
 
@@ -195,7 +198,8 @@ fun MapScreen(
     navigateToProfileScreen: () -> Unit,
     onDismissSplash: () -> Unit,
     setSettingsVisibility: (Boolean) -> Unit,
-    itemEffectOnExperience: Long
+    itemEffectOnExperience: Long,
+    eventItemReward: Item?
 ) {
 
     val context = LocalContext.current
@@ -227,7 +231,8 @@ fun MapScreen(
         CompletedEventDialog(
             completedEvent = it,
             onConfirmClick = onConfirmCompletedEventClick,
-            itemEffectOnExperience = itemEffectOnExperience
+            itemEffectOnExperience = itemEffectOnExperience,
+            eventItemReward = eventItemReward
 
         )
     }

@@ -26,7 +26,8 @@ data class EventWithQuestsUI(
     val startTime: Long,
     val duration: Long,
     val quests: List<EventQuest>,
-    var isCompleted: Boolean
+    var isCompleted: Boolean,
+    var rewardItemId: Long?
 ) {
     fun getTotalReward(): Long {
         var totalReward = 0L

@@ -36,7 +36,7 @@ class ItemRepository @Inject constructor(private val itemsDao: ItemsDao, private
         return itemsDao.getAll().map {itemsData -> convertItemsDataToItem(itemsData)}.toList()
     }
 
-    suspend fun getItemById(id: Int): Item{
+    suspend fun getItemById(id: Long): Item{
         return convertItemsDataToItem(itemsDao.getItemById(id))
     }
 
@@ -82,7 +82,7 @@ class ItemRepository @Inject constructor(private val itemsDao: ItemsDao, private
     }
 
     // INSERTS
-    suspend fun insertItemToInventory(itemId: Int): List<InventoryItem> {
+    suspend fun insertItemToInventory(itemId: Long): List<InventoryItem> {
         val item = itemsDao.getItemById(itemId)
         inventoryDao.insertItem(convertItemsDataToInventoryData(item))
 

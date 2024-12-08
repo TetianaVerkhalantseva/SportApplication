@@ -12,8 +12,6 @@ import com.example.sportapplication.database.entity.ItemType
 import com.example.sportapplication.database.model.InventoryItem
 import com.example.sportapplication.database.model.Item
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.Timer
 import javax.inject.Inject
@@ -91,7 +89,7 @@ class InventoryViewModel @Inject constructor(
         }
     }
 
-    fun addItemToInventoryById(itemId: Int){
+    fun addItemToInventoryById(itemId: Long){
         viewModelScope.launch {
 
             val updatedInventory = itemRepository.insertItemToInventory(itemId)

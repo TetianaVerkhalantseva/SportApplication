@@ -12,7 +12,7 @@ interface ItemsDao {
     suspend fun getAll(): List<ItemsData>
 
     @Query("SELECT * FROM itemsData WHERE item_id = :id")
-    suspend fun getItemById(id: Int): ItemsData
+    suspend fun getItemById(id: Long): ItemsData
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertItem(itemsData: ItemsData)
