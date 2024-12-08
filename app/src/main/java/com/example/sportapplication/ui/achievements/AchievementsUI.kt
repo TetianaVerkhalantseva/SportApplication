@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -28,7 +29,6 @@ fun AchievementPanel(
     )
 }
 
-
 @Composable
 fun WorkoutsGrid(
     achievements: List<AchievementUI>
@@ -45,8 +45,8 @@ fun WorkoutsGrid(
                                 modifier = Modifier
                                     .weight(1F),
                                 image =
-                                    if (item.isCompleted) item.icon
-                                    else R.drawable.default_achive,
+                                if (item.isCompleted) item.icon
+                                else R.drawable.default_achive,
                                 title = stringResource(id = item.title)
                             )
                             index++
@@ -76,7 +76,9 @@ fun WorkoutItem(
         Spacer(modifier = Modifier.height(6.dp))
         Text(
             modifier = Modifier.align(Alignment.CenterHorizontally),
-            text = title
+            text = title,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onTertiaryContainer
         )
     }
 }

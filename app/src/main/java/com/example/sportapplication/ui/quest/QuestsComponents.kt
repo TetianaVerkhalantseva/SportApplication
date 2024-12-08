@@ -29,7 +29,6 @@ import androidx.compose.ui.unit.dp
 import com.example.sportapplication.R
 import com.example.sportapplication.database.model.Quest
 
-
 @Composable
 fun LazyQuestsColumn(quests: List<Quest>, onQuestClick: (Quest) -> Unit) {
     LazyColumn {
@@ -60,6 +59,10 @@ fun LazyQuestItem(
         Card(
             elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
             modifier = modifier,
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                contentColor = MaterialTheme.colorScheme.onSurfaceVariant
+            )
         ) {
             Row(
                 modifier = Modifier
@@ -84,7 +87,8 @@ fun LazyQuestItem(
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
                         text = stringResource(id = quest.name),
-                        style = MaterialTheme.typography.displaySmall
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.onSurface
                     )
 
                     Text(
@@ -97,14 +101,16 @@ fun LazyQuestItem(
                             R.string.amount_of_tasks_event_placeholder,
                             amountOfTasks
                         ),
-                        style = MaterialTheme.typography.bodySmall
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                     Text(
                         text = stringResource(
                             R.string.event_reward_placeholder,
                             quest.reward.experience
                         ),
-                        style = MaterialTheme.typography.bodySmall
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                 }
             }

@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -21,9 +23,8 @@ fun AchievementsScreenRoute() {
     val viewModel: AchievementsViewModel = hiltViewModel()
     val achievements by viewModel.achievements.collectAsState()
 
-
     AchievementsScreen(
-       achievements = achievements
+        achievements = achievements
     )
 }
 
@@ -32,15 +33,22 @@ fun AchievementsScreen(
     achievements: List<Pair<AchievementType, List<AchievementUI>>>?
 ) {
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+            .verticalScroll(rememberScrollState())
     ) {
+        achievements?.forEach { achievementPair ->
+            Column(modifier = Modifier.padding(8.dp)) {
+                // Achievement type heading
+                Text(
+                    text = achievementPair.first.name,
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.primary
+                )
 
-        Column(
-            modifier = Modifier
-                .padding(20.dp)
-                .verticalScroll(rememberScrollState())
-        ) {
-            achievements?.forEach { achievementPair ->
+                Spacer(modifier = Modifier.height(4.dp))
+
                 AchievementPanel(
                     achievements = achievementPair.second
                 )

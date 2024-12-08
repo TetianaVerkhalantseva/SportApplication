@@ -46,12 +46,12 @@ fun LazyEventsColumn(events: List<EventWithQuestsUI>, onEventClick: (EventWithQu
 
 @Composable
 fun LazyEventItem(
-    modifier : Modifier = Modifier,
+    modifier: Modifier = Modifier,
     event: EventWithQuestsUI,
     onClick: () -> Unit
 ) {
 
-    val amountOfTasks = event.quests.sumOf  {
+    val amountOfTasks = event.quests.sumOf {
         it.locationWithTasks.sumOf {
             it.tasks.size
         }
@@ -64,7 +64,10 @@ fun LazyEventItem(
         Card(
             elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
             modifier = modifier,
-            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                contentColor = MaterialTheme.colorScheme.onSurfaceVariant
+            )
         ) {
             Row(
                 modifier = Modifier
@@ -89,7 +92,8 @@ fun LazyEventItem(
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
                         text = stringResource(id = event.name),
-                        style = MaterialTheme.typography.displaySmall
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.onSurface
                     )
 
                     if (event.isCompleted) {
@@ -98,27 +102,32 @@ fun LazyEventItem(
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.tertiary
                         )
-                    }
-                    else {
+                    } else {
                         CountdownTimer(
                             modifier = Modifier,
                             tillTimeInMilliseconds = event.startTime.plus(event.duration)
                         )
                     }
                     Text(
-                        text = stringResource(R.string.amount_of_locations_event_placeholder, event.quests.size),
+                        text = stringResource(
+                            R.string.amount_of_locations_event_placeholder, event.quests.size
+                        ),
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.tertiary
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                     Text(
-                        text = stringResource(R.string.amount_of_tasks_event_placeholder, amountOfTasks),
+                        text = stringResource(
+                            R.string.amount_of_tasks_event_placeholder, amountOfTasks
+                        ),
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.tertiary
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                     Text(
-                        text = stringResource(R.string.event_reward_placeholder, event.getTotalReward()),
+                        text = stringResource(
+                            R.string.event_reward_placeholder, event.getTotalReward()
+                        ),
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.tertiary
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                 }
             }
