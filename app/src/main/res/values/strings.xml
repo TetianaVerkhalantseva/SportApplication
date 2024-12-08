@@ -92,7 +92,7 @@
     <string name="completed_quests">Completed Quests</string>
     <string name="distance_traveled">Distance Traveled</string>
     <string name="total_achievements">Total Achievements</string>
-    <string name="inventory_items">Inventory Items</string>
+    <string name="total_items_picked_up">Total Items Picked Up</string>
     <string name="completed_tasks">Completed Tasks</string>
     <string name="completed_events">Completed Events</string>
     <string name="experience">Experience</string>
@@ -100,7 +100,8 @@
     <string name="choose_avatar">Choose avatar</string>
 
 
-
+    <!-- Strings for Inventory -->
+    <string name="inventory_items">Inventory Items</string>
 
     <!-- Events -->
     <string name="events">Events</string>

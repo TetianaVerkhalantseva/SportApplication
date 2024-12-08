@@ -1,5 +1,8 @@
 package com.example.sportapplication.ui.profile
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -42,6 +45,9 @@ class ProfileViewModel @Inject constructor(
     private val _poiVisitedAmount = MutableStateFlow(0)
     val poiVisitedAmount = _poiVisitedAmount.asStateFlow()
 
+    var _totalNumberOfItemsPickedUp by mutableIntStateOf(0)
+
+
     val achievedQuestsLiveData = userRepository.getAllAchievedQuestsLiveData()
     val _questsObserver = Observer<List<AchievedQuest>> {
         viewModelScope.launch {
@@ -67,7 +73,7 @@ class ProfileViewModel @Inject constructor(
             } else {
                 _nickname.value = "Player"
                 _avatarId.value = 0
-                userDao.insertUser(User(name = "Player", avatarId = 0))
+                userDao.insertUser(User(name = "Player", avatarId = 0, totalItemsPickedUp = 0))
             }
             // Oppdater AvatarHelper med initial verdier
             AvatarHelper.updateNickname(_nickname.value)
@@ -75,6 +81,7 @@ class ProfileViewModel @Inject constructor(
         }
         observeStatistics()
     }
+
 
     private fun observeStatistics() {
         viewModelScope.launch {
@@ -92,6 +99,8 @@ class ProfileViewModel @Inject constructor(
                     achievedQuests.size
                 )
             )
+
+            _totalNumberOfItemsPickedUp = userRepository.getTotalNumberOfItemsPickedUp()
         }
     }
 
@@ -103,7 +112,7 @@ class ProfileViewModel @Inject constructor(
                 val updatedUser = user.copy(name = newNickname)
                 userDao.updateUser(updatedUser)
             } else {
-                val newUser = User(name = newNickname, avatarId = _avatarId.value)
+                val newUser = User(name = newNickname, avatarId = _avatarId.value, totalItemsPickedUp = 0)
                 userDao.insertUser(newUser)
             }
             _nickname.value = newNickname
@@ -122,7 +131,7 @@ class ProfileViewModel @Inject constructor(
                 val updatedUser = user.copy(avatarId = newAvatarId)
                 userDao.updateUser(updatedUser)
             } else {
-                val newUser = User(name = _nickname.value, avatarId = newAvatarId)
+                val newUser = User(name = _nickname.value, avatarId = newAvatarId, totalItemsPickedUp = 0)
                 userDao.insertUser(newUser)
             }
             _avatarId.value = newAvatarId

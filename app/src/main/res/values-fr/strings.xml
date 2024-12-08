@@ -57,10 +57,15 @@
     <string name="completed_quests">Quêtes Complétées</string>
     <string name="total_achievements">Réalisations totales</string>
     <string name="distance_traveled">Distance Parcourue</string>
-    <string name="inventory_items">Articles d’inventaire</string>
+    <string name="total_items_picked_up">Total des articles récupérés</string>
     <string name="completed_tasks">Tâches terminées</string>
     <string name="pois_visited">POIs visités</string>
     <string name="choose_avatar">Choisissez un avatar</string>
+
+
+    <!-- Strings for Items -->
+    <string name="inventory_items">Articles d’inventaire</string>
+
 
     <!-- About us  -->
     <string name="about_us">À propos de nous</string>

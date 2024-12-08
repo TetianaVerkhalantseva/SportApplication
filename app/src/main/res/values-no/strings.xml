@@ -53,13 +53,14 @@
     <string name="completed_quests">Fullførte Oppdrag</string>
     <string name="distance_traveled">Tilbakelagt Avstand</string>
     <string name="total_achievements">Totalt Antall Prestasjoner</string>
-    <string name="inventory_items">Lagergjenstander</string>
+    <string name="total_items_picked_up">Totalt Items Plukket Opp</string>
     <string name="completed_tasks">Fullførte Oppgaver</string>
     <string name="pois_visited">Besøkte POI-er</string>
     <string name="choose_avatar">Velg avatar</string>
 
 
-
+    <!-- Strings for Items -->
+    <string name="inventory_items">Lagergjenstander</string>
 
     <!-- Events -->
     <string name="event_morning_run">Morgentur</string>

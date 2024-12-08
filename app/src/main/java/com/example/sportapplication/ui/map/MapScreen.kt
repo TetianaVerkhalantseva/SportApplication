@@ -48,6 +48,7 @@ import com.example.sportapplication.database.entity.User
 import com.example.sportapplication.database.model.EventQuest
 import com.example.sportapplication.database.model.EventResponseBody
 import com.example.sportapplication.database.model.InterestingLocation
+import com.example.sportapplication.database.model.Item
 import com.example.sportapplication.database.model.Quest
 import com.example.sportapplication.repository.model.Event
 import com.example.sportapplication.repository.model.QuestInProgress
@@ -93,6 +94,9 @@ fun MapScreenRoute(
     val displayIntroductionPage by viewModel.displayIntroductionPage.collectAsState()
     val user by viewModel.user.collectAsState()
     val showSplash by viewModel.showSplash.collectAsState()
+
+    val itemEffectOnExperience  = viewModel.itemEffectOnQuest
+    val eventItemReward = viewModel.eventItemReward
 
     LaunchedEffect(key1 = displayIntroductionPage) {
         setBottomBarVisibility(displayIntroductionPage.not())
@@ -145,7 +149,9 @@ fun MapScreenRoute(
         onDismissIntroductionPage = { viewModel.onDismissIntroductionPage() },
         navigateToProfileScreen = navigateToProfileScreen,
         onDismissSplash = { viewModel.onDismissSplash() },
-        setSettingsVisibility = setSettingsVisibility
+        setSettingsVisibility = setSettingsVisibility,
+        itemEffectOnExperience = itemEffectOnExperience,
+        eventItemReward = eventItemReward
     )
 }
 
@@ -191,7 +197,9 @@ fun MapScreen(
     onDismissIntroductionPage: () -> Unit,
     navigateToProfileScreen: () -> Unit,
     onDismissSplash: () -> Unit,
-    setSettingsVisibility: (Boolean) -> Unit
+    setSettingsVisibility: (Boolean) -> Unit,
+    itemEffectOnExperience: Long,
+    eventItemReward: Item?
 ) {
 
     val context = LocalContext.current
@@ -214,14 +222,17 @@ fun MapScreen(
     completedQuestDialog?.let {
         CompletedQuestDialog(
             quest = it,
-            onConfirmClick = onConfirmCompletedQuestDialog
+            onConfirmClick = onConfirmCompletedQuestDialog,
+            itemEffectOnExperience = itemEffectOnExperience
         )
     }
 
     completedEventDialogState?.let {
         CompletedEventDialog(
             completedEvent = it,
-            onConfirmClick = onConfirmCompletedEventClick
+            onConfirmClick = onConfirmCompletedEventClick,
+            itemEffectOnExperience = itemEffectOnExperience,
+            eventItemReward = eventItemReward
 
         )
     }
