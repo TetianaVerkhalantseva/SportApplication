@@ -59,7 +59,7 @@ import com.example.sportapplication.ui.theme.SportApplicationTheme
 import com.example.sportapplication.utils.sensorPackage.SensorModel
 import kotlinx.coroutines.launch
 
-
+//Main screen for the app, handling topappbar and menu logic.
 @Composable
 fun MainScreen(
     navController: NavHostController,
@@ -139,7 +139,7 @@ fun MainScreen(
                                 )
                             }
 
-                            // Battery indicator in the middle of the image
+                            // Battery indicator
                             Box(contentAlignment = Alignment.BottomCenter) {
                                 BatteryIndicator(
                                     batteryViewModel = batteryViewModel,
@@ -351,7 +351,7 @@ fun MainScreen(
         )
     }
 }
-
+//Activity level color schemes.
 fun getcolor(sensors: SensorModel): Float {
     return (((sensors.currentAverageAccelerationX + sensors.currentAverageAccelerationY + sensors.currentAverageAccelerationZ) / 10)).coerceIn(0f, 255f)
 }

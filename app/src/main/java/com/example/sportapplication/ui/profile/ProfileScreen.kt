@@ -51,6 +51,11 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(navController: NavHostController, viewModel: ProfileViewModel = hiltViewModel()) {
+
+    // The main composable for the Profile screen.
+    // Displays user profile details, including nickname, avatar selection, and player statistics.
+    // Provides functionality to update the nickname and avatar.
+
     val nickname by viewModel.nickname.collectAsState()
     val avatarId by AvatarHelper.avatarId.collectAsState()
     val coroutineScope = rememberCoroutineScope()
@@ -59,6 +64,7 @@ fun ProfileScreen(navController: NavHostController, viewModel: ProfileViewModel 
     var isEdited by remember { mutableStateOf(false) }
     var statusMessage by remember { mutableStateOf<Int?>(null) }
 
+    // Collects user statistics such as experience, completed quests/events, and POIs visited.
     val userExperience by viewModel.userExperience.collectAsState()
     val completedQuests by viewModel.completedQuestsAmount.collectAsState()
     val completedEvents by viewModel.completedEventsAmount.collectAsState()
@@ -67,6 +73,7 @@ fun ProfileScreen(navController: NavHostController, viewModel: ProfileViewModel 
 
     val poisVisited by viewModel.poiVisitedAmount.collectAsState()
 
+    // List of statistics displayed on the profile screen.
     val statistics = listOf(
         stringResource(R.string.completed_quests) to completedQuests.toString(),
         stringResource(R.string.total_achievements) to totalAchievements.toString(),
@@ -87,6 +94,7 @@ fun ProfileScreen(navController: NavHostController, viewModel: ProfileViewModel 
             TopAppBar(
                 title = {
                     Row {
+                        // Displays the profile title and user status.
                         Text(
                             modifier = Modifier.weight(1F),
                             text = stringResource(R.string.profile),
@@ -112,6 +120,7 @@ fun ProfileScreen(navController: NavHostController, viewModel: ProfileViewModel 
             )
         },
         content = { padding ->
+            // Main content of the profile screen, including nickname, avatar, and statistics.
             LazyColumn(
                 modifier = Modifier
                     .padding(padding)
@@ -141,7 +150,7 @@ fun ProfileScreen(navController: NavHostController, viewModel: ProfileViewModel 
                         },
                         modifier = Modifier.fillMaxWidth()
                     )
-
+                    // Button to save the updated nickname to database.
                     PrimaryButton(
                         text = stringResource(R.string.save),
                         onClick = {
@@ -204,7 +213,7 @@ fun ProfileScreen(navController: NavHostController, viewModel: ProfileViewModel 
         }
     )
 }
-
+// Displays the user's status based on their experience points.
 @Composable
 fun UserStatus(
     modifier: Modifier,
@@ -217,7 +226,7 @@ fun UserStatus(
         color = MaterialTheme.colorScheme.primary
     )
 }
-
+// Displays a single item in the statistics list with a label and value.
 @Composable
 fun StatisticItem(label: String, value: String) {
     Row(
@@ -239,7 +248,7 @@ fun StatisticItem(label: String, value: String) {
         )
     }
 }
-
+// Allows the user to select an avatar with a highlight on the selected option.
 @Composable
 fun AvatarSelectionSection(
     selectedAvatar: Int,
