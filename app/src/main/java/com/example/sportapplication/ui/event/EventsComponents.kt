@@ -64,6 +64,7 @@ fun LazyEventItem(
         Card(
             elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
             modifier = modifier,
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
         ) {
             Row(
                 modifier = Modifier
@@ -106,15 +107,18 @@ fun LazyEventItem(
                     }
                     Text(
                         text = stringResource(R.string.amount_of_locations_event_placeholder, event.quests.size),
-                        style = MaterialTheme.typography.bodySmall
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.tertiary
                     )
                     Text(
                         text = stringResource(R.string.amount_of_tasks_event_placeholder, amountOfTasks),
-                        style = MaterialTheme.typography.bodySmall
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.tertiary
                     )
                     Text(
                         text = stringResource(R.string.event_reward_placeholder, event.getTotalReward()),
-                        style = MaterialTheme.typography.bodySmall
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.tertiary
                     )
                 }
             }

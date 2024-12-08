@@ -71,7 +71,7 @@ fun IntroductionScreen(
         Text(
             text = stringResource(R.string.welcome_to_questabout_2),
             style = MaterialTheme.typography.titleLarge,
-            color = MaterialTheme.colorScheme.primary,
+            color = MaterialTheme.colorScheme.tertiary,
             modifier = Modifier
                 .padding(bottom = 24.dp) // Increased spacing below welcome message
         )
@@ -87,7 +87,7 @@ fun IntroductionScreen(
                 Text(
                     text = stringResource(R.string.about_questabout),
                     style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.primary,
+                    color = MaterialTheme.colorScheme.tertiary,
                     modifier = Modifier.padding(bottom = 16.dp) // Increased spacing below the title
                 )
 
@@ -122,29 +122,26 @@ fun IntroductionScreen(
                 Text(
                     text = "${(progress * 100).toInt()}%",
                     style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.onBackground
+                    color = MaterialTheme.colorScheme.tertiary
                 )
             }
             else {
                 OutlinedButton(
-                    border = BorderStroke(1.dp, color = Color.Red),
+                    border = BorderStroke(1.dp, color = MaterialTheme.colorScheme.tertiary),
                     shape = RoundedCornerShape(20.dp),
                     onClick = { navigateToMapScreen() },
                     colors = ButtonDefaults.outlinedButtonColors(
-                        containerColor = Color.Red,
-                        contentColor = Color.Unspecified
+                        containerColor = MaterialTheme.colorScheme.tertiary,
+                        contentColor = MaterialTheme.colorScheme.onTertiary
                     ),
                 ) {
                     Text(
                         text = stringResource(id = R.string.got_it),
                         fontSize = 16.sp,
-                        color = Color.White
+                        color = MaterialTheme.colorScheme.onTertiary
                     )
                 }
             }
         }
     }
 }
-
-
-

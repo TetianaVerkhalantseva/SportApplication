@@ -3,9 +3,11 @@ package com.example.sportapplication.ui.about
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -14,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -53,15 +56,25 @@ fun AboutUsScreen() {
 
         Spacer(modifier = Modifier.height(30.dp))
 
-
         Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-            TeamMemberCard(name = "Lill-Kristin Karlsen", role = stringResource(R.string.developer))
-            TeamMemberCard(name = "Tetiana Verkhalantseva", role = stringResource(R.string.developer))
-            TeamMemberCard(name = "Oliver Stanislaw Sokol", role = stringResource(R.string.developer))
+            TeamMemberCard(
+                name = "Lill-Kristin Karlsen",
+                role = stringResource(R.string.developer),
+                imageRes = R.drawable.lill
+            )
+            TeamMemberCard(
+                name = "Tetiana Verkhalantseva",
+                role = stringResource(R.string.developer),
+                imageRes = R.drawable.tetiana
+            )
+            TeamMemberCard(
+                name = "Oliver Stanislaw Sokol",
+                role = stringResource(R.string.developer),
+                imageRes = R.drawable.oliver
+            )
         }
 
         Spacer(modifier = Modifier.height(40.dp))
-
 
         Text(
             text = "Product Idea:",
@@ -80,9 +93,8 @@ fun AboutUsScreen() {
 }
 
 @Composable
-fun TeamMemberCard(name: String, role: String) {
+fun TeamMemberCard(name: String, role: String, imageRes: Int) {
     var isHovered by remember { mutableStateOf(false) }
-
 
     val scaleState by animateFloatAsState(
         targetValue = if (isHovered) 1.1f else 1f, // Scale up when hovered
@@ -112,7 +124,7 @@ fun TeamMemberCard(name: String, role: String) {
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
         colors = CardDefaults.cardColors(containerColor = cardBackgroundColor)
     ) {
-        Column(
+        Row(
             modifier = Modifier
                 .padding(16.dp)
                 .fillMaxWidth()
@@ -120,19 +132,34 @@ fun TeamMemberCard(name: String, role: String) {
                     scaleX = scaleState
                     scaleY = scaleState
                 },
-            horizontalAlignment = Alignment.Start
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                text = name,
-                style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
-                color = MaterialTheme.colorScheme.onSurface
+            // Profile Image
+            Image(
+                painter = painterResource(id = imageRes),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(64.dp)
+                    .clip(CircleShape)
+                    .background(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f))
             )
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(
-                text = role,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
+
+            Spacer(modifier = Modifier.width(16.dp))
+
+            // Name and Role
+            Column(horizontalAlignment = Alignment.Start) {
+                Text(
+                    text = name,
+                    style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = role,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
         }
     }
 }

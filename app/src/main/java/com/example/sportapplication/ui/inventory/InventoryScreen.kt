@@ -1,6 +1,5 @@
 package com.example.sportapplication.ui.inventory
 
-
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -17,6 +16,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.snapshots.SnapshotStateList
@@ -47,12 +48,11 @@ fun InventoryScreenRoute() {
 @Composable
 fun InventoryScreen(
     inventoryItems: SnapshotStateList<InventoryItem>,
-    itemList:SnapshotStateList<Item>,
+    itemList: SnapshotStateList<Item>,
     viewModel: InventoryViewModel
 ) {
     val inventory = inventoryItems.toMutableList()
     val items = itemList.toMutableList()
-
 
     Column {
 
@@ -64,14 +64,19 @@ fun InventoryScreen(
             items = inventory,
             removeItemFunction = viewModel::removeItemFromInventoryById
         )
-        Button(onClick = { viewModel.addItemToInventoryById(Random.nextInt(1,4)) }) {
-            Text("Add Item")
+        Button(
+            onClick = { viewModel.addItemToInventoryById(Random.nextInt(1, 4)) },
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.tertiaryContainer
+            )
+        ) {
+            Text("Add Item", color = MaterialTheme.colorScheme.tertiary)
         }
 
         CategoryItem(
             text = "Item Catalogue",
 
-        )
+            )
 
         ItemLazyColumn(
             items = items
@@ -175,20 +180,35 @@ fun InventoryItemUI(
                 text = item.itemName, softWrap = true,
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.tertiary
             )
             if (item.itemId != -1L) {
-                Box(Modifier.padding(start = 4.dp, end = 4.dp)){
-                    if(item.itemType == ItemType.ACTIVE) {
-                        Button(onClick = { removeItemFunction(item.inventoryId) }) {
-                            Text("TODO: Use")
+                Box(Modifier.padding(start = 4.dp, end = 4.dp)) {
+                    if (item.itemType == ItemType.ACTIVE) {
+                        Button(
+                            onClick = { removeItemFunction(item.inventoryId) },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = MaterialTheme.colorScheme.tertiaryContainer
+                            )
+                        ) {
+                            Text("TODO: Use", color = MaterialTheme.colorScheme.tertiary)
                         }
-                    } else if(item.itemType == ItemType.PASSIVE){
-                        Text("Effect", color = Color(102, 255, 102), modifier = Modifier.clickable { Log.i("test effect item", "clicked effect item") })
+                    } else if (item.itemType == ItemType.PASSIVE) {
+                        Text(
+                            "Effect",
+                            color = Color(102, 255, 102),
+                            modifier = Modifier.clickable { Log.i("test effect item", "clicked effect item") }
+                        )
                     }
                 }
 
-                Button(onClick={removeItemFunction(item.inventoryId)}){
-                    Text("Drop")
+                Button(
+                    onClick = { removeItemFunction(item.inventoryId) },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.tertiaryContainer
+                    )
+                ) {
+                    Text("Drop", color = MaterialTheme.colorScheme.tertiary)
                 }
             }
 
@@ -201,7 +221,6 @@ fun InventoryItemUI(
         )
     }
 }
-
 
 @Composable
 fun ItemUI(
@@ -221,6 +240,7 @@ fun ItemUI(
                 text = item.itemName,
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.tertiary
             )
             if (item.itemId != -1L) {
 

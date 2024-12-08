@@ -31,6 +31,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -77,7 +78,7 @@ fun MainScreen(
     val batteryViewModel: BatteryViewModel = hiltViewModel()
 
     val scope = rememberCoroutineScope()
-    var isDarkTheme by remember { mutableStateOf(false) }
+    var isDarkTheme by rememberSaveable { mutableStateOf(false) }
 
     SportApplicationTheme(darkTheme = isDarkTheme) {
         Scaffold(
@@ -130,7 +131,7 @@ fun MainScreen(
                                     style = MaterialTheme.typography.headlineLarge.copy(
                                         fontWeight = FontWeight.ExtraBold,
                                         shadow = Shadow(
-                                            color = Color(0xFFFFA500), // Orange outline
+                                            color = MaterialTheme.colorScheme.onSurface,
                                             blurRadius = 8f
                                         )
                                     ),
@@ -160,7 +161,7 @@ fun MainScreen(
                                     expanded = showMenu,
                                     onDismissRequest = { showMenu = false },
                                     modifier = Modifier.background(MaterialTheme.colorScheme.primaryContainer),
-                                    offset = DpOffset(x = (-50).dp, y = 10.dp)
+                                    offset = DpOffset(x = (-50).dp, y = 40.dp)
                                 ) {
                                     DropdownMenuItem(
                                         text = {
@@ -225,7 +226,7 @@ fun MainScreen(
                                             expanded = showSettingsMenu,
                                             onDismissRequest = { showSettingsMenu = false },
                                             modifier = Modifier.background(MaterialTheme.colorScheme.primaryContainer),
-                                            offset = DpOffset(x = (-50).dp, y = 90.dp)
+                                            offset = DpOffset(x = (-180).dp, y = 70.dp)
                                         ) {
                                             DropdownMenuItem(
                                                 text = {
@@ -255,6 +256,7 @@ fun MainScreen(
                                                 },
                                                 onClick = {
                                                     showLanguageMenu = !showLanguageMenu
+
                                                 },
                                                 leadingIcon = {
                                                     Icon(
@@ -270,7 +272,7 @@ fun MainScreen(
                                                     expanded = showLanguageMenu,
                                                     onDismissRequest = { showLanguageMenu = false },
                                                     modifier = Modifier.background(MaterialTheme.colorScheme.primaryContainer),
-                                                    offset = DpOffset( x=0.dp, y = 90.dp)
+                                                    offset = DpOffset( x=0.dp, y = 110.dp)
                                                 ) {
                                                     val languages = mapOf(
                                                         "en" to "English",
