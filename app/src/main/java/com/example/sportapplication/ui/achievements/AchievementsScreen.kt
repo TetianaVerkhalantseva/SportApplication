@@ -52,7 +52,7 @@ fun AchievementsScreen(
                 AchievementPanel(
                     achievements = achievementPair.second
                 )
-                Spacer(modifier = Modifier.height(25.dp))
+                Spacer(modifier = Modifier.height(10.dp))
             }
         }
     }

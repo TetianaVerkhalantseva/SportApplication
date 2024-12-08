@@ -36,18 +36,18 @@
     <string name="achievements">Achievements</string>
     <string name="total_workouts">Total Workouts</string>
     <string name="workouts_in_a_week">Workouts in a Week</string>
-    <string name="icon_1_quest">1 Quest</string>
-    <string name="icon_3_quest">3 Quests</string>
-    <string name="icon_10_quest">10 Quests</string>
-    <string name="icon_1_event">1 Event</string>
-    <string name="icon_3_event">3 Events</string>
-    <string name="icon_10_event">10 Events</string>
-    <string name="icon_100xp">100 XP</string>
-    <string name="icon_1000xp">1000 XP</string>
-    <string name="icon_3000xp">3000 XP</string>
+    <string name="icon_1_quest">Explorer</string>
+    <string name="icon_3_quest">Seeker</string>
+    <string name="icon_10_quest">Master</string>
+    <string name="icon_1_event">Participant</string>
+    <string name="icon_3_event">Enthusiast</string>
+    <string name="icon_10_event">Champion</string>
+    <string name="icon_100xp">Collector</string>
+    <string name="icon_1000xp">Hoarder</string>
+    <string name="icon_3000xp">Tycoon</string>
     <string name="icon_new">Newbie</string>
     <string name="icon_skilled">Skilled</string>
-    <string name="icon_pro">Pro</string>
+    <string name="icon_pro">Pro Gamer</string>
 
     <!-- Quests Screen -->
     <string name="all_quests">All quests</string>
