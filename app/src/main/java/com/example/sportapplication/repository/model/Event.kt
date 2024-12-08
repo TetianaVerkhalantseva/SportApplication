@@ -12,7 +12,7 @@ data class Event(
     @StringRes val description: Int? = null,
     val locationId: Long,
     val startTime: Long,
-    val duration: Long,
+    var duration: Long,
     val questsIds: List<Long>,
     var isCompleted: Boolean
 )

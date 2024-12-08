@@ -318,6 +318,16 @@ class MapViewModel @Inject constructor(
     fun onStartEventClick() {
         viewModelScope.launch {
             val event = _achievedEvent.value
+            val passiveItems = itemRepository.getAllPassiveInventoryItems()
+
+            if(event?.duration != null  && passiveItems.isNotEmpty()){
+                var cumulativeDuration = 0L
+                passiveItems.forEach { passiveItem -> cumulativeDuration += ((passiveItem.itemEffectOnDuration?.times(event.duration.toDouble())
+                    ?.toLong() ?: event.duration) - event.duration) }
+
+                event.duration += cumulativeDuration
+            }
+
             _currentEventInProgress = event?.toResponseBody()
             _currentEventTimeOutMillis.emit(event?.startTime?.plus(event.duration))
             _achievedEvent.emit(null)
@@ -339,6 +349,7 @@ class MapViewModel @Inject constructor(
                     }
                 )
             }
+
         }
     }
 
@@ -350,12 +361,14 @@ class MapViewModel @Inject constructor(
                 _questInProgressDialog.emit(quest.toQuestInProgress())
 
                 val activeItems = itemRepository.getAllActiveInventoryItems()
+                if (activeItems.isNotEmpty()){
+
                 var cumulativeActiveItemReward = 0L
 
                 activeItems.forEach { cumulativeActiveItemReward += (quest.reward.experience.toDouble()*((it.itemEffectOnXp ?: 1f) - 1f).toDouble()).toLong() }
 
-
                 itemEffectOnQuest = cumulativeActiveItemReward
+                }
             }
 
 
@@ -475,6 +488,7 @@ class MapViewModel @Inject constructor(
 
     fun onEventQuestComplete(questline: EventsQuestline) {
         viewModelScope.launch {
+
             val currentQuestLines = _eventsQuestline.value
             val currentSelectedQuestLineIndex = currentQuestLines?.indexOf(questline)
             val previousQuestLine = currentQuestLines?.getOrNull(currentSelectedQuestLineIndex ?: -1)
@@ -489,9 +503,20 @@ class MapViewModel @Inject constructor(
 
                     var totalReward = 0L
                     currentQuestLines.forEach {
-                        totalReward += it.eventQuest.reward.experience
+                        totalReward += it.eventQuest.reward.experience + itemEffectOnQuest
                     }
                     totalReward *= EVENT_REWARD_MULTIPLIER
+
+                    val activeItems = itemRepository.getAllActiveInventoryItems()
+
+                    if(activeItems.isNotEmpty()){
+
+                        var cumulativeActiveItemReward = 0L
+
+                        activeItems.forEach { item -> cumulativeActiveItemReward += (totalReward.toDouble()*((item.itemEffectOnXp ?: 1f) - 1f).toDouble()).toLong() }
+
+                        totalReward += cumulativeActiveItemReward
+                    }
 
                     _lastDismissedDialogEvent.emit(null)
                     _currentEventInProgress?.let {

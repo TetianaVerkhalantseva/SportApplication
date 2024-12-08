@@ -23,7 +23,7 @@ class PoiStorage @Inject constructor() {
             icon = R.drawable.ic_shoes,
             description = R.string.event_morning_run_description,
             locationId = 7,
-            startTime = 1733596261788,
+            startTime = System.currentTimeMillis(),
             duration = 3600000,
             questsIds = listOf(4, 5)),
         EventResponseBody(
@@ -32,7 +32,7 @@ class PoiStorage @Inject constructor() {
             icon = R.drawable.ic_fitness_tracker,
             description = R.string.event_soccer_game_description,
             locationId = 3,
-            startTime = 1733596261788,
+            startTime = System.currentTimeMillis(),
             duration = 5400000,
             questsIds = listOf(1, 2, 3))
     )
