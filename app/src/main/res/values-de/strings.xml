@@ -1,30 +1,67 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">SportAnwendung</string>
+    <string name="app_name">Questabout</string>
     <string name="map_screen">Karte</string>
-    <string name="quest_screen">Aufgabe</string>
+    <string name="quest_screen">Quest</string>
     <string name="inventory_screen">Inventar</string>
-    <string name="achievements_screen">Erfolg</string>
+    <string name="achievements_screen">Errungenschaften</string>
     <string name="sensor_screen">Sensor</string>
 
+    <!-- Map Screen -->
+    <string name="achieved_achievement_reward_placeholder">Du hast eine neue Errungenschaft und %1$d Erfahrung erhalten!</string>
+    <string name="start_event_quests">Event mit Quests starten</string>
+    <string name="event">Event</string>
+    <string name="task_completed">Abgeschlossen</string>
+    <string name="go_to_quest_location_placeholder">Um das Event fortzusetzen, musst du zu %1$s gehen</string>
+    <string name="distance_to_next_quest_location">Entfernung zur nächsten Quest-Location: %1$d Meter</string>
+    <string name="continue_events_quest">Quest des Events fortsetzen</string>
+    <string name="event_is_completed">Event abgeschlossen!</string>
+    <string name="event_is_expired">Event ist abgelaufen!</string>
+    <string name="completed_event_reward_placeholder">Du hast %1$d Punkte verdient!</string>
+    <string name="ok">Ok</string>
+    <string name="quest">Quest</string>
+    <string name="quest_is_completed">Quest abgeschlossen!</string>
+    <string name="start_completing_quest">Quest beginnen</string>
+    <string name="completed">Abgeschlossen</string>
+    <string name="active">Aktiv</string>
+
+    <!-- User Statuses -->
+    <string name="status_v1">Neu</string>
+    <string name="status_v2">Erfahren</string>
+    <string name="status_v3">Experte</string>
+    <string name="status_v4">Pro +</string>
+
     <!-- Achievements Screen -->
-    <string name="achievements">Erfolge</string>
-    <string name="total_workouts">Gesamt Workouts</string>
+    <string name="achievements">Errungenschaften</string>
+    <string name="total_workouts">Gesamtanzahl Workouts</string>
     <string name="workouts_in_a_week">Workouts in einer Woche</string>
-    <string name="share_badge">Abzeichen teilen</string>
+    <string name="icon_1_quest">1 Quest</string>
+    <string name="icon_3_quest">3 Quests</string>
+    <string name="icon_10_quest">10 Quests</string>
+    <string name="icon_1_event">1 Event</string>
+    <string name="icon_3_event">3 Events</string>
+    <string name="icon_10_event">10 Events</string>
+    <string name="icon_100xp">100 XP</string>
+    <string name="icon_1000xp">1000 XP</string>
+    <string name="icon_3000xp">3000 XP</string>
+    <string name="icon_new">Anfänger</string>
+    <string name="icon_skilled">Erfahren</string>
+    <string name="icon_pro">Profi</string>
 
     <!-- Quests Screen -->
-    <string name="all_quests">Alle Aufgaben</string>
+    <string name="all_quests">Alle Quests</string>
     <string name="favourites">Favoriten</string>
-    <string name="daily_quests">Tägliche Aufgaben</string>
-    <string name="no_equipment_quests">Aufgaben ohne Ausrüstung</string>
-    <string name="quest_description1">Mache dies 4 Mal, dann tue das 123123 Mal und sei glücklich</string>
+    <string name="daily_quests">Tägliche Quests</string>
+    <string name="no_equipment_quests">Quests ohne Ausrüstung</string>
+    <string name="quest_description1">Mache dies 4 Mal, dann das 123123 Mal, und sei glücklich</string>
+
+    <!-- Selected Event Screen -->
+    <string name="go_to_map">Zur Karte gehen</string>
 
     <!-- Selected Quest Screen -->
     <string name="start_quiz">Quiz starten</string>
 
     <!-- Introduction Screen and menu -->
-    <string name="welcome_to_sport_application">Willkommen bei der SportAnwendung</string>
+    <string name="welcome_to_sport_application">Willkommen bei Sport Application</string>
     <string name="welcome_to_questabout">Willkommen bei Questabout</string>
     <string name="questabout">Questabout</string>
     <string name="change_language">Sprache ändern</string>
@@ -32,8 +69,19 @@
     <string name="settings">Einstellungen</string>
     <string name="welcome_to_questabout_2">Willkommen bei Questabout</string>
     <string name="about_questabout">Über Questabout</string>
-    <string name="questabout_is_an_app_designed_to_bring_together_gamification_outdoor_activities_and_social_interaction_explore_nature_while_earning_achievements_and_meeting_like_minded_people_the_app_includes_features_like_a_customizable_map_navigation_tools_event_tracking_and_options_to_set_up_personal_quests_users_can_customize_preferences_creating_a_tailored_experience_through_camera_input_the_gameplay_becomes_more_interactive_adding_an_ar_like_experience_to_your_outdoor_adventures_complete_challenges_alone_or_collaborate_with_others_for_group_based_achievements_the_app_tracks_weather_conditions_suggests_hotspots_and_visualizes_your_activity_through_heatmaps_customize_your_avatar_earn_badges_and_keep_up_with_others_through_real_time_communication_keep_the_adventure_alive_with_questabout_s_dynamic_and_social_features_this_application_has_been_carefully_crafted_to_ensure_a_fun_and_engaging_experience_for_users_who_want_to_combine_exercise_with_exploration_and_social_connection_it_s_all_about_getting_outside_moving_and_making_new_connections_track_your_progress_manage_your_quests_and_customize_your_experience_every_step_of_the_way_questabout_makes_sure_every_journey_is_an_adventure_and_every_adventure_brings_new_opportunities_whether_you_are_looking_for_a_peaceful_hike_a_challenging_mountain_climb_or_just_a_walk_in_the_park_questabout_is_your_perfect_companion_stay_motivated_with_rewards_meet_new_friends_and_keep_discovering_new_places_let_the_journey_begin">Questabout ist eine App, die Gamification, Outdoor-Aktivitäten und soziale Interaktion zusammenbringt. Entdecke die Natur, während du Erfolge sammelst und gleichgesinnte Menschen triffst. Die App bietet Funktionen wie eine anpassbare Karte, Navigationstools, Ereignisverfolgung und die Möglichkeit, persönliche Aufgaben zu erstellen. Benutzer können Präferenzen anpassen und so ein maßgeschneidertes Erlebnis schaffen. Durch die Kameraeingabe wird das Gameplay interaktiver und bietet ein AR-ähnliches Erlebnis für deine Outdoor-Abenteuer. Schließe Herausforderungen alleine oder in Gruppen ab, um Erfolge zu erzielen. Die App verfolgt Wetterbedingungen, schlägt Hotspots vor und visualisiert deine Aktivitäten auf Heatmaps. Passe deinen Avatar an, verdiene Abzeichen und bleibe mit anderen in Echtzeit in Verbindung. Halte das Abenteuer mit den dynamischen und sozialen Funktionen von Questabout lebendig. Diese Anwendung wurde sorgfältig entwickelt, um ein unterhaltsames und fesselndes Erlebnis für Benutzer zu bieten, die Bewegung mit Erkundung und sozialer Interaktion verbinden möchten. Es geht darum, nach draußen zu gehen, sich zu bewegen und neue Verbindungen zu knüpfen. Verfolge deinen Fortschritt, verwalte deine Aufgaben und passe dein Erlebnis an jedem Schritt an. Questabout sorgt dafür, dass jede Reise ein Abenteuer ist und jedes Abenteuer neue Möglichkeiten bietet. Ob du eine friedliche Wanderung, einen herausfordernden Bergaufstieg oder einfach nur einen Spaziergang im Park suchst, Questabout ist dein perfekter Begleiter. Bleibe motiviert mit Belohnungen, lerne neue Freunde kennen und entdecke neue Orte. Lass das Abenteuer beginnen!</string>
-    <string name="change_your_settings_here">Ändere deine Einstellungen hier</string>
+    <string name="questabout_is_an_app_designed_to_bring_together_gamification_outdoor_activities_and_social_interaction_explore_nature_while_earning_achievements_and_meeting_like_minded_people_the_app_includes_features_like_a_customizable_map_navigation_tools_event_tracking_and_options_to_set_up_personal_quests_users_can_customize_preferences_creating_a_tailored_experience">
+<![CDATA[
+Questabout ist eine App, die Gamification mit Outdoor-Aktivitäten kombiniert und Nutzer dazu motiviert, sich körperlich zu betätigen und ihre Umgebung zu erkunden. Die App bietet eine strukturierte und unterhaltsame Möglichkeit, aktiv zu bleiben, indem sie Missionen und Events integriert.
+
+Zu den Hauptfunktionen gehören eine anpassbare Karte, die den Nutzern bei der Navigation und der Verfolgung ihres Fortschritts hilft, ein Missionssystem mit vielfältigen Herausforderungen sowie ein Event-Tracker für die Teilnahme an organisierten Aktivitäten. Nutzer können Missionen absolvieren, die vom Laufen und Wandern bis hin zur Erfüllung spezifischer Aufgaben an bestimmten Orten reichen. Die App zeichnet Erfolge auf und belohnt Aktivitäten mit Punkten und anderen Belohnungen, um die Motivation aufrechtzuerhalten.
+
+Mit dem Fokus auf individuelle Herausforderungen legt Questabout Wert auf persönliche Weiterentwicklung und Erkundung. Egal, ob das Ziel darin besteht, einen malerischen Wanderweg zu entdecken, ein sportliches Training zu absolvieren oder neue Orte in der Umgebung zu erkunden – Questabout ist der ideale Begleiter, um aktiv und inspiriert zu bleiben.
+
+Beginne dein Abenteuer noch heute, stelle dich neuen Herausforderungen und entdecke mit Questabout immer wieder Neues!
+]]>
+</string>
+
+    <string name="change_your_settings_here">Ändere hier deine Einstellungen</string>
     <string name="got_it">Verstanden!</string>
 
     <!-- Strings for unit system selection -->
@@ -41,31 +89,35 @@
     <string name="metric_system">Metrisches System</string>
     <string name="imperial_system">Imperiales System</string>
 
-    <!-- Strings for Profile Screen  -->
+    <!-- Strings for Profile Screen -->
     <string name="profile">Profil</string>
     <string name="nickname">Spitzname</string>
     <string name="save">Speichern</string>
     <string name="current_nickname">Aktueller Spitzname</string>
     <string name="nickname_saved_successfully">Spitzname erfolgreich gespeichert</string>
-    <string name="nickname_save_failed">Speichern des Spitznamens fehlgeschlagen. Bitte versuchen Sie es erneut.</string>
+    <string name="nickname_save_failed">Fehler beim Speichern des Spitznamens. Bitte versuchen Sie es erneut.</string>
     <string name="enter_new_nickname">Neuen Spitznamen eingeben</string>
     <string name="player_statistics">Spielerstatistiken</string>
     <string name="completed_quests">Abgeschlossene Quests</string>
-    <string name="distance_traveled">Zurückgelegte Strecke</string>
+    <string name="distance_traveled">Zurückgelegte Entfernung</string>
     <string name="total_achievements">Gesamte Erfolge</string>
-    <string name="inventory_items">Inventargegenstände</string>
+    <string name="inventory_items">Inventarobjekte</string>
     <string name="completed_tasks">Abgeschlossene Aufgaben</string>
+    <string name="completed_events">Abgeschlossene Events</string>
+    <string name="experience">Erfahrung</string>
     <string name="pois_visited">Besuchte POIs</string>
-    <string name="choose_avatar">Avatar wählen</string>
-
-
+    <string name="choose_avatar">Avatar auswählen</string>
 
 
     <!-- Events -->
-    <string name="event_morning_run">Morgenlauf</string>
-    <string name="event_morning_run_description">Beginnen Sie Ihren Tag mit einem 5 km Lauf durch den Stadtpark.</string>
+    <string name="events">Events</string>
+    <string name="event_morning_run">Morgendlicher Lauf</string>
+    <string name="event_morning_run_description">Starte deinen Tag mit einem 5-km-Lauf durch den Stadtpark.</string>
     <string name="event_soccer_game">Fußballspiel</string>
-    <string name="event_soccer_game_description">Nehmen Sie an einem lokalen Fußballspiel im Stadion teil.</string>
+    <string name="event_soccer_game_description">Nimm an einem lokalen Fußballspiel im Stadion teil.</string>
+    <string name="amount_of_locations_event_placeholder">Anzahl der Orte: %1$d</string>
+    <string name="amount_of_tasks_event_placeholder">Anzahl der Aufgaben: %1$d</string>
+    <string name="event_reward_placeholder">Belohnung: %1$d Erfahrungspunkte</string>
 
     <!-- Sports Locations in Tromsø -->
     <string name="location_city_park">Prestvannet See</string>
@@ -75,79 +127,65 @@
     <string name="location_tromso_alpinpark">Tromsø Alpinpark</string>
     <string name="location_tuil_arena">TUIL Arena</string>
     <string name="location_kraft_sportssenter">Kraft Sportzentrum</string>
-    <string name="location_fløyahallen">Fløyahalle</string>
+    <string name="location_fløyahallen">Fløyahallen</string>
     <string name="location_skarpmarka">Skarpmarka</string>
     <string name="location_kroken_car_park">Kroken Parkplatz</string>
     <string name="location_valhallhallen">Valhallhallen</string>
     <string name="location_crossfit_nordaforr">CrossFit Nordaførr</string>
     <string name="location_folkeparken">Folkeparken</string>
-
+    <string name="location_skansen_festningsverk">Skansen Festung</string>
 
     <!-- Quests -->
     <string name="quest_1_name">Quest 1</string>
-    <string name="quest_1_title">Lauf Herausforderung</string>
-    <string name="quest_1_description">Laufen Sie zwei Runden um den Park.</string>
-    <string name="quest_1_reward">Belohnung: Sneakers</string>
+    <string name="quest_1_title">Lauf-Herausforderung</string>
+    <string name="quest_1_description">Absolviere zwei Runden im Park.</string>
+    <string name="quest_1_reward">Belohnung: Laufschuhe</string>
+    <string name="amount_of_tasks_quest_placeholder">Anzahl der Aufgaben: %1$d</string>
 
     <string name="quest_2_name">Quest 2</string>
-    <string name="quest_2_title">Kniebeugen Herausforderung</string>
-    <string name="quest_2_description">Machen Sie 30 Kniebeugen im Stadion.</string>
+    <string name="quest_2_title">Kniebeugen-Herausforderung</string>
+    <string name="quest_2_description">Mache 30 Kniebeugen im Stadion.</string>
     <string name="quest_2_reward">Belohnung: Sportshorts</string>
 
+    <string name="quest_3_name">Quest 3</string>
+    <string name="quest_3_title">Test-Herausforderung</string>
+    <string name="quest_3_description">Beschreibung der Test-Herausforderung.</string>
+    <string name="quest_3_reward">Belohnung: Sportshorts</string>
+
     <!-- General Tasks for Quests and Events -->
-    <string name="task_complete_challenge_action">Schließe die Herausforderung ab</string>
-    <string name="task_take_photo_photo">Mach ein Foto zur Bestätigung der Fertigstellung</string>
+    <string name="task_complete_challenge_action">Herausforderung abschließen</string>
+    <string name="task_take_photo_photo">Mache ein Foto zur Bestätigung</string>
     <string name="task_go_action">Gehe zum angegebenen Ort</string>
     <string name="task_run_action">Laufe zum angegebenen Ort</string>
     <string name="task_bike_action">Fahre mit dem Fahrrad zum angegebenen Ort</string>
-    <string name="task_collect_item_action">Sammle das Objekt am Ort ein</string>
-    <string name="task_check_in_action">Melde dich am Ort an</string>
-    <string name="task_participate_event_action">Nimm an der Veranstaltung teil</string>
+    <string name="task_collect_item_action">Sammle den Gegenstand am Ort</string>
+    <string name="task_check_in_action">Checke am Ort ein</string>
+    <string name="task_participate_event_action">Nimm am Event teil</string>
     <string name="task_finish_activity_action">Beende die Aktivität</string>
     <string name="task_share_results_action">Teile deine Ergebnisse mit Freunden</string>
-    <string name="task_wait_timer_action">Warte, bis der Timer abläuft</string>
+    <string name="task_wait_timer_action">Warte, bis der Timer abgelaufen ist</string>
 
     <!-- Sports Tasks -->
-
-    <!-- Task 1: Run 5 Kilometers -->
-    <string name="task_run_5k_action">Laufen Sie 5 Kilometer auf der angegebenen Strecke.</string>
-    <string name="task_run_5k_photo">Machen Sie ein Foto an der Ziellinie.</string>
-
-    <!-- Task 2: Swim 500 Meters -->
-    <string name="task_swim_500m_action">Schwimmen Sie 500 Meter im Pool.</string>
-    <string name="task_swim_500m_photo">Machen Sie ein Foto nach dem Schwimmen.</string>
-
-    <!-- Task 3: Climb 1000 Steps -->
-    <string name="task_climb_1000_steps_action">Steigen Sie 1000 Stufen auf der Treppe.</string>
-    <string name="task_climb_1000_steps_photo">Machen Sie ein Foto oben auf der Treppe.</string>
-
-    <!-- Task 4: Bike 10 Kilometers -->
-    <string name="task_bike_10k_action">Fahren Sie 10 Kilometer zum angegebenen Ort.</string>
-    <string name="task_bike_10k_photo">Machen Sie ein Foto am Zielort.</string>
-
-    <!-- Task 5: Complete 50 Push-ups -->
-    <string name="task_pushups_50_action">Machen Sie 50 Liegestütze so schnell wie möglich.</string>
-    <string name="task_pushups_50_photo">Machen Sie ein Foto nach den Liegestützen.</string>
-
-    <!-- Task 6: Row 2 Kilometers -->
-    <string name="task_row_2k_action">Rudern Sie 2 Kilometer auf dem Rudergerät.</string>
-    <string name="task_row_2k_photo">Machen Sie ein Foto des Rudergeräts nach dem Rudern.</string>
-
-    <!-- Task 7: Hike to the Mountain Peak -->
-    <string name="task_hike_peak_action">Wandern Sie zum 3 Kilometer entfernten Berggipfel.</string>
-    <string name="task_hike_peak_photo">Machen Sie ein Foto auf dem Gipfel.</string>
-
-    <!-- Task 8: Perform 30 Burpees -->
-    <string name="task_burpees_30_action">Machen Sie 30 Burpees ohne Pause.</string>
-    <string name="task_burpees_30_photo">Machen Sie ein Foto nach den Burpees.</string>
-
-    <!-- Task 9: Run Two Laps -->
-    <string name="task_run_two_laps_action">Laufen Sie zwei Runden</string>
-    <string name="task_run_two_laps_photo">Machen Sie ein Foto nach den zwei Runden.</string>
-
-    <!-- Task 10: Do 30 Squats -->
-    <string name="task_do_squats_action">Machen Sie 30 Kniebeugen</string>
-    <string name="task_do_squats_photo">Machen Sie ein Foto nach den Kniebeugen.</string>
+    <string name="task_run_5k_action">Laufe 5 Kilometer entlang der Route.</string>
+    <string name="task_run_5k_photo">Mache ein Foto an der Ziellinie.</string>
+    <string name="task_swim_500m_action">Schwimme 500 Meter im Pool.</string>
+    <string name="task_swim_500m_photo">Mache ein Foto am Pool nach Abschluss.</string>
+    <string name="task_climb_1000_steps_action">Steige 1000 Stufen hoch.</string>
+    <string name="task_climb_1000_steps_photo">Mache ein Foto oben an den Stufen.</string>
+    <string name="task_bike_10k_action">Fahre 10 Kilometer zum angegebenen Ort.</string>
+    <string name="task_bike_10k_photo">Mache ein Foto am Zielpunkt.</string>
+    <string name="task_pushups_50_action">Mache 50 Liegestütze so schnell wie möglich.</string>
+    <string name="task_pushups_50_photo">Mache ein Foto nach Abschluss der Liegestütze.</string>
+    <string name="task_row_2k_action">Rudere 2 Kilometer auf dem Rudergerät.</string>
+    <string name="task_row_2k_photo">Mache ein Foto vom Rudergerät nach Abschluss.</string>
+    <string name="task_hike_peak_action">Wandere zum 3 Kilometer entfernten Berggipfel.</string>
+    <string name="task_hike_peak_photo">Mache ein Foto am Berggipfel.</string>
+    <string name="task_burpees_30_action">Mache 30 Burpees ohne Unterbrechung.</string>
+    <string name="task_burpees_30_photo">Mache ein Foto nach Abschluss der Burpees.</string>
+    <string name="task_run_two_laps_action">Laufe zwei Runden</string>
+    <string name="task_run_two_laps_photo">Mache ein Foto nach Abschluss der zwei Runden.</string>
+    <string name="task_do_squats_action">Mache 30 Kniebeugen</string>
+    <string name="task_do_squats_photo">Mache ein Foto nach Abschluss der Kniebeugen.</string>
 
     <string name="default_description">Beschreibung nicht verfügbar</string>
 
@@ -157,8 +195,7 @@
     <string name="developer_name_2">Tetiana Verkhalantseva</string>
     <string name="developer_name_3">Oliver Stanislaw Sokol</string>
     <string name="product_idea">Produktidee</string>
-    <string name="this_app_was_created_to_help_users_achieve_their_fitness_and_outdoor_goals_through_gamification_the_app_tracks_user_activity_and_provides_fun_challenges">This app was created to help users achieve their fitness and outdoor goals through gamification. The app tracks user activity and provides fun challenges.</string>
-    <string name="meet_the_team_behind_this_app">Meet the team behind this app:</string>
-    <string name="developer">Developer</string>
-
+    <string name="this_app_was_created_to_help_users_achieve_their_fitness_and_outdoor_goals_through_gamification_the_app_tracks_user_activity_and_provides_fun_challenges">Diese App wurde entwickelt, um Benutzern dabei zu helfen, ihre Fitness- und Outdoor-Ziele durch Gamification zu erreichen. Die App verfolgt Benutzeraktivitäten und bietet unterhaltsame Herausforderungen.</string>
+    <string name="meet_the_team_behind_this_app">Lerne das Team hinter dieser App kennen:</string>
+    <string name="developer">Entwickler</string>
 </resources>
