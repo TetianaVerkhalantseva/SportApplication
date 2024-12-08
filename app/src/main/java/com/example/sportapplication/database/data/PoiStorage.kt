@@ -35,7 +35,7 @@ class PoiStorage @Inject constructor() {
             icon = R.drawable.ic_fitness_tracker,
             description = R.string.event_soccer_game_description,
             locationId = 3,
-            startTime = System.currentTimeMillis(),
+            startTime = 1733596261788,
             duration = 5400000,
             questsIds = listOf(1, 2, 3),
             rewardItemId = null)
