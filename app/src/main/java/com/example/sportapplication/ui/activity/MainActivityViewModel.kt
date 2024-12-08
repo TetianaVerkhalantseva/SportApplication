@@ -15,6 +15,6 @@ class MainActivityViewModel @Inject constructor(
     sensorDao: SensorDao
 ): ViewModel() {
 
-    val sensors = SensorModel(multiSensor, sensorDao)
+    var sensors: SensorModel = SensorModel(multiSensor, sensorDao)
 
 }

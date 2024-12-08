@@ -24,8 +24,8 @@ class InventoryViewModel @Inject constructor(
     private val itemRepository: ItemRepository
 ) : ViewModel() {
 
-    var activeTimer: Timer = Timer()
-    var isTimerActive: Boolean = false
+    private var activeTimer: Timer = Timer()
+    private var isTimerActive: Boolean = false
     var currentTime by mutableLongStateOf(System.currentTimeMillis())
 
     private val emptyInventoryItem = InventoryItem(
@@ -73,8 +73,10 @@ class InventoryViewModel @Inject constructor(
             val inventoryInDao = itemRepository.getAllInventory()
             if(inventoryInDao.isNotEmpty()){
                 inventoryItems.clear()
-                inventoryInDao.forEach{ item ->
-                    inventoryItems.add(item)
+                inventoryInDao.forEach{
+
+
+                    inventoryItems.add(it)
                 }
             }
 
@@ -90,7 +92,7 @@ class InventoryViewModel @Inject constructor(
     }
 
     fun addItemToInventoryById(itemId: Int){
-        CoroutineScope(Dispatchers.IO).launch {
+        viewModelScope.launch {
 
             val updatedInventory = itemRepository.insertItemToInventory(itemId)
 
@@ -104,10 +106,11 @@ class InventoryViewModel @Inject constructor(
     }
 
     fun removeItemFromInventoryById(inventoryId: Long){
-        CoroutineScope(Dispatchers.IO).launch {
+        viewModelScope.launch {
             val isActive = activeInventoryItems.find {inventoryItem -> inventoryId == inventoryItem.inventoryId}
 
             val updatedInventory = itemRepository.removeItemFromInventory(inventoryId)
+
             inventoryItems.clear()
             if(updatedInventory.isEmpty()){
                 inventoryItems.add(emptyInventoryItem)
@@ -127,7 +130,7 @@ class InventoryViewModel @Inject constructor(
     }
 
     fun activateItemInInventoryById(inventoryId: Long){
-        CoroutineScope(Dispatchers.IO).launch {
+        viewModelScope.launch {
             val updatedInventory = itemRepository.updateInventoryItem(inventoryId, System.currentTimeMillis())
             val activeInventoryItemsFromRepository = itemRepository.getAllActiveInventoryItems()
 
@@ -161,10 +164,12 @@ class InventoryViewModel @Inject constructor(
                 removeItemFromInventoryById(it.inventoryId)
             } }
         } else {
+            currentTime = System.currentTimeMillis()
             isTimerActive = false
             activeTimer.cancel()
         }
 
     }
+
 
 }

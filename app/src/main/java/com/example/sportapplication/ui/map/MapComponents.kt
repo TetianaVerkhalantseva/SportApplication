@@ -359,7 +359,8 @@ fun ContinueCompletingEventDialog(
 @Composable
 fun CompletedEventDialog(
     completedEvent: CompletedEvent,
-    onConfirmClick: () -> Unit
+    onConfirmClick: () -> Unit,
+    itemEffectOnExperience: Long
 ) {
     Dialog(onDismissRequest = onConfirmClick) {
         Card(
@@ -395,7 +396,7 @@ fun CompletedEventDialog(
                 }
 
                 Text(
-                    text = stringResource(id = R.string.completed_event_reward_placeholder, completedEvent.reward),
+                    text = stringResource(id = R.string.completed_event_reward_placeholder, (completedEvent.reward + itemEffectOnExperience)),
                     modifier = Modifier.align(Alignment.CenterHorizontally)
                 )
 
@@ -549,7 +550,8 @@ fun QuestDialog(
 @Composable
 fun CompletedQuestDialog(
     quest: Quest,
-    onConfirmClick: () -> Unit
+    onConfirmClick: () -> Unit,
+    itemEffectOnExperience: Long
 ) {
     Dialog(onDismissRequest = onConfirmClick) {
         Card(
@@ -585,7 +587,7 @@ fun CompletedQuestDialog(
                 }
 
                 Text(
-                    text = stringResource(id = R.string.completed_event_reward_placeholder, quest.reward.experience),
+                    text = stringResource(id = R.string.completed_event_reward_placeholder, (quest.reward.experience + itemEffectOnExperience)),
                     modifier = Modifier.align(Alignment.CenterHorizontally)
                 )
 

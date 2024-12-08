@@ -1,6 +1,5 @@
 package com.example.sportapplication.repository
 
-
 import com.example.sportapplication.database.dao.InventoryDao
 import com.example.sportapplication.database.dao.ItemsDao
 import com.example.sportapplication.database.entity.InventoryData
@@ -11,7 +10,7 @@ import com.example.sportapplication.database.model.InventoryItem
 import com.example.sportapplication.database.model.Item
 import javax.inject.Inject
 
-class ItemRepository @Inject constructor(private val itemsDao: ItemsDao, private val inventoryDao: InventoryDao){
+class ItemRepository @Inject constructor(private val itemsDao: ItemsDao, private val inventoryDao: InventoryDao, private val userRepository: UserRepository){
     suspend fun prepopulateItems(){
         itemsDao.deleteAll()
         itemsDao.resetPrimaryKey()
@@ -19,7 +18,7 @@ class ItemRepository @Inject constructor(private val itemsDao: ItemsDao, private
 
         if (items.isEmpty()) {
             val prepopulateItems = arrayOf(
-                ItemsData(itemId = 0, itemName = "PowerAid Drink", itemType = ItemType.ACTIVE, itemCategory = ItemCategory.DRINK, itemActivated = null, itemDuration = minutesToMilliseconds(30L), itemEffectOnXp = 1.25f, itemEffectOnDuration = null),
+                ItemsData(itemId = 0, itemName = "PowerAid Drink", itemType = ItemType.ACTIVE, itemCategory = ItemCategory.DRINK, itemActivated = null, itemDuration = minutesToMilliseconds(30L), itemEffectOnXp = 1.1f, itemEffectOnDuration = null),
                 ItemsData(itemId = 0, itemName = "Energizer Bar", itemType = ItemType.ACTIVE, itemCategory = ItemCategory.CHOCOLATEBAR, itemActivated = null, itemDuration = minutesToMilliseconds(15L), itemEffectOnXp = 1.25f, itemEffectOnDuration = null),
                 ItemsData(itemId = 0, itemName = "Comfortable Sneakers", itemType = ItemType.PASSIVE, itemCategory = ItemCategory.SNEAKER, itemActivated = null, itemDuration = null, itemEffectOnXp = null, itemEffectOnDuration = 1.25f),
             )
@@ -54,8 +53,22 @@ class ItemRepository @Inject constructor(private val itemsDao: ItemsDao, private
     }
 
     suspend fun getAllActiveInventoryItems(): List<InventoryItem> {
-        val allItems = inventoryDao.getAll()
-        val activatedItems = allItems.filter { inventoryData -> inventoryData.itemType == ItemType.ACTIVE }
+        var allItems = inventoryDao.getAll()
+        val allItemCount = allItems.size
+
+
+        allItems.forEach { if(it.itemActivated != null && it.itemDuration != null){
+                if(it.itemActivated!! + it.itemDuration - System.currentTimeMillis() < 0){
+                    removeItemFromInventory(it.inventoryId)
+                }
+            }
+        }
+
+        if(allItems.size < allItemCount){
+            allItems = inventoryDao.getAll()
+        }
+
+        val activatedItems = allItems.filter { inventoryData -> inventoryData.itemActivated != null}
 
         return activatedItems.map{ inventoryData -> convertInventoryDataToInventoryItem(inventoryData)}.toList()
 
@@ -72,6 +85,9 @@ class ItemRepository @Inject constructor(private val itemsDao: ItemsDao, private
     suspend fun insertItemToInventory(itemId: Int): List<InventoryItem> {
         val item = itemsDao.getItemById(itemId)
         inventoryDao.insertItem(convertItemsDataToInventoryData(item))
+
+        userRepository.addOneToTotalNumberOfItemsPickedUp()
+
         return inventoryDao.getAll().map{ inventoryData -> convertInventoryDataToInventoryItem(inventoryData)}.toList()
     }
 

@@ -19,6 +19,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -59,30 +61,34 @@ fun InventoryScreen(
     val items = itemList.toMutableList()
 
 
-    Column(Modifier.fillMaxSize()) {
+    LazyColumn{
 
-        CategoryItem(
+        item{CategoryItem(
             text = "Inventory",
-        )
+        )}
 
-        InventoryLazyColumn(
+        item{InventoryLazyColumn(
             items = inventory,
             currentTime = viewModel.currentTime,
             removeItemFunction = viewModel::removeItemFromInventoryById,
             activateItemFunction = viewModel::activateItemInInventoryById
-        )
-        Button(onClick = { viewModel.addItemToInventoryById(Random.nextInt(1,4)) }) {
-            Text("Add Item")
-        }
+        )}
 
-        CategoryItem(
+        item{
+            Spacer(Modifier.height(30.dp))
+        }
+        item{Button(onClick = { viewModel.addItemToInventoryById(Random.nextInt(1,4)) }) {
+            Text("Add Item")
+        }}
+
+        item{CategoryItem(
             text = "Item Catalogue",
 
-        )
+        )}
 
-        ItemLazyColumn(
+        item{ItemLazyColumn(
             items = items
-        )
+        )}
     }
 }
 
@@ -151,7 +157,7 @@ fun ItemLazyColumn(
     items: List<Item>,
 ) {
     LazyColumn(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth().heightIn(0.dp, 400.dp)
     ) {
         items(items) { item ->
             ItemUI(
@@ -197,7 +203,7 @@ fun InventoryItemUI(
                             Text("Use")
                         }
                     } else if(item.itemType == ItemType.PASSIVE){
-                        Text("Effect", color = Color(102, 255, 102), modifier = Modifier.clickable { Log.i("test effect item", "clicked effect item") })
+                        Text("Effect", color = Color(24, 84, 181), modifier = Modifier.clickable { Log.i("test effect item", "clicked effect item") })
                     }
                 }
 

@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.location.Location
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -26,8 +27,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableLongState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -49,6 +52,7 @@ import com.example.sportapplication.database.model.EventQuest
 import com.example.sportapplication.database.model.EventResponseBody
 import com.example.sportapplication.database.model.InterestingLocation
 import com.example.sportapplication.database.model.Quest
+import com.example.sportapplication.database.model.itemCategoryToDrawable
 import com.example.sportapplication.repository.model.Event
 import com.example.sportapplication.repository.model.QuestInProgress
 import com.example.sportapplication.ui.introduction.IntroductionScreenRoute
@@ -93,6 +97,8 @@ fun MapScreenRoute(
     val displayIntroductionPage by viewModel.displayIntroductionPage.collectAsState()
     val user by viewModel.user.collectAsState()
     val showSplash by viewModel.showSplash.collectAsState()
+
+    val itemEffectOnExperience  = viewModel.itemEffectOnQuest
 
     LaunchedEffect(key1 = displayIntroductionPage) {
         setBottomBarVisibility(displayIntroductionPage.not())
@@ -145,7 +151,8 @@ fun MapScreenRoute(
         onDismissIntroductionPage = { viewModel.onDismissIntroductionPage() },
         navigateToProfileScreen = navigateToProfileScreen,
         onDismissSplash = { viewModel.onDismissSplash() },
-        setSettingsVisibility = setSettingsVisibility
+        setSettingsVisibility = setSettingsVisibility,
+        itemEffectOnExperience = itemEffectOnExperience
     )
 }
 
@@ -191,7 +198,8 @@ fun MapScreen(
     onDismissIntroductionPage: () -> Unit,
     navigateToProfileScreen: () -> Unit,
     onDismissSplash: () -> Unit,
-    setSettingsVisibility: (Boolean) -> Unit
+    setSettingsVisibility: (Boolean) -> Unit,
+    itemEffectOnExperience: Long
 ) {
 
     val context = LocalContext.current
@@ -214,14 +222,16 @@ fun MapScreen(
     completedQuestDialog?.let {
         CompletedQuestDialog(
             quest = it,
-            onConfirmClick = onConfirmCompletedQuestDialog
+            onConfirmClick = onConfirmCompletedQuestDialog,
+            itemEffectOnExperience = itemEffectOnExperience
         )
     }
 
     completedEventDialogState?.let {
         CompletedEventDialog(
             completedEvent = it,
-            onConfirmClick = onConfirmCompletedEventClick
+            onConfirmClick = onConfirmCompletedEventClick,
+            itemEffectOnExperience = itemEffectOnExperience
 
         )
     }

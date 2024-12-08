@@ -105,4 +105,22 @@ class UserRepository @Inject constructor(
 
     suspend fun getQuestUIById(questId: Long): Quest? =
         getAllQuestsUI().find { it.id == questId }
+
+
+    // USER FUNCTIONS
+
+    suspend fun getTotalNumberOfItemsPickedUp(): Int{
+        return userDao.getTotalNumberOfItemsPickedUp()
+    }
+
+    suspend fun addOneToTotalNumberOfItemsPickedUp(): Int {
+        val user = userDao.getUser()
+        if (user != null){
+            user.totalItemsPickedUp += 1
+            userDao.updateUser(user)
+        }
+
+        return userDao.getTotalNumberOfItemsPickedUp()
+    }
+
 }

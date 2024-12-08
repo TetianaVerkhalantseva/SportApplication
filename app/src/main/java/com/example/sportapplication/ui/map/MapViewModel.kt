@@ -1,7 +1,11 @@
 package com.example.sportapplication.ui.map
 
 import android.location.Location
+import android.util.Log
 import androidx.annotation.StringRes
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableLongStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.sportapplication.database.data.EVENT_REWARD_MULTIPLIER
@@ -29,6 +33,7 @@ import kotlinx.coroutines.flow.map
 import com.example.sportapplication.database.dao.UserDao
 import kotlinx.coroutines.launch
 import com.example.sportapplication.database.entity.User
+import com.example.sportapplication.repository.ItemRepository
 import java.util.Calendar
 import javax.inject.Inject
 
@@ -40,6 +45,7 @@ class MapViewModel @Inject constructor(
     private val poiRepository: PoiRepository,
     private val userRepository: UserRepository,
     private val userDao: UserDao,
+    private val itemRepository: ItemRepository,
     private val prefs: AppSharedPreferences
 ): ViewModel() {
     private var completedEventsIds: List<AchievedEvent> = emptyList()
@@ -107,6 +113,9 @@ class MapViewModel @Inject constructor(
         onUserLocationUpdate(it)
         it
     }
+
+    var itemEffectOnQuest by mutableLongStateOf(0L)
+
 
     private fun onUserLocationUpdate(location: Location) {
         viewModelScope.launch {
@@ -340,7 +349,17 @@ class MapViewModel @Inject constructor(
                 _previousDismissedQuestDialog = quest
                 _startCompletingQuestDialog.emit(null)
                 _questInProgressDialog.emit(quest.toQuestInProgress())
+
+                val activeItems = itemRepository.getAllActiveInventoryItems()
+                var cumulativeActiveItemReward = 0L
+
+                activeItems.forEach { cumulativeActiveItemReward += (quest.reward.experience.toDouble()*((it.itemEffectOnXp ?: 1f) - 1f).toDouble()).toLong() }
+
+
+                itemEffectOnQuest = cumulativeActiveItemReward
             }
+
+
         }
     }
 
@@ -425,8 +444,11 @@ class MapViewModel @Inject constructor(
                         _completedQuestDialog.emit(quest)
 
                         userRepository.insertAchievedQuest(quest.id)
-                        prefs.userExperience = quest.reward.experience
+
+                        prefs.userExperience = quest.reward.experience + itemEffectOnQuest
                     }
+
+
                     else {
                         _questInProgressDialog.emit(
                             quest.copy(

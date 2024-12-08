@@ -29,6 +29,6 @@ interface InventoryDao {
     suspend fun deleteAll()
 
     @Delete
-    fun deleteItem(item: InventoryData)
+    suspend fun deleteItem(item: InventoryData)
 
 }

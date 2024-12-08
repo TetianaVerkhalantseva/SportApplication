@@ -53,13 +53,13 @@
     <string name="completed_quests">Misiones Completadas</string>
     <string name="distance_traveled">Distancia Recorrida</string>
     <string name="total_achievements">Logros Totales</string>
-    <string name="inventory_items">Elementos de Inventario</string>
+    <string name="total_items_picked_up">Total de artículos recogidos</string>
     <string name="completed_tasks">Tareas Completadas</string>
     <string name="pois_visited">POIs Visitados</string>
     <string name="choose_avatar">Elige un avatar</string>
 
-
-
+    <!-- Strings for Items -->
+    <string name="inventory_items">Elementos de Inventario</string>
 
     <!-- Events -->
     <string name="event_morning_run">Carrera Matutina</string>
