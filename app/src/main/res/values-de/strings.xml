@@ -110,11 +110,6 @@ Beginne dein Abenteuer noch heute, stelle dich neuen Herausforderungen und entde
     <string name="pois_visited">Besuchte POIs</string>
     <string name="choose_avatar">Avatar wählen</string>
 
-    <!-- Strings for Items -->
-    <string name="inventory_items">Inventargegenstände</string>
-    <string name="choose_avatar">Avatar auswählen</string>
-
-
     <!-- Events -->
     <string name="events">Events</string>
     <string name="event_morning_run">Morgendlicher Lauf</string>

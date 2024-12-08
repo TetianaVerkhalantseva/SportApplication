@@ -515,7 +515,7 @@ fun OSMMapView(
                 },
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
-                    .padding(bottom = 100.dp, end = 16.dp), // Position in the lower right corner
+                    .padding(bottom = 10.dp, end = 16.dp), // Position in the lower right corner
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_navigation),

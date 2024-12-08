@@ -99,24 +99,15 @@ Start ditt eventyr i dag, ta på deg nye utfordringer og oppdag stadig mer med Q
     <string name="enter_new_nickname">Skriv inn nytt kallenavn</string>
     <string name="player_statistics">Spillerstatistikk</string>
     <string name="completed_quests">Fullførte Oppdrag</string>
-    <string name="distance_traveled">Tilbakelagt Avstand</string>
     <string name="total_achievements">Totalt Antall Prestasjoner</string>
     <string name="total_items_picked_up">Totalt Items Plukket Opp</string>
     <string name="completed_tasks">Fullførte Oppgaver</string>
-    <string name="pois_visited">Besøkte POI-er</string>
-    <string name="completed_quests">Fullførte oppdrag</string>
     <string name="distance_traveled">Reist distanse</string>
-    <string name="total_achievements">Totalt antall prestasjoner</string>
     <string name="inventory_items">Gjenstander i inventar</string>
-    <string name="completed_tasks">Fullførte oppgaver</string>
     <string name="completed_events">Fullførte arrangementer</string>
     <string name="experience">Erfaring</string>
     <string name="pois_visited">Besøkte interessepunkter</string>
     <string name="choose_avatar">Velg avatar</string>
-
-
-    <!-- Strings for Items -->
-    <string name="inventory_items">Lagergjenstander</string>
 
     <!-- Events -->
     <string name="events">Hendelser</string>
