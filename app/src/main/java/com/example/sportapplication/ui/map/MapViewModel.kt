@@ -26,9 +26,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
-import com.example.sportapplication.database.dao.UserDao
 import kotlinx.coroutines.launch
-import com.example.sportapplication.database.entity.User
 import java.util.Calendar
 import javax.inject.Inject
 
@@ -39,19 +37,10 @@ class MapViewModel @Inject constructor(
     private val locationRepository: LocationRepository,
     private val poiRepository: PoiRepository,
     private val userRepository: UserRepository,
-    private val userDao: UserDao,
     private val prefs: AppSharedPreferences
 ): ViewModel() {
+
     private var completedEventsIds: List<AchievedEvent> = emptyList()
-
-    private val _displayIntroductionPage = MutableStateFlow(isMapScreenFirstLaunch)
-    val displayIntroductionPage =_displayIntroductionPage.asStateFlow()
-
-    private val _showSplash = MutableStateFlow(prefs.showSplash)
-    val showSplash = _showSplash.asStateFlow()
-
-    private val _user = MutableStateFlow<User?>(null)
-    val user = _user.asStateFlow()
 
     private val _followUserState = MutableStateFlow(true)
     val followUserState = _followUserState.asStateFlow()
@@ -228,7 +217,6 @@ class MapViewModel @Inject constructor(
     init {
         observeCompletedEvents()
         observeCompletedQuests()
-        observeUser()
         viewModelScope.launch {
             val events = userRepository.getAllNotAchievedEvents()
             val currentAvailableEventResponseBodies = mutableListOf<EventResponseBody>()
@@ -245,14 +233,6 @@ class MapViewModel @Inject constructor(
             _events.emit(currentAvailableEventResponseBodies)
         }
         getAndSetQuests()
-    }
-
-    private fun observeUser() {
-        userDao.getUserLiveData().observeForever { user ->
-            viewModelScope.launch {
-                _user.emit(user)
-            }
-        }
     }
 
     private fun getAndSetQuests() {
@@ -622,24 +602,6 @@ class MapViewModel @Inject constructor(
         viewModelScope.launch {
             _completedEventDialogState.emit(null)
         }
-    }
-
-    fun onDismissIntroductionPage() {
-        viewModelScope.launch {
-            _displayIntroductionPage.emit(false)
-            isMapScreenFirstLaunch = false
-        }
-    }
-
-    fun onDismissSplash() {
-        viewModelScope.launch {
-            _showSplash.emit(false)
-            prefs.showSplash = false
-        }
-    }
-
-    companion object {
-        var isMapScreenFirstLaunch = true
     }
 
 }

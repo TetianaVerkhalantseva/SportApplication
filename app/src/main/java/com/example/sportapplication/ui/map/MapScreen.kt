@@ -9,21 +9,11 @@ import android.graphics.drawable.Drawable
 import android.location.Location
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
-import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -33,28 +23,21 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.sportapplication.R
-import com.example.sportapplication.database.entity.User
 import com.example.sportapplication.database.model.EventQuest
 import com.example.sportapplication.database.model.EventResponseBody
 import com.example.sportapplication.database.model.InterestingLocation
 import com.example.sportapplication.database.model.Quest
 import com.example.sportapplication.repository.model.Event
 import com.example.sportapplication.repository.model.QuestInProgress
-import com.example.sportapplication.ui.introduction.IntroductionScreenRoute
-import com.example.sportapplication.ui.settings.AvatarHelper
 import com.example.sportapplication.utils.isLocationPermissionGranted
 import com.example.sportapplication.utils.locationPermissions
+import com.google.android.gms.maps.model.LatLng
 import org.osmdroid.events.MapListener
 import org.osmdroid.events.ScrollEvent
 import org.osmdroid.events.ZoomEvent
@@ -65,13 +48,13 @@ import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 
+private const val DEFAULT_MAP_POSITION_LAT = 69.653379
+private const val DEFAULT_MAP_POSITION_LON = 18.964080
+
 @Composable
 fun MapScreenRoute(
     navigateToSelectedMarkerQuestScreen: (Long) -> Unit,
-    navigateToSelectedMarkerEventScreen: (Long) -> Unit,
-    navigateToProfileScreen: () -> Unit,
-    setBottomBarVisibility: (Boolean) -> Unit,
-    setSettingsVisibility: (Boolean) -> Unit
+    navigateToSelectedMarkerEventScreen: (Long) -> Unit
 ) {
     val viewModel : MapViewModel = hiltViewModel()
     val requestLocationAccessState by viewModel.requestLocationAccessState.collectAsState()
@@ -90,18 +73,10 @@ fun MapScreenRoute(
     val questInProgressDialog by viewModel.questInProgressDialog.collectAsState()
     val completedQuestDialog by viewModel.completedQuestDialog.collectAsState()
     val currentEventTimeOutMillis by viewModel.currentEventTimeOutMillis.collectAsState()
-    val displayIntroductionPage by viewModel.displayIntroductionPage.collectAsState()
-    val user by viewModel.user.collectAsState()
-    val showSplash by viewModel.showSplash.collectAsState()
 
-    LaunchedEffect(key1 = displayIntroductionPage) {
-        setBottomBarVisibility(displayIntroductionPage.not())
-    }
 
     MapScreen(
         requestLocationAccessState = requestLocationAccessState,
-        user = user,
-        showSplash = showSplash,
         userLocation = userLocation,
         startObservingUserLocation = { viewModel.startObservingUserLocation() },
         followUserState = followUserState,
@@ -140,19 +115,12 @@ fun MapScreenRoute(
         onQuestClick = {
             if (!viewModel.onQuestClick(it))
                 navigateToSelectedMarkerQuestScreen(it.id)
-        },
-        displayIntroductionPage = displayIntroductionPage,
-        onDismissIntroductionPage = { viewModel.onDismissIntroductionPage() },
-        navigateToProfileScreen = navigateToProfileScreen,
-        onDismissSplash = { viewModel.onDismissSplash() },
-        setSettingsVisibility = setSettingsVisibility
+        }
     )
 }
 
 @Composable
 fun MapScreen(
-    user: User?,
-    showSplash: Boolean,
     requestLocationAccessState: Boolean,
     userLocation: Location?,
     startObservingUserLocation: () -> Unit,
@@ -170,7 +138,6 @@ fun MapScreen(
     questInProgressDialog: QuestInProgress?,
     completedQuestDialog: Quest?,
     currentEventTimeOutMillis: Long?,
-    displayIntroductionPage: Boolean,
     onStartQuestClick: () -> Unit,
     onDismissStartQuest: () -> Unit,
     onQuestTaskCompleted: () -> Unit,
@@ -187,11 +154,7 @@ fun MapScreen(
     onConfirmNotAvailableQuestLine: () -> Unit,
     onContinueCompletingEvent: () -> Unit,
     onDismissContinueCompletingEvent: () -> Unit,
-    onConfirmCompletedEventClick: () -> Unit,
-    onDismissIntroductionPage: () -> Unit,
-    navigateToProfileScreen: () -> Unit,
-    onDismissSplash: () -> Unit,
-    setSettingsVisibility: (Boolean) -> Unit
+    onConfirmCompletedEventClick: () -> Unit
 ) {
 
     val context = LocalContext.current
@@ -202,12 +165,9 @@ fun MapScreen(
         if (granted) { startObservingUserLocation() }
     }
 
-
-    if (displayIntroductionPage.not()) {
-        LaunchedEffect(key1 = requestLocationAccessState) {
-            if (context.isLocationPermissionGranted()) startObservingUserLocation()
-            else locationPermissionLauncher.launch(locationPermissions)
-        }
+    LaunchedEffect(key1 = requestLocationAccessState) {
+        if (context.isLocationPermissionGranted()) startObservingUserLocation()
+        else locationPermissionLauncher.launch(locationPermissions)
     }
 
 
@@ -282,53 +242,38 @@ fun MapScreen(
     }
 
     OSMMapView(
-        user = user,
-        showSplash = showSplash,
         userLocation = userLocation,
         interestingLocations = interestingLocations,
         eventQuests = eventQuests,
         eventResponseBodies = eventResponseBodies,
         quests = quests,
-        displayIntroductionPage = displayIntroductionPage,
         navigateToSelectedMarkerQuestScreen = navigateToSelectedMarkerQuestScreen,
         navigateToSelectedMarkerEventScreen = navigateToSelectedMarkerEventScreen,
         onEventClick = onEventClick,
-        onQuestClick = onQuestClick,
-        onDismissIntroductionPage = onDismissIntroductionPage,
-        navigateToProfileScreen = navigateToProfileScreen,
-        onDismissSplash = onDismissSplash,
-        setSettingsVisibility = setSettingsVisibility
+        onQuestClick = onQuestClick
     )
 }
 
 @Composable
 fun OSMMapView(
-    user: User?,
-    showSplash: Boolean,
     userLocation: Location?,
     interestingLocations: List<InterestingLocation>,
     eventQuests: List<EventQuest>,
     eventResponseBodies: List<EventResponseBody>,
     quests: List<Quest>,
-    displayIntroductionPage: Boolean,
     navigateToSelectedMarkerQuestScreen: (Long) -> Unit,
     navigateToSelectedMarkerEventScreen: (Long) -> Unit,
     onEventClick: (EventResponseBody) -> Unit,
-    onQuestClick: (Quest) -> Unit,
-    onDismissIntroductionPage: () -> Unit,
-    navigateToProfileScreen: () -> Unit,
-    onDismissSplash: () -> Unit,
-    setSettingsVisibility: (Boolean) -> Unit
+    onQuestClick: (Quest) -> Unit
 ) {
     val context = LocalContext.current
-
-    val avatarId by AvatarHelper.avatarId.collectAsState()
     var globalMapView by remember {
         mutableStateOf<MapView?>(null)
     }
 
-    val nicknameDynamic by AvatarHelper.nickname.collectAsState()
-    val nickname = user?.name ?: nicknameDynamic
+    val defaultLocation by remember {
+        mutableStateOf(LatLng(DEFAULT_MAP_POSITION_LAT, DEFAULT_MAP_POSITION_LON))
+    }
 
     var shouldCenterMap by remember { mutableStateOf(true) }  // To control centering on the user's interestingLocation
     var mapViewInitialized by remember { mutableStateOf(false) } // To check the initialization of the card
@@ -397,34 +342,12 @@ fun OSMMapView(
 
 
                 // Call updateMarkerIcons to place markers on the map for interesting locations, quests, and events
-                updateMarkerIcons(
-                    mapView,
-                    context,
-                    interestingLocations,
-                    eventQuests,
-                    quests,
-                    eventResponseBodies,
-                    navigateToSelectedMarkerQuestScreen,
-                    navigateToSelectedMarkerEventScreen,
-                    onEventClick,
-                    onQuestClick
-                )
+                updateMarkerIcons(mapView, context, interestingLocations, eventQuests, quests, eventResponseBodies, navigateToSelectedMarkerQuestScreen, navigateToSelectedMarkerEventScreen, onEventClick, onQuestClick)
 
                 mapView.addMapListener(object : MapListener {
                     override fun onZoom(event: ZoomEvent): Boolean {
                         // Update markers whenever the zoom level changes
-                        updateMarkerIcons(
-                            mapView,
-                            context,
-                            onZoomInterestingLocations,
-                            onZoomEventQuests,
-                            onZoomQuests,
-                            onZoomEvents,
-                            navigateToSelectedMarkerQuestScreen,
-                            navigateToSelectedMarkerEventScreen,
-                            onEventClick,
-                            onQuestClick
-                        )
+                        updateMarkerIcons(mapView, context, onZoomInterestingLocations, onZoomEventQuests, onZoomQuests, onZoomEvents, navigateToSelectedMarkerQuestScreen, navigateToSelectedMarkerEventScreen, onEventClick, onQuestClick)
                         return true // Return true to indicate the event was handled
                     }
 
@@ -435,8 +358,7 @@ fun OSMMapView(
                 })
 
                 // Adding an overlay for the user's location
-                val myLocationOverlay =
-                    MyLocationNewOverlay(GpsMyLocationProvider(context), mapView)
+                val myLocationOverlay = MyLocationNewOverlay(GpsMyLocationProvider(context), mapView)
                 myLocationOverlay.enableMyLocation()
                 val bitmap = BitmapFactory.decodeResource(context.resources, R.drawable.location)
                 myLocationOverlay.setDirectionIcon(bitmap)
@@ -456,124 +378,33 @@ fun OSMMapView(
             }
         )
 
-        if (showSplash) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(Color.White.copy(alpha = 0.8f))
-            ) {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center,
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    Text(
-                        text = stringResource(R.string.change_your_settings_here),
-                        style = MaterialTheme.typography.bodyLarge.copy(color = Color.Black),
-                        modifier = Modifier.padding(16.dp)
-                    )
-                    Button(onClick = {
-                        onDismissSplash()
-                    }) {
-                        Text(stringResource(R.string.got_it))
-                    }
-                }
-            }
-        }
 
-        if (displayIntroductionPage) {
-            IntroductionScreenRoute(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .align(Alignment.Center),
-                navigateToMapScreen = {
-                    onDismissIntroductionPage()
-                    if (showSplash)
-                        setSettingsVisibility(true)
-                }
+        // Centers the map on the user's current location when clicked.
+        FloatingActionButton(
+            onClick = {
+                shouldCenterMap = true
+            },
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(bottom = 100.dp, end = 16.dp), // Position in the lower right corner
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_navigation),
+                contentDescription = "Center on my location"
             )
         }
 
-
-
-        // Centers the map on the user's current location when clicked.
-        if (displayIntroductionPage.not()) {
-            FloatingActionButton(
-                onClick = {
-                    shouldCenterMap = true
-                },
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(bottom = 100.dp, end = 16.dp), // Position in the lower right corner
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_navigation),
-                    contentDescription = "Center on my location"
-                )
-            }
-
-            // Will navigate to a selected marker when implemented.
-            FloatingActionButton(
-                onClick = { }, //TODO Implement navigation functionality
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(bottom = 16.dp, end = 16.dp), // Position under the first button
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_navigate),
-                    contentDescription = "Navigate to marker"
-                )
-            }
-
-            // Overlay Avatar with Username
-            Box(
-                modifier = Modifier
-                    .align(Alignment.BottomStart)
-                    .padding(16.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    // Username over avatar
-                    Text(
-                        text = nickname,
-                        style = MaterialTheme.typography.labelLarge.copy(
-                            color = MaterialTheme.colorScheme.scrim,
-                            fontWeight = FontWeight.Bold,
-                            textAlign = TextAlign.Center
-                        ),
-                        modifier = Modifier.padding(bottom = 4.dp)
-                    )
-
-                    // Avatar with circular frame
-                    Box(
-                        modifier = Modifier
-                            .size(90.dp)
-                            .background(
-                                Color.White,
-                                shape = CircleShape
-                            )
-                            .padding(5.dp)
-                            .clip(CircleShape)
-                            .clickable { navigateToProfileScreen() }
-                    ) {
-                        Image(
-                            painter = painterResource(
-                                id = when (avatarId) {
-                                    0 -> R.drawable.avatar_female
-                                    1 -> R.drawable.avatar_male
-                                    else -> R.drawable.avatar_female
-                                }
-                            ),
-                            contentDescription = null,
-                            modifier = Modifier
-                                .size(80.dp)
-                                .clip(CircleShape)
-                        )
-                    }
-                }
-            }
+        // Will navigate to a selected marker when implemented.
+        FloatingActionButton(
+            onClick = { }, //TODO Implement navigation functionality
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(bottom = 16.dp, end = 16.dp), // Position under the first button
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_navigate),
+                contentDescription = "Navigate to marker"
+            )
         }
     }
 }

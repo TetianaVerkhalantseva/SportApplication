@@ -5,36 +5,21 @@ import android.content.SharedPreferences
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.graphics.graphicsLayer
@@ -42,21 +27,28 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.font.FontWeight.Companion.Bold
+import androidx.compose.ui.text.font.FontWeight.Companion.ExtraBold
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.sportapplication.R
 import com.example.sportapplication.ui.about.navigation.navigateToAboutUs
 import com.example.sportapplication.ui.activity.navigation.AppNavHost
 import com.example.sportapplication.ui.profile.ProfileViewModel
 import com.example.sportapplication.ui.profile.navigation.navigateToProfile
-import com.example.sportapplication.ui.settings.LanguageViewModel
+import com.example.sportapplication.ui.settings.AvatarHelper
 import com.example.sportapplication.ui.settings.batteryindicator.BatteryIndicator
 import com.example.sportapplication.ui.settings.batteryindicator.BatteryViewModel
+import com.example.sportapplication.ui.settings.LanguageViewModel
+import com.example.sportapplication.ui.settings.UnitViewModel
 import com.example.sportapplication.ui.settings.updateLocale
 import com.example.sportapplication.ui.theme.SportApplicationTheme
 import com.example.sportapplication.utils.sensorPackage.SensorModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
@@ -67,18 +59,38 @@ fun MainScreen(
     sharedPreferences: SharedPreferences,
     sensors: SensorModel,
     viewModel: ProfileViewModel = hiltViewModel(),
-    setBottomBarVisibility: (Boolean) -> Unit
+    avatarHelper: AvatarHelper = AvatarHelper
 ) {
     var showMenu by remember { mutableStateOf(false) }
     var showLanguageMenu by remember { mutableStateOf(false) }
     var showSettingsMenu by remember { mutableStateOf(false) }
+    var showUnitMenu by remember { mutableStateOf(false) }
+    var showSplash by remember { mutableStateOf(false) }
 
     val languageViewModel: LanguageViewModel = hiltViewModel()
-
+    //val unitViewModel: UnitViewModel = hiltViewModel() TODO delete if not need
     val batteryViewModel: BatteryViewModel = hiltViewModel()
 
     val scope = rememberCoroutineScope()
     var isDarkTheme by rememberSaveable { mutableStateOf(false) }
+
+    val avatarId by AvatarHelper.avatarId.collectAsState()
+    val nicknameFromDb by viewModel.nickname.collectAsState()
+    val nicknameDynamic by avatarHelper.nickname.collectAsState()
+    val nickname = nicknameDynamic ?: nicknameFromDb
+
+    val currentBackStackEntry by navController.currentBackStackEntryAsState()
+    val showAvatar = currentBackStackEntry?.destination?.route == "map_route"
+
+    LaunchedEffect(Unit) {
+        delay(3500)
+        val isFirstLaunch = sharedPreferences.getBoolean("isFirstLaunch", true)
+        if (isFirstLaunch) {
+            showMenu = true
+            showSplash = true
+            sharedPreferences.edit().putBoolean("isFirstLaunch", false).apply()
+        }
+    }
 
     SportApplicationTheme(darkTheme = isDarkTheme) {
         Scaffold(
@@ -339,13 +351,82 @@ fun MainScreen(
                         .padding(padding)
                         .fillMaxSize()
                 ) {
-                    AppNavHost(
-                        navHostController = navController,
-                        setBottomBarVisibility = setBottomBarVisibility,
-                        setSettingsVisibility = {
-                            showMenu = it
+                    AppNavHost(navHostController = navController)
+
+                    if (showAvatar) {
+                        // Overlay Avatar with Username
+                        Box(
+                            modifier = Modifier
+                                .align(Alignment.BottomStart)
+                                .padding(16.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Column(
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                // Username over avatar
+                                Text(
+                                    text = nickname,
+                                    style = MaterialTheme.typography.labelLarge.copy(
+                                        color = MaterialTheme.colorScheme.scrim,
+                                        fontWeight = Bold,
+                                        textAlign = TextAlign.Center
+                                    ),
+                                    modifier = Modifier.padding(bottom = 4.dp)
+                                )
+
+                                // Avatar with circular frame
+                                Box(
+                                    modifier = Modifier
+                                        .size(90.dp)
+                                        .background(
+                                            Color.White,
+                                            shape = CircleShape
+                                        )
+                                        .padding(5.dp)
+                                        .clip(CircleShape)
+                                        .clickable { navController.navigateToProfile() }
+                                ) {
+                                    Image(
+                                        painter = painterResource(
+                                            id = when (avatarId) {
+                                                0 -> R.drawable.avatar_female
+                                                1 -> R.drawable.avatar_male
+                                                else -> R.drawable.avatar_female
+                                            }
+                                        ),
+                                        contentDescription = null,
+                                        modifier = Modifier
+                                            .size(80.dp)
+                                            .clip(CircleShape)
+                                    )
+                                }
+                            }
                         }
-                    )
+                    }
+
+                    if (showSplash) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .background(Color.White.copy(alpha = 0.8f))
+                        ) {
+                            Column(
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.Center,
+                                modifier = Modifier.fillMaxSize()
+                            ) {
+                                Text(
+                                    text = stringResource(R.string.change_your_settings_here),
+                                    style = MaterialTheme.typography.bodyLarge.copy(color = Color.Black),
+                                    modifier = Modifier.padding(16.dp)
+                                )
+                                Button(onClick = { showSplash = false }) {
+                                    Text(stringResource(R.string.got_it))
+                                }
+                            }
+                        }
+                    }
                 }
             }
         )
