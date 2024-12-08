@@ -1,7 +1,6 @@
 package com.example.sportapplication.ui.map
 
 import android.location.Location
-import android.util.Log
 import androidx.annotation.StringRes
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf

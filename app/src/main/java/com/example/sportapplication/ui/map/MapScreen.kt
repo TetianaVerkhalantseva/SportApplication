@@ -7,7 +7,6 @@ import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.location.Location
-import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -27,10 +26,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableLongState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -52,7 +49,6 @@ import com.example.sportapplication.database.model.EventQuest
 import com.example.sportapplication.database.model.EventResponseBody
 import com.example.sportapplication.database.model.InterestingLocation
 import com.example.sportapplication.database.model.Quest
-import com.example.sportapplication.database.model.itemCategoryToDrawable
 import com.example.sportapplication.repository.model.Event
 import com.example.sportapplication.repository.model.QuestInProgress
 import com.example.sportapplication.ui.introduction.IntroductionScreenRoute
