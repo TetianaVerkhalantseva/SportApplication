@@ -512,19 +512,6 @@ fun OSMMapView(
                 )
             }
 
-            // Will navigate to a selected marker when implemented.
-            FloatingActionButton(
-                onClick = { }, //TODO Implement navigation functionality
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(bottom = 16.dp, end = 16.dp), // Position under the first button
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_navigate),
-                    contentDescription = "Navigate to marker"
-                )
-            }
-
             // Overlay Avatar with Username
             Box(
                 modifier = Modifier
