@@ -145,7 +145,7 @@ fun ItemLazyColumn(
         modifier = Modifier.fillMaxWidth().heightIn(0.dp, 400.dp)
     ) {
         items(items) { item ->
-            ItemUI(
+            ItemCatalogueUI(
                 item = item
             )
         }
