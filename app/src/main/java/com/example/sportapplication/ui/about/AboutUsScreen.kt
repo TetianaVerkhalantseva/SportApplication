@@ -24,6 +24,10 @@ import com.example.sportapplication.R
 
 @Composable
 fun AboutUsScreen() {
+
+    // Handles the main content of the "About Us" page.
+    // Includes team introductions and product idea.
+
     val fadeInState = remember { mutableStateOf(0f) }
     LaunchedEffect(Unit) {
         fadeInState.value = 1f
@@ -96,16 +100,17 @@ fun AboutUsScreen() {
 fun TeamMemberCard(name: String, role: String, imageRes: Int) {
     var isHovered by remember { mutableStateOf(false) }
 
+    // Handles scaling animation on hover.
     val scaleState by animateFloatAsState(
         targetValue = if (isHovered) 1.1f else 1f, // Scale up when hovered
         animationSpec = tween(durationMillis = 300)
     )
-
+    // Changes the background color on hover.
     val cardBackgroundColor by animateColorAsState(
         targetValue = if (isHovered) MaterialTheme.colorScheme.primary.copy(alpha = 0.1f) else MaterialTheme.colorScheme.surfaceVariant,
         animationSpec = tween(durationMillis = 300)
     )
-
+    //Displays members using cards.
     Card(
         modifier = Modifier
             .fillMaxWidth()
