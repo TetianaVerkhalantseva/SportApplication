@@ -20,7 +20,6 @@ import kotlin.math.abs
 import kotlin.math.cos
 import kotlin.math.sin
 import kotlin.math.sqrt
-import kotlin.reflect.typeOf
 
 
 class SensorModel (
@@ -94,11 +93,13 @@ class SensorModel (
                         }
                     averagingTimer = fixedRateTimer("averagingTimer", true, 5000L, 5000L) {
                         val numberOfEntries = averageAcceleration.size
+                        val localAveragingAcceleration = averageAcceleration.toList()
+
                         var summedX = 0f
                         var summedY = 0f
                         var summedZ = 0f
 
-                        averageAcceleration.forEach {
+                        localAveragingAcceleration.forEach {
                             summedX += abs(it[0])
                             summedY += abs(it[1])
                             summedZ += abs(it[2])
