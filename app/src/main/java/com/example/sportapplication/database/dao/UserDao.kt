@@ -25,4 +25,9 @@ interface UserDao {
 
     @Query("SELECT * FROM user LIMIT 1")
     fun getUserLiveData(): LiveData<User?>
+
+    @Query("SELECT total_items_picked_up FROM user WHERE id = 1")
+    suspend fun getTotalNumberOfItemsPickedUp(): Int
+
+
 }

@@ -92,6 +92,21 @@ Con un enfoque en el juego individual, Questabout enfatiza la superación person
     <string name="profile">Perfil</string>
     <string name="nickname">Apodo</string>
     <string name="save">Guardar</string>
+    <string name="current_nickname">Apodo Actual</string>
+    <string name="nickname_saved_successfully">Apodo guardado con éxito</string>
+    <string name="nickname_save_failed">No se pudo guardar el apodo. Por favor, inténtelo de nuevo.</string>
+    <string name="enter_new_nickname">Introduzca un nuevo apodo</string>
+    <string name="player_statistics">Estadísticas del Jugador</string>
+    <string name="completed_quests">Misiones Completadas</string>
+    <string name="distance_traveled">Distancia Recorrida</string>
+    <string name="total_achievements">Logros Totales</string>
+    <string name="total_items_picked_up">Total de artículos recogidos</string>
+    <string name="completed_tasks">Tareas Completadas</string>
+    <string name="pois_visited">POIs Visitados</string>
+    <string name="choose_avatar">Elige un avatar</string>
+
+    <!-- Strings for Items -->
+    <string name="inventory_items">Elementos de Inventario</string>
     <string name="current_nickname">Apodo actual</string>
     <string name="nickname_saved_successfully">Apodo guardado exitosamente</string>
     <string name="nickname_save_failed">Error al guardar el apodo. Por favor, inténtalo de nuevo.</string>

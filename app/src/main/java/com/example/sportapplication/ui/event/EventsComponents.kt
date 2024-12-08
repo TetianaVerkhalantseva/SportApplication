@@ -19,6 +19,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -26,18 +27,21 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.sportapplication.ui.inventory.ItemUI
 import com.example.sportapplication.R
+import com.example.sportapplication.database.model.Item
 import com.example.sportapplication.repository.model.EventWithQuestsUI
 import com.example.sportapplication.ui.map.CountdownTimer
 
 @Composable
-fun LazyEventsColumn(events: List<EventWithQuestsUI>, onEventClick: (EventWithQuestsUI) -> Unit) {
+fun LazyEventsColumn(events: List<EventWithQuestsUI>, onEventClick: (EventWithQuestsUI) -> Unit, items: SnapshotStateList<Item>) {
     LazyColumn {
         items(events) { event ->
             LazyEventItem(
                 modifier = Modifier
                     .padding(10.dp),
                 event = event,
+                item = items.find {it.itemId == event.rewardItemId},
                 onClick = { onEventClick(event) }
             )
         }
@@ -48,6 +52,7 @@ fun LazyEventsColumn(events: List<EventWithQuestsUI>, onEventClick: (EventWithQu
 fun LazyEventItem(
     modifier: Modifier = Modifier,
     event: EventWithQuestsUI,
+    item: Item?,
     onClick: () -> Unit
 ) {
 
@@ -129,6 +134,10 @@ fun LazyEventItem(
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurface
                     )
+                    if(item != null){
+                        Text("Item Reward: ")
+                        ItemUI(item, Modifier.width(200.dp))
+                    }
                 }
             }
         }

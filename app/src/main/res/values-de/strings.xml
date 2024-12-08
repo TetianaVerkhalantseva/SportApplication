@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Questabout</string>
     <string name="map_screen">Karte</string>
@@ -101,11 +102,16 @@ Beginne dein Abenteuer noch heute, stelle dich neuen Herausforderungen und entde
     <string name="completed_quests">Abgeschlossene Quests</string>
     <string name="distance_traveled">Zurückgelegte Entfernung</string>
     <string name="total_achievements">Gesamte Erfolge</string>
+    <string name="total_items_picked_up">Gesamtzahl abgeholter Artikel</string>
     <string name="inventory_items">Inventarobjekte</string>
     <string name="completed_tasks">Abgeschlossene Aufgaben</string>
     <string name="completed_events">Abgeschlossene Events</string>
     <string name="experience">Erfahrung</string>
     <string name="pois_visited">Besuchte POIs</string>
+    <string name="choose_avatar">Avatar wählen</string>
+
+    <!-- Strings for Items -->
+    <string name="inventory_items">Inventargegenstände</string>
     <string name="choose_avatar">Avatar auswählen</string>
 
 
