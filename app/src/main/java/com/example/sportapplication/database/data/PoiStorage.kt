@@ -24,7 +24,7 @@ class PoiStorage @Inject constructor() {
             icon = R.drawable.ic_shoes,
             description = R.string.event_morning_run_description,
             locationId = 7,
-            startTime = System.currentTimeMillis(),
+            startTime = 1733697901190,
             duration = 3600000,
             questsIds = listOf(4, 5),
             rewardItemId = Random.nextInt(1, 4).toLong()
@@ -35,7 +35,7 @@ class PoiStorage @Inject constructor() {
             icon = R.drawable.ic_fitness_tracker,
             description = R.string.event_soccer_game_description,
             locationId = 3,
-            startTime = 1733596261788,
+            startTime = 1733697901190,
             duration = 5400000,
             questsIds = listOf(1, 2, 3),
             rewardItemId = null)
@@ -128,7 +128,7 @@ class PoiStorage @Inject constructor() {
             longitude = 18.964080)
     )
 
-    // List of quests
+    // List of quests for events
     val eventQuests = listOf(
         EventQuest(
             id = 1,
@@ -235,6 +235,7 @@ class PoiStorage @Inject constructor() {
 
     )
 
+    // List of separate quests
     val quests = listOf(
         Quest(
             id = 1,
