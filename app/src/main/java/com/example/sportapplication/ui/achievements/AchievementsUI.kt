@@ -78,7 +78,7 @@ fun AchievementItem(
             modifier = Modifier.align(Alignment.CenterHorizontally),
             text = title,
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onTertiaryContainer
+            color = MaterialTheme.colorScheme.onBackground
         )
     }
 }
